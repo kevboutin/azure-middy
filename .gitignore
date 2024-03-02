@@ -41,6 +41,9 @@ lib-cov
 coverage
 *.lcov
 
+# VSCode
+.vscode
+
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
