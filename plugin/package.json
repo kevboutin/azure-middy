@@ -1,0 +1,41 @@
+{
+    "name": "@kevboutin/azure-middy-plugin",
+    "version": "0.0.1",
+    "description": "Performance profiling plugins for azure-middy",
+    "engines": {
+        "node": ">=18"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "test": "npm run test:unit",
+        "test:unit": "ava"
+    },
+    "license": "MIT",
+    "keywords": [
+        "azure",
+        "middleware",
+        "serverless",
+        "framework",
+        "function",
+        "app",
+        "faas",
+        "function"
+    ],
+    "author": {
+        "name": "Azure-middy contributors",
+        "url": "https://github.com/kevboutin/azure-middy/graphs/contributors"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kevboutin/azure-middy.git"
+    },
+    "bugs": {
+        "url": "https://github.com/kevboutin/azure-middy/issues"
+    },
+    "dependencies": {
+        "@airbnb/node-memwatch": "2.0.0"
+    },
+    "devDependencies": {}
+}

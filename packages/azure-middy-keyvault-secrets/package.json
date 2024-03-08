@@ -1,0 +1,55 @@
+{
+    "name": "@kevboutin/azure-middy-keyvault-secrets",
+    "version": "0.0.1",
+    "description": "Azure Key Vault Secrets middleware for the azure-middy framework",
+    "engines": {
+        "node": ">=18"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "exports": {
+        ".": {
+            "import": {
+                "default": "./index.js"
+            }
+        }
+    },
+    "files": [
+        "index.js"
+    ],
+    "scripts": {
+        "test": "npm run test:unit",
+        "test:unit": "ava"
+    },
+    "license": "MIT",
+    "keywords": [
+        "azure",
+        "middleware",
+        "serverless",
+        "framework",
+        "function",
+        "app",
+        "faas",
+        "function"
+    ],
+    "author": "Azure-Middy contributors (https://github.com/kevboutin/azure-middy/graphs/contributors)",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kevboutin/azure-middy.git",
+        "directory": "packages/azure-middy-keyvault-secrets"
+    },
+    "bugs": {
+        "url": "https://github.com/kevboutin/azure-middy/issues"
+    },
+    "dependencies": {
+        "@kevboutin/azure-middy-util": "0.0.1"
+    },
+    "devDependencies": {
+        "@azure/identity": "^4.0.1",
+        "@azure/keyvault-secrets": "^4.8.0",
+        "@kevboutin/azure-middy-core": "0.0.1"
+    },
+    "homepage": "https://github.com/kevboutin/azure-middy#readme",
+    "main": "index.js"
+}

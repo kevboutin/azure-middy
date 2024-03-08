@@ -1,0 +1,33 @@
+{
+    "name": "@kevboutin/azure-middy-util",
+    "version": "0.0.1",
+    "description": "Node.js middleware engine for Azure functions (azure-middy-util package)",
+    "main": "index.js",
+    "scripts": {
+        "test": "npm run test:unit",
+        "test:unit": "ava"
+    },
+    "keywords": [
+        "azure",
+        "middleware",
+        "serverless",
+        "framework",
+        "function",
+        "app",
+        "faas",
+        "function"
+    ],
+    "author": {
+        "name": "Azure-Middy contributors",
+        "url": "https://github.com/kevboutin/azure-middy/graphs/contributors"
+    },
+    "repository": {
+        "type": "git",
+        "url": "github:kevboutin/azure-middy",
+        "directory": "packages/azure-middy-util"
+    },
+    "bugs": {
+        "url": "https://github.com/kevboutin/azure-middy/issues"
+    },
+    "license": "MIT"
+}

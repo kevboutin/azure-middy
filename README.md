@@ -29,7 +29,7 @@ Let's assume you are building a JSON API to process a payment:
 //# handler.js #
 
 // import core
-const middy = require("@middy/core");
+const middy = require("@kevboutin/azure-middy-core");
 
 // import some middlewares
 const jsonBodyParser = require("@middy/http-json-body-parser");
