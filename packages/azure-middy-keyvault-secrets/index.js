@@ -54,7 +54,7 @@ const keyvaultSecretsMiddleware = (opts = {}) => {
             });
         }
 
-        const data = await getInternal(Object.keys(options.fetchData), request);
+        await getInternal(Object.keys(options.fetchData), request);
     };
 
     return {
