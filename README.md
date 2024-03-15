@@ -32,13 +32,11 @@ Let's assume you are building a JSON API to process a payment:
 const middy = require("@kevboutin/azure-middy-core");
 
 // import some middlewares
-const jsonBodyParser = require("@middy/http-json-body-parser");
-const httpErrorHandler = require("@middy/http-error-handler");
-const validator = require("@middy/validator");
+const secretMiddleware = require("@kevboutin/azure-middy-keyvault-secrets");
+const mongodbMiddleware = require("@kevboutin/azure-middy-mongodb");
 
-// This is your common handler, in no way different than what you are used to doing every day in AWS Lambda
+// This is your common handler, in no way different than what you are used to doing every day in Azure functions
 const baseHandler = async (context, req) => {
-    // we don't need to deserialize the body ourself as a middleware will be used to do that
     const {
         creditCardNumber,
         expiryMonth,
@@ -51,77 +49,44 @@ const baseHandler = async (context, req) => {
     // do stuff with this data
     // ...
 
-    return { result: "success", message: "payment processed correctly" };
-};
-
-// Notice that in the handler you only added base business logic (no deserialization,
-// validation or error handler), we will add the rest with middlewares
-
-const inputSchema = {
-    type: "object",
-    properties: {
-        body: {
-            type: "object",
-            properties: {
-                creditCardNumber: {
-                    type: "string",
-                    minLength: 12,
-                    maxLength: 19,
-                    pattern: "d+",
-                },
-                expiryMonth: { type: "integer", minimum: 1, maximum: 12 },
-                expiryYear: { type: "integer", minimum: 2017, maximum: 2027 },
-                cvc: {
-                    type: "string",
-                    minLength: 3,
-                    maxLength: 4,
-                    pattern: "d+",
-                },
-                nameOnCard: { type: "string" },
-                amount: { type: "number" },
-            },
-            required: ["creditCardNumber"], // Insert here all required event properties
-        },
-    },
+    context.res = {
+        body: { result: "success", message: "payment processed successfully" },
+    };
 };
 
 // Let's "middyfy" our handler, then we will be able to attach middlewares to it
-const handler = middy(baseHandler)
-    .use(jsonBodyParser()) // parses the request body when it's a JSON and converts it to an object
-    .use(validator({ inputSchema })) // validates the input
-    .use(httpErrorHandler()); // handles common http errors and returns proper responses
+const handler = middy(baseHandler).use(
+    secretMiddleware({
+        vaultUrl:
+            process.env.VAULT_URL || "https://azure_keyvault.vault.azure.net",
+        cacheExpiry: -1,
+        fetchData: {
+            somesecret: "api_key",
+        },
+    }).use(mongodbMiddleware()),
+);
 
 module.exports = { handler };
 ```
 
 ## Why?
 
-One of the main strengths of serverless and Azure functions is that, from a developer
-perspective, your focus is mostly shifted toward implementing business logic.
+One of the main strengths of serverless and Azure functions is that, from a developer perspective, your focus is mostly shifted toward implementing business logic.
 
-Anyway, when you are writing a handler, you still have to deal with some common technical concerns
-outside business logic, like input parsing and validation, output serialization,
-error handling, etc.
+Anyway, when you are writing a handler, you still have to deal with some common technical concerns outside business logic, like input parsing and validation, output serialization, error handling, etc.
 
-Very often, all this necessary code ends up polluting the pure business logic code in
-your handlers, making the code harder to read and to maintain.
+Very often, all this necessary code ends up polluting the pure business logic code in your handlers, making the code harder to read and to maintain.
 
-In other contexts, like generic web frameworks ([fastify](http://fastify.io), [hapi](https://hapijs.com/), [express](http://expressjs.com/), etc.), this
-problem has been solved using the [middleware pattern](https://www.packtpub.com/mapt/book/web_development/9781783287314/4/ch04lvl1sec33/middleware).
+In other contexts, like generic web frameworks ([fastify](http://fastify.io), [hapi](https://hapijs.com/), [express](http://expressjs.com/), etc.), this problem has been solved using the [middleware pattern](https://www.packtpub.com/mapt/book/web_development/9781783287314/4/ch04lvl1sec33/middleware).
 
-This pattern allows developers to isolate these common technical concerns into
-_"steps"_ that _decorate_ the main business logic code.
-Middleware functions are generally written as independent modules and then plugged into
-the application in a configuration step, thus not polluting the main business logic
-code that remains clean, readable, and easy to maintain.
+This pattern allows developers to isolate these common technical concerns into _"steps"_ that _decorate_ the main business logic code.
+Middleware functions are generally written as independent modules and then plugged into the application in a configuration step, thus not polluting the main business logic code that remains clean, readable, and easy to maintain.
 
-Since we could not find a similar approach for Azure function handlers, we decided
-to create azure-middy, our own middleware framework for serverless in Azure land.
+Since we could not find a similar approach for Azure function handlers, we decided to create azure-middy, our own middleware framework for serverless in Azure land.
 
 ## Usage
 
-As you might have already seen from our first example here, using azure-middy is very
-simple and requires just few steps:
+As you might have already seen from our first example here, using azure-middy is very simple and requires just few steps:
 
 1.  Write your function handlers as usual, focusing mostly on implementing the bare business logic for them.
 2.  Import `middy` and all the middlewares you want to use.
@@ -177,29 +142,21 @@ Middy implements the classic _onion-like_ middleware pattern, with some peculiar
 
 ![Azure-Middy middleware engine diagram](/docs/img/azure-middy-middleware-engine.png)
 
-When you attach a new middleware this will wrap the business logic contained in the handler
-in two separate steps.
+When you attach a new middleware this will wrap the business logic contained in the handler in two separate steps.
 
-When another middleware is attached this will wrap the handler again and it will be wrapped by
-all the previously added middlewares in order, creating multiple layers for interacting with
-the _request_ (event) and the _response_.
+When another middleware is attached this will wrap the handler again and it will be wrapped by all the previously added middlewares in order, creating multiple layers for interacting with the _request_ (event) and the _response_.
 
-This way the _request-response cycle_ flows through all the middlewares, the
-handler and all the middlewares again, giving the opportunity within every step to
-modify or enrich the current request, context, or the response.
+This way the _request-response cycle_ flows through all the middlewares, the handler and all the middlewares again, giving the opportunity within every step to modify or enrich the current request, context, or the response.
 
 ### Execution order
 
 Middlewares have two phases: `before` and `after`.
 
-The `before` phase, happens _before_ the handler is executed. In this code the
-response is not created yet, so you will have access only to the request.
+The `before` phase, happens _before_ the handler is executed. In this code the response is not created yet, so you will have access only to the request.
 
-The `after` phase, happens _after_ the handler is executed. In this code you will
-have access to both the request and the response.
+The `after` phase, happens _after_ the handler is executed. In this code you will have access to both the request and the response.
 
-If you have three middlewares attached (as in the image above), this is the expected
-order of execution:
+If you have three middlewares attached (as in the image above), this is the expected order of execution:
 
 -   `middleware1` (before)
 -   `middleware2` (before)
@@ -209,10 +166,7 @@ order of execution:
 -   `middleware2` (after)
 -   `middleware1` (after)
 
-Notice that in the `after` phase, middlewares are executed in inverted order,
-this way the first handler attached is the one with the highest priority as it will
-be the first able to change the request and last able to modify the response before
-it gets sent to the user.
+Notice that in the `after` phase, middlewares are executed in inverted order, this way the first handler attached is the one with the highest priority as it will be the first able to change the request and last able to modify the response before it gets sent to the user.
 
 ### Interrupt middleware execution early
 
@@ -269,17 +223,11 @@ const handler = middy((context, req) => {
 
 But, what happens when there is an error?
 
-When there is an error, the regular control flow is stopped and the execution is
-moved back to all the middlewares that implemented a special phase called `onError`, following
-the order they have been attached.
+When there is an error, the regular control flow is stopped and the execution is moved back to all the middlewares that implemented a special phase called `onError`, following the order they have been attached.
 
-Every `onError` middleware can decide to handle the error and create a proper response or
-to delegate the error to the next middleware.
+Every `onError` middleware can decide to handle the error and create a proper response or to delegate the error to the next middleware.
 
-When a middleware handles the error and creates a response, the execution is still propagated to all the other
-error middlewares and they have a chance to update or replace the response as
-needed. At the end of the error middlewares sequence, the response is returned
-to the user.
+When a middleware handles the error and creates a response, the execution is still propagated to all the other error middlewares and they have a chance to update or replace the response as needed. At the end of the error middlewares sequence, the response is returned to the user.
 
 If no middleware manages the error, the Lambda execution fails reporting the unmanaged error.
 
@@ -321,9 +269,7 @@ Where:
 
 ### Configurable middlewares
 
-In order to make middlewares configurable, they are generally exported as a function that accepts
-a configuration object. This function should then return the middleware object with `before`,
-`after`, and `onError` as keys.
+In order to make middlewares configurable, they are generally exported as a function that accepts a configuration object. This function should then return the middleware object with `before`, `after`, and `onError` as keys.
 
 E.g.
 
@@ -377,14 +323,11 @@ module.exports = { handler };
 
 ### Inline middlewares
 
-Sometimes you want to create handlers that serve a very small need and that are not
-necessarily re-usable. In such cases, you probably will need to hook only into one of
-the different phases (`before`, `after` or `onError`).
+Sometimes you want to create handlers that serve a very small need and that are not necessarily re-usable. In such cases, you probably will need to hook only into one of the different phases (`before`, `after` or `onError`).
 
-In these cases you can use **inline middlewares** which are shortcut functions to hook
-logic into Azure-Middy's control flow.
+In these cases you can use **inline middlewares** which are shortcut functions to hook logic into Azure-Middy's control flow.
 
-Let's see how inline middlewares work with a simple example:
+Observe how inline middlewares work with a simple example:
 
 ```javascript
 const middy = require("@kevboutin/azure-middy-core");
@@ -408,31 +351,22 @@ handler.onError(async (request) => {
 module.exports = { handler };
 ```
 
-As you can see above, a middy instance also exposes the `before`, `after` and `onError`
-methods to allow you to quickly hook in simple inline middlewares.
+As you can see above, a middy instance also exposes the `before`, `after` and `onError` methods to allow you to quickly hook in simple inline middlewares.
 
 ### Request caching & Internal storage
 
-The handler also contains an `internal` object that can be used to store values securely between middlewares that
-expires when the event ends. To compliment this there is also a cache where middleware can store request promises.
+The handler also contains an `internal` object that can be used to store values securely between middlewares that expires when the event ends. To compliment this there is also a cache where middleware can store request promises.
 During `before` these promises can be stored into `internal` then resolved only when needed. This pattern is useful to take advantage of the async nature of node especially when you have multiple middleware that require reaching out the external APIs.
 
 Here is a middleware boilerplate using this pattern:
 
 ```javascript
-const {
-    canPrefetch,
-    getInternal,
-    processCache,
-} = require("@kevboutin/azure-middy-util");
+const { getInternal, processCache } = require("@kevboutin/azure-middy-util");
 
 const defaults = {
     fetchData: {}, // { internalKey: params }
-    disablePrefetch: false,
     cacheKey: "custom",
     cacheExpiry: -1,
-    setToEnv: false,
-    setToContext: false,
 };
 
 module.exports = (opts = {}) => {
@@ -451,32 +385,16 @@ module.exports = (opts = {}) => {
         return values;
     };
 
-    let prefetch, client, init;
-    if (canPrefetch(options)) {
-        init = true;
-        prefetch = processCache(options, fetch);
-    }
-
+    let client;
     const customMiddlewareBefore = async (request) => {
         let cached;
-        if (init) {
-            cached = prefetch;
-        } else {
-            cached = processCache(options, fetch, request);
-        }
+        cached = processCache(options, fetch, request);
 
         Object.assign(request.internal, cached);
-        if (options.setToEnv)
-            Object.assign(
-                process.env,
-                await getInternal(Object.keys(options.fetchData), request),
-            );
-        if (options.setToContext)
-            Object.assign(
-                request.context,
-                await getInternal(Object.keys(options.fetchData), request),
-            );
-        else init = false;
+        Object.assign(
+            process.env,
+            await getInternal(Object.keys(options.fetchData), request),
+        );
     };
 
     return {

@@ -48,10 +48,13 @@ const keyvaultSecretsMiddleware = (opts = {}) => {
         }
 
         const { value } = processCache(options, fetch, request);
-        Object.assign(request.internal, value);
+        if (value) {
+            value.then((res) => {
+                Object.assign(request.internal, res);
+            });
+        }
 
         const data = await getInternal(Object.keys(options.fetchData), request);
-        Object.assign(request.context, data);
     };
 
     return {

@@ -2,7 +2,7 @@ const { SecretClient } = require("@azure/keyvault-secrets");
 const test = require("ava");
 const sinon = require("sinon");
 const middy = require("../../azure-middy-core/index.js");
-const { getInternal, clearCache } = require("../../azure-middy-util/index.js");
+const { getInternal, clearCache } = require("@kevboutin/azure-middy-util");
 const keyvaultSecretsMiddleware = require("../index.js");
 
 let sandbox, stub;
@@ -112,7 +112,7 @@ test.serial(
 
         const middleware = async (request) => {
             const values = await getInternal(true, request);
-            //t.is(values.token, "value");
+            t.is(values.someprop, "value");
         };
 
         handler
@@ -121,7 +121,7 @@ test.serial(
                     vaultUrl: "https://azure_keyvault.vault.azure.net",
                     cacheExpiry: -1,
                     fetchData: {
-                        token: "api_key",
+                        someprop: "api_key",
                     },
                 }),
             )

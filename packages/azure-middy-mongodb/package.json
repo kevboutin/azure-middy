@@ -1,7 +1,7 @@
 {
-    "name": "@kevboutin/azure-middy-keyvault-secrets",
+    "name": "@kevboutin/azure-middy-mongodb",
     "version": "0.0.1",
-    "description": "Azure Key Vault Secrets middleware for the azure-middy framework",
+    "description": "MongoDB middleware for the azure-middy framework",
     "engines": {
         "node": ">=18"
     },
@@ -43,11 +43,10 @@
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
     "dependencies": {
-        "@kevboutin/azure-middy-util": "0.0.1"
+        "@kevboutin/azure-middy-util": "0.0.1",
+        "mongoose": "^8.2.1"
     },
     "devDependencies": {
-        "@azure/identity": "^4.0.1",
-        "@azure/keyvault-secrets": "^4.8.0",
         "@kevboutin/azure-middy-core": "0.0.1"
     },
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
