@@ -8,6 +8,7 @@ const {
     clearCache,
     getCache,
     modifyCache,
+    normalizeHttpResponse,
     getInternal,
 } = require("../index");
 
@@ -56,6 +57,64 @@ test("jsonSafeStringify should stringify with replacer", async (t) => {
 test("jsonSafeStringify should not stringify if throws error", async (t) => {
     const value = jsonSafeStringify({ bigint: BigInt(9007199254740991) });
     t.deepEqual(value, { bigint: BigInt(9007199254740991) });
+});
+
+// normalizeHttpResponse
+test("normalizeHttpResponse should not change response", async (t) => {
+    const request = {
+        response: { headers: {} },
+    };
+    const response = normalizeHttpResponse(request);
+    t.deepEqual(response, { statusCode: 500, headers: {} });
+    t.deepEqual(request, { response });
+});
+test("normalizeHttpResponse should update headers in response", async (t) => {
+    const request = {
+        response: {},
+    };
+    const response = normalizeHttpResponse(request);
+    t.deepEqual(response, { statusCode: 200, headers: {}, body: {} });
+    t.deepEqual(request, { response });
+});
+test("normalizeHttpResponse should update undefined response", async (t) => {
+    const request = {};
+    const response = normalizeHttpResponse(request);
+    t.deepEqual(response, { statusCode: 500, headers: {} });
+    t.deepEqual(request, { response });
+});
+test("normalizeHttpResponse should update incomplete response", async (t) => {
+    const request = {
+        response: {
+            body: "",
+        },
+    };
+    const response = normalizeHttpResponse(request);
+    t.deepEqual(response, { statusCode: 500, headers: {}, body: "" });
+    t.deepEqual(request, { response });
+});
+test("normalizeHttpResponse should update nullish response", async (t) => {
+    const request = {
+        response: null,
+    };
+    const response = normalizeHttpResponse(request);
+    t.deepEqual(response, { statusCode: 200, headers: {}, body: null });
+    t.deepEqual(request, { response });
+});
+test("normalizeHttpResponse should update string response", async (t) => {
+    const request = {
+        response: "",
+    };
+    const response = normalizeHttpResponse(request);
+    t.deepEqual(response, { statusCode: 200, headers: {}, body: "" });
+    t.deepEqual(request, { response });
+});
+test("normalizeHttpResponse should update array response", async (t) => {
+    const request = {
+        response: [],
+    };
+    const response = normalizeHttpResponse(request);
+    t.deepEqual(response, { statusCode: 200, headers: {}, body: [] });
+    t.deepEqual(request, { response });
 });
 
 // processCache / clearCache

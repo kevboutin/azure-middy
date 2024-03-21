@@ -1,0 +1,42 @@
+{
+    "name": "@kevboutin/azure-middy-security-headers",
+    "version": "0.0.1",
+    "description": "Middleware for sending HTTP response security headers",
+    "engines": {
+        "node": ">=18"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "test": "npm run test:unit",
+        "test:unit": "ava --config test.config.js"
+    },
+    "license": "MIT",
+    "keywords": [
+        "azure",
+        "middleware",
+        "serverless",
+        "framework",
+        "function",
+        "app",
+        "faas",
+        "function",
+        "security",
+        "headers"
+    ],
+    "author": "Azure-Middy contributors (https://github.com/kevboutin/azure-middy/graphs/contributors)",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kevboutin/azure-middy.git",
+        "directory": "packages/azure-middy-keyvault-secrets"
+    },
+    "bugs": {
+        "url": "https://github.com/kevboutin/azure-middy/issues"
+    },
+    "devDependencies": {
+        "@kevboutin/azure-middy-core": "0.0.1"
+    },
+    "homepage": "https://github.com/kevboutin/azure-middy#readme",
+    "main": "index.js"
+}
