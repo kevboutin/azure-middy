@@ -32,6 +32,7 @@ Let's assume you are building a JSON API to process a payment:
 const middy = require("@kevboutin/azure-middy-core");
 
 // import some middlewares
+const loggerMiddleware = require("@kevboutin/azure-middy-logger");
 const secretMiddleware = require("@kevboutin/azure-middy-keyvault-secrets");
 const mongodbMiddleware = require("@kevboutin/azure-middy-mongodb");
 
@@ -55,16 +56,19 @@ const baseHandler = async (context, req) => {
 };
 
 // Let's "middyfy" our handler, then we will be able to attach middlewares to it
-const handler = middy(baseHandler).use(
-    secretMiddleware({
-        vaultUrl:
-            process.env.VAULT_URL || "https://azure_keyvault.vault.azure.net",
-        cacheExpiry: -1,
-        fetchData: {
-            somesecret: "api_key",
-        },
-    }).use(mongodbMiddleware()),
-);
+const handler = middy(baseHandler)
+    .use(loggerMiddleware())
+    .use(
+        secretMiddleware({
+            vaultUrl:
+                process.env.VAULT_URL ||
+                "https://azure_keyvault.vault.azure.net",
+            cacheExpiry: -1,
+            fetchData: {
+                somesecret: "api_key",
+            },
+        }).use(mongodbMiddleware()),
+    );
 
 module.exports = { handler };
 ```
