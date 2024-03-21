@@ -229,10 +229,10 @@ Every `onError` middleware can decide to handle the error and create a proper re
 
 When a middleware handles the error and creates a response, the execution is still propagated to all the other error middlewares and they have a chance to update or replace the response as needed. At the end of the error middlewares sequence, the response is returned to the user.
 
-If no middleware manages the error, the Lambda execution fails reporting the unmanaged error.
+If no middleware manages the error, the function execution fails and reports the unmanaged error.
 
 ```javascript
-// Initailaize response
+// Initialize response
 request.response = request.response ?? {};
 
 // Add to response
@@ -264,7 +264,7 @@ async (request) => {
 Where:
 
 -   `request`: is a reference to the current context and allows access to (and modification of)
-    the current `context` (request), the `req` (request), the `response` (in the _after_ phase), and `error`
+    the current `context`, the `req` (request), the `response` (in the _after_ phase), and `error`
     (in case of an error).
 
 ### Configurable middlewares
@@ -292,7 +292,6 @@ module.exports = (opts = {}) => {
     };
 
     return {
-        // Having descriptive function names will allow for easier tracking of perormance bottlenecks using @middy/core/profiler
         before: customMiddlewareBefore,
         after: customMiddlewareAfter,
         onError: customMiddlewareOnError,
