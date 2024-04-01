@@ -35,7 +35,7 @@
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
     "devDependencies": {
-        "@kevboutin/azure-middy-core": "0.0.1"
+        "@kevboutin/azure-middy-core": "0.1.0"
     },
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
     "main": "index.js"

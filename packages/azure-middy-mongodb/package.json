@@ -47,7 +47,7 @@
         "mongoose": "^8.2.1"
     },
     "devDependencies": {
-        "@kevboutin/azure-middy-core": "0.0.1"
+        "@kevboutin/azure-middy-core": "0.1.0"
     },
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
     "main": "index.js"

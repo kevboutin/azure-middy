@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-plugin",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Performance profiling plugins for azure-middy",
     "engines": {
         "node": ">=18"
