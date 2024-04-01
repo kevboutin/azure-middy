@@ -43,12 +43,12 @@
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
     "dependencies": {
-        "@kevboutin/azure-middy-util": "0.0.1"
+        "@kevboutin/azure-middy-util": "0.1.0"
     },
     "devDependencies": {
         "@azure/identity": "^4.0.1",
         "@azure/keyvault-secrets": "^4.8.0",
-        "@kevboutin/azure-middy-core": "0.0.1"
+        "@kevboutin/azure-middy-core": "0.1.0"
     },
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
     "main": "index.js"

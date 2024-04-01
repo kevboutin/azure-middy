@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-security-headers",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Middleware for sending HTTP response security headers",
     "engines": {
         "node": ">=18"

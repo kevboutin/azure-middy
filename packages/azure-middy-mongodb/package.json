@@ -43,7 +43,7 @@
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
     "dependencies": {
-        "@kevboutin/azure-middy-util": "0.0.1",
+        "@kevboutin/azure-middy-util": "0.1.0",
         "mongoose": "^8.2.1"
     },
     "devDependencies": {

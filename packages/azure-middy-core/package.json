@@ -46,7 +46,5 @@
     },
     "bugs": {
         "url": "https://github.com/kevboutin/middy/issues"
-    },
-    "devDependencies": {},
-    "dependencies": {}
+    }
 }
