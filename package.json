@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-monorepo",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "A Node.js middleware engine for Azure functions",
     "main": "index.js",
     "private": true,
@@ -18,6 +18,7 @@
         "outdated": "npm outdated --workspaces",
         "pre-commit": "npm run lint && npm run test:lint",
         "prepare": "npx husky",
+        "prettier:check": "npx prettier --list-different \"./**/*.{json,yaml,js,ts}\"",
         "prettier:fix": "npx prettier -w **/*.js",
         "release:tag": "git tag $npm_package_version && git push --tags",
         "test": "npm run test:lint && npm run test:packages:unit",
