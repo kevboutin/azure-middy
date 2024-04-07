@@ -1,0 +1,11 @@
+## Files that should be ignored from Azure deployments
+
+.git
+.husky
+.vscode
+docs
+local.settings.json
+function-schema.json
+schemas
+test
+.venv

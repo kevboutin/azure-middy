@@ -1,0 +1,19 @@
+{
+    "disabled": false,
+    "scriptFile": "./index.js",
+    "bindings": [
+        {
+            "type": "httpTrigger",
+            "direction": "in",
+            "route": "hello",
+            "name": "req",
+            "methods": ["get"],
+            "authLevel": "anonymous"
+        },
+        {
+            "type": "http",
+            "name": "res",
+            "direction": "out"
+        }
+    ]
+}

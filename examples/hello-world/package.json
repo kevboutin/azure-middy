@@ -1,0 +1,32 @@
+{
+    "name": "helloworld",
+    "version": "1.0.0",
+    "description": "Example hello world function using azure-middy",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "example",
+        "hello",
+        "azure",
+        "cloud",
+        "javascript",
+        "nodejs"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kevboutin/azure-middy.git",
+        "directory": "examples/hello-world"
+    },
+    "bugs": {
+        "url": "https://github.com/kevboutin/azure-middy/issues"
+    },
+    "author": "Azure-Middy contributors (https://github.com/kevboutin/azure-middy/graphs/contributors)",
+    "license": "MIT",
+    "homepage": "https://github.com/kevboutin/azure-middy#readme",
+    "dependencies": {
+        "@kevboutin/azure-middy-core": "^0.1.0",
+        "@kevboutin/azure-middy-logger": "^0.1.0"
+    }
+}

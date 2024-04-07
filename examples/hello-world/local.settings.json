@@ -1,0 +1,13 @@
+{
+    "IsEncrypted": false,
+    "Host": {
+        "LocalHttpPort": 7070,
+        "CORS": "*",
+        "CORSCredentials": false
+    },
+    "Values": {
+        "FUNCTIONS_WORKER_RUNTIME": "node",
+        "FUNCTIONS_WORKER_RUNTIME_VERSION": "~18",
+        "WEBSITE_NODE_DEFAULT_VERSION": "~18"
+    }
+}
