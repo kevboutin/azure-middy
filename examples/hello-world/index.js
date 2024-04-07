@@ -1,10 +1,10 @@
 /*
- * Simple helloWorld example using the Azure functions v3 programming model.
+ * Simple "hello world" example using the Azure functions v3 programming model.
  */
 const middy = require("@kevboutin/azure-middy-core");
 const loggerMiddleware = require("@kevboutin/azure-middy-logger");
 
-const TAG = "helloWorld";
+const TAG = "hello-world";
 const headers = {
     "Content-Type": "application/json",
 };

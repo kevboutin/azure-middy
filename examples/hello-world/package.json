@@ -1,5 +1,5 @@
 {
-    "name": "helloworld",
+    "name": "hello-world",
     "version": "1.0.0",
     "description": "Example hello world function using azure-middy",
     "main": "index.js",
