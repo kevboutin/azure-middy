@@ -1,6 +1,6 @@
 const test = require("ava");
-const middy = require("../../azure-middy-core/index.js");
-const { securityHeadersMiddleware } = require("../index.js");
+const middy = require("../../azure-middy-core/index.cjs");
+const { securityHeadersMiddleware } = require("../index.cjs");
 
 const req = {};
 const defaultContext = {

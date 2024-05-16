@@ -1,9 +1,19 @@
+const memwatch = require("@airbnb/node-memwatch");
+
 const defaults = {
     logger: console.log,
     enabled: true,
 };
 
-const timePlugin = (opts = {}) => {
+/**
+ * A plugin for monitoring memory usage during request processing.
+ *
+ * @param {Object} opts - Options for configuring the plugin.
+ * @param {Function} opts.logger - The logger function to use for logging memory usage.
+ * @param {boolean} opts.enabled - Whether the plugin is enabled or not.
+ * @returns {Object} - An object containing the plugin's methods.
+ */
+const memoryPlugin = (opts = {}) => {
     const { logger, enabled } = { ...defaults, ...opts };
     if (!enabled) {
         return {};
@@ -13,19 +23,12 @@ const timePlugin = (opts = {}) => {
     const store = {};
 
     const start = (id) => {
-        store[id] = process.hrtime.bigint();
+        store[id] = new memwatch.HeapDiff();
     };
     const stop = (id) => {
-        if (!enabled) return;
-        logger(
-            id,
-            Number.parseInt((process.hrtime.bigint() - store[id]).toString()) /
-                1_000_000,
-            "ms",
-        );
+        logger(id, store[id].end());
     };
 
-    // Only run during cold start
     const beforePrefetch = () => start("prefetch");
     const requestStart = () => {
         if (cold) {
@@ -51,4 +54,4 @@ const timePlugin = (opts = {}) => {
     };
 };
 
-export default timePlugin;
+module.exports = { memoryPlugin };

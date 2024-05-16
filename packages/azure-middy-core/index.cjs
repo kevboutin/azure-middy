@@ -1,3 +1,10 @@
+/**
+ * Creates a middleware wrapper function.
+ *
+ * @param {Function} baseHandler - The base handler function.
+ * @param {Object} plugin - The plugin object.
+ * @returns {Function} - The middleware wrapper function.
+ */
 const middy = (baseHandler = () => {}, plugin) => {
     plugin?.beforePrefetch?.();
     const beforeMiddlewares = [];
@@ -73,6 +80,17 @@ const middy = (baseHandler = () => {}, plugin) => {
     return instance;
 };
 
+/**
+ * Executes a request by running the provided middlewares and handler.
+ *
+ * @param {Object} request - The request object.
+ * @param {Array} beforeMiddlewares - The array of middlewares to run before the handler.
+ * @param {Function} baseHandler - The base handler function.
+ * @param {Array} afterMiddlewares - The array of middlewares to run after the handler.
+ * @param {Array} onErrorMiddlewares - The array of middlewares to run when an error occurs.
+ * @param {Object} plugin - The plugin object.
+ * @returns {Promise} - A promise that resolves to the response of the request.
+ */
 const runRequest = async (
     request,
     beforeMiddlewares,
@@ -110,6 +128,14 @@ const runRequest = async (
     return request.response;
 };
 
+/**
+ * Executes the provided middlewares for a given request.
+ *
+ * @param {Object} request - The request object.
+ * @param {Array} middlewares - The array of middlewares to execute.
+ * @param {Object} plugin - The plugin object.
+ * @returns {Promise} - A promise that resolves to the response of the request.
+ */
 const runMiddlewares = async (request, middlewares, plugin) => {
     for (const nextMiddleware of middlewares) {
         plugin?.beforeMiddleware?.(nextMiddleware?.name);

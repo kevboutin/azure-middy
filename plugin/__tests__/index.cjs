@@ -1,9 +1,9 @@
 const test = require("ava");
-const middy = require("../../packages/azure-middy-core/index.js");
+const middy = require("../../packages/azure-middy-core/index.cjs");
 
-const pluginHRTime = require("../hrtime.js");
+const { timePlugin } = require("../hrtime.cjs");
 
-const event = {};
+const req = {};
 const context = {
     getRemainingTimeInMillis: () => 1000,
 };
@@ -42,13 +42,13 @@ test.serial("Should run with hrtime plugin", async (t) => {
     const logger = (id, value) => {
         output[id] = value;
     };
-    const plugin = pluginHRTime({ logger });
+    const plugin = timePlugin({ logger });
 
     const functionHandler = () => {};
 
-    const handler = middy(plugin).handler(functionHandler);
+    const handler = middy(functionHandler, plugin);
 
-    await handler(event, context);
+    await handler(context, req);
     t.deepEqual(
         Object.keys(output),
         Object.keys({
@@ -64,12 +64,12 @@ test.serial("Should run with hrtime plugin and middleware", async (t) => {
     const logger = (id, value) => {
         output[id] = value;
     };
-    const plugin = pluginHRTime({ logger });
+    const plugin = timePlugin({ logger });
     const functionHandler = () => {};
 
-    const handler = middy(plugin).use(middleware()).handler(functionHandler);
+    const handler = middy(functionHandler, plugin).use(middleware());
 
-    await handler(event, context);
+    await handler(context, req);
     t.deepEqual(
         Object.keys(output),
         Object.keys({
@@ -87,14 +87,12 @@ test.serial("Should run with hrtime plugin and async middleware", async (t) => {
     const logger = (id, value) => {
         output[id] = value;
     };
-    const plugin = pluginHRTime({ logger });
+    const plugin = timePlugin({ logger });
     const functionHandler = () => {};
 
-    const handler = middy(plugin)
-        .use(middlewareAsync())
-        .handler(functionHandler);
+    const handler = middy(functionHandler, plugin).use(middlewareAsync());
 
-    await handler(event, context);
+    await handler(context, req);
     t.deepEqual(
         Object.keys(output),
         Object.keys({

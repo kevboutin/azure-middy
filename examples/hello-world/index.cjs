@@ -8,12 +8,18 @@ const TAG = "hello-world";
 const headers = {
     "Content-Type": "application/json",
 };
-let msg = "Hello world!";
 
+/**
+ * Handles a request and generates an appropriate response.
+ *
+ * @param {object} context The context object containing information about the current execution context.
+ * @param {object} req The request object containing information about the incoming request.
+ * @returns {void}
+ */
 const baseHandler = async (context, req) => {
     if (req.query.name || (req.body && req.body.name)) {
         const name = req.query.name || req.body.name;
-        msg = `Hello world! This is from ${name}.`;
+        const msg = `Hello world! This is from ${name}.`;
         console.log(`${TAG}: ${msg}`);
         context.res = {
             headers,

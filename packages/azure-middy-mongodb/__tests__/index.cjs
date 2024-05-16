@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const test = require("ava");
 const sinon = require("sinon");
-const middy = require("../../azure-middy-core/index.js");
-const { mongodbMiddleware, disconnect } = require("../index.js");
+const middy = require("../../azure-middy-core/index.cjs");
+const { mongodbMiddleware, disconnect } = require("../index.cjs");
 const { getInternal } = require("@kevboutin/azure-middy-util");
 
 let sandbox, stub;

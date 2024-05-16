@@ -1,9 +1,9 @@
 const { SecretClient } = require("@azure/keyvault-secrets");
 const test = require("ava");
 const sinon = require("sinon");
-const middy = require("../../azure-middy-core/index.js");
+const middy = require("../../azure-middy-core/index.cjs");
 const { getInternal, clearCache } = require("@kevboutin/azure-middy-util");
-const keyvaultSecretsMiddleware = require("../index.js");
+const keyvaultSecretsMiddleware = require("../index.cjs");
 
 let sandbox, stub;
 test.beforeEach(async (t) => {

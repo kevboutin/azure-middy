@@ -9,16 +9,16 @@
     "publishConfig": {
         "access": "public"
     },
-    "main": "./index.js",
+    "main": "./index.cjs",
     "exports": {
         ".": {
             "import": {
-                "default": "./index.js"
+                "default": "./index.cjs"
             }
         }
     },
     "files": [
-        "index.js"
+        "index.cjs"
     ],
     "scripts": {
         "test": "npm run test:unit",

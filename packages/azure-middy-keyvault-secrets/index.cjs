@@ -14,9 +14,26 @@ const defaults = {
     vaultUrl: "",
 };
 
+/**
+ * Middleware function for retrieving secrets from Azure Key Vault.
+ *
+ * @param {Object} opts - Options for the middleware.
+ * @param {string} opts.cacheKey - The key to use for caching the secrets.
+ * @param {Object} opts.fetchData - The data to fetch from Key Vault.
+ * @param {string} opts.vaultUrl - The URL of the Key Vault.
+ * @returns {Object} - The middleware function.
+ */
 const keyvaultSecretsMiddleware = (opts = {}) => {
     const options = { ...defaults, ...opts };
 
+    /**
+     * Fetches secrets from Azure Key Vault and adds them to the request object.
+     *
+     * @param {Object} request - The request object.
+     * @param {Object} cachedValues - The cached values object.
+     * @returns {Object} - The fetched values object.
+     * @throws {Error} - If an error occurs while fetching the secrets.
+     */
     const fetch = async (request, cachedValues = {}) => {
         const values = {};
 
@@ -42,6 +59,12 @@ const keyvaultSecretsMiddleware = (opts = {}) => {
     let client;
     const credential = new DefaultAzureCredential();
 
+    /**
+     * Middleware function that retrieves secrets from Azure Key Vault and adds them to the request object.
+     *
+     * @param {Object} request - The request object.
+     * @returns {Promise} - A promise that resolves when the middleware is complete.
+     */
     const keyvaultSecretsMiddlewareBefore = async (request) => {
         if (!client) {
             client = new SecretClient(options.vaultUrl, credential);

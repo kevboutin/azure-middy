@@ -1,6 +1,6 @@
 const test = require("ava");
 const sinon = require("sinon");
-const middy = require("../index.js");
+const middy = require("../index.cjs");
 
 test('Middleware attached with "use" must be an object or array[object]', async (t) => {
     const handler = middy();

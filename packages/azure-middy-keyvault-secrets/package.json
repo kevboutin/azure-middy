@@ -11,12 +11,12 @@
     "exports": {
         ".": {
             "import": {
-                "default": "./index.js"
+                "default": "./index.cjs"
             }
         }
     },
     "files": [
-        "index.js"
+        "index.cjs"
     ],
     "scripts": {
         "test": "npm run test:unit",
@@ -51,5 +51,5 @@
         "@kevboutin/azure-middy-core": "0.1.0"
     },
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
-    "main": "index.js"
+    "main": "index.cjs"
 }

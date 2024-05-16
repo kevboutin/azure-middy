@@ -10,7 +10,7 @@ const {
     modifyCache,
     normalizeHttpResponse,
     getInternal,
-} = require("../index");
+} = require("../index.cjs");
 
 // jsonSafeParse
 test("jsonSafeParse should parse valid json", async (t) => {
