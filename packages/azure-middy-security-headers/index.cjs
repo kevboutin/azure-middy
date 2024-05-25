@@ -236,6 +236,12 @@ helmet.poweredBy = (headers, config) => {
     }
 };
 
+/**
+ * Middleware function for adding security headers to the response.
+ *
+ * @param {Object} opts - Options for configuring the security headers.
+ * @returns {Object} - An object with 'after' and 'onError' properties, representing the middleware functions.
+ */
 const securityHeadersMiddleware = (opts = {}) => {
     const options = { ...defaults, ...opts };
 

@@ -56,7 +56,9 @@ const keyvaultSecretsMiddleware = (opts = {}) => {
         return values;
     };
 
+    /** @type {class} SecretClient */
     let client;
+    /** @type {class} DefaultAzureCredential */
     const credential = new DefaultAzureCredential();
 
     /**
