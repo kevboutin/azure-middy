@@ -117,9 +117,9 @@ const isPromise = (promise) => typeof promise?.then === "function";
 /**
  * Retrieves internal values based on the provided variables and request.
  *
- * @param {boolean|string|string[]|object} variables - The variables to retrieve internal values for.
- * @param {object} request - The request object.
- * @returns {object} - An object containing the retrieved internal values.
+ * @param {boolean|string|string[]|Object} variables - The variables to retrieve internal values for.
+ * @param {Object} request - The request object.
+ * @returns {Object} - An object containing the retrieved internal values.
  * @throws {Error} - If any of the internal values fail to resolve.
  */
 const getInternal = async (variables, request) => {

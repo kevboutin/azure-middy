@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
+/** @type mongoose.Connection */
 let connection = null;
+/** @constant {string} */
 const mongodbUri = process.env.MONGO_URI || "mongodb://localhost:27017";
+/** @type {Object<string, boolean|number|string>} */
 const defaults = {
     serverSelectionTimeoutMS: 5000,
 };
@@ -9,7 +12,7 @@ const defaults = {
 /**
  * Provides an updated database connection to the specified database.
  *
- * @param {Object} conn - The current database connection.
+ * @param {mongoose.Connection} conn - The current database connection.
  * @param {string} databaseName - The name of the database to switch to.
  * @returns {Object|string} - The new database connection object if successful, otherwise an error message.
  */
@@ -28,15 +31,21 @@ const changeDatabase = async (conn, databaseName) => {
 /**
  * Disconnects from the database cluster.
  *
+ * @param {mongoose.Connection} conn - The database connection.
  * @returns {Promise<Error|null>} - Returns a promise that resolves to null if the disconnection is successful, or an Error object if there is an error.
  */
-const disconnect = async () => {
+const disconnect = async (conn) => {
     console.log("Disconnecting from MongoDB");
     try {
-        if (connection) {
-            await connection.close();
+        if (conn) {
+            await conn.close();
             connection = null;
         }
+        if (connection !== null) {
+            await connection.close();
+            return null;
+        }
+        return null;
     } catch (err) {
         console.error("Error disconnecting from the database:", err);
         return err;
@@ -53,7 +62,7 @@ const disconnect = async () => {
 const connect = async (opts = {}) => {
     // Log the MongoDB URI securely
     const secureUri = mongodbUri.replace(/\/\/.*@/, "//***:***@");
-    console.log("Connecting to MongoDB:", secureUri);
+    console.log("Connecting to MongoDB at:", secureUri);
 
     // If connection is already established, return it
     if (connection !== null) {
@@ -72,12 +81,17 @@ const connect = async (opts = {}) => {
 
         // Log successful connection
         console.log("Database connected");
+        /*
         connection.on("disconnected", async () => {
             console.log(
                 `Lost connection to ${secureUri} so closing database connection as part of cleanup.`,
             );
-            await this.disconnect();
+            await disconnect(connection);
         });
+        connection.on("error", (err) => {
+            console.log(`Error occurred with established connection.`, err);
+        });
+        */
 
         // Return the database connection
         return connection;
@@ -104,11 +118,15 @@ const mongodbMiddleware = (opts = {}) => {
      */
     const mongodbMiddlewareBefore = async (request) => {
         if (!connection) {
-            await connect(options);
+            console.log(
+                "Connecting to MongoDB as global connection was not yet set",
+            );
+            connection = await connect(options);
         } else {
             if (connection.readyState === 1 || connection.readyState === 2) {
                 console.log("Connection is cached");
             } else {
+                console.log("Connecting to MongoDB");
                 await connect(options);
             }
         }
