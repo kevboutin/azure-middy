@@ -34,7 +34,7 @@ const disconnect = async () => {
     console.log("Disconnecting from MongoDB");
     try {
         if (connection) {
-            await connection.disconnect();
+            await connection.close();
             connection = null;
         }
     } catch (err) {
@@ -47,7 +47,7 @@ const disconnect = async () => {
  * Connects to a MongoDB database cluster using Mongoose.
  *
  * @param {Object} opts - Optional parameters for creating the connection.
- * @returns {Promise} - A promise that resolves to the database connection.
+ * @returns {Promise<mongoose.Connection>} - A promise that resolves to the database connection.
  * @throws {Error} - If there is an error connecting to the database.
  */
 const connect = async (opts = {}) => {
@@ -72,6 +72,12 @@ const connect = async (opts = {}) => {
 
         // Log successful connection
         console.log("Database connected");
+        connection.on("disconnected", async () => {
+            console.log(
+                `Lost connection to ${secureUri} so closing database connection as part of cleanup.`,
+            );
+            await this.disconnect();
+        });
 
         // Return the database connection
         return connection;

@@ -46,7 +46,7 @@
         "@kevboutin/azure-middy-util": "0.1.0"
     },
     "devDependencies": {
-        "@azure/identity": "^4.0.1",
+        "@azure/identity": "^4.4.0",
         "@azure/keyvault-secrets": "^4.8.0",
         "@kevboutin/azure-middy-core": "0.1.0"
     },
