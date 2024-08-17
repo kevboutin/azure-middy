@@ -42,16 +42,15 @@ const baseHandler = async (req, context) => {
     console.error(
         `${TAG}: Name attribute was not provided in the query or body.`,
     );
-    context.res = {
-        headers,
+    return {
         status: 400,
+        headers,
         body: JSON.stringify({
             result: "failure",
             message:
                 "Please provide a name as a query parameter or in the body of the request.",
         }),
     };
-    return;
 };
 
 const handler = middy(baseHandler).use(loggerMiddleware());

@@ -337,7 +337,7 @@ const { app } = require("@azure/functions");
 const middy = require("@kevboutin/azure-middy-core");
 const customMiddleware = require("customMiddleware.js");
 
-const handler = middy(async (context, req) => {
+const handler = middy(async (req, context) => {
     // do stuff
     return {};
 });
