@@ -11,7 +11,7 @@ const middy = (baseHandler = () => {}, plugin) => {
     const afterMiddlewares = [];
     const onErrorMiddlewares = [];
 
-    const instance = (context = {}, req = {}) => {
+    const instance = (req = {}, context = {}) => {
         plugin?.requestStart?.();
         const request = {
             req,
@@ -104,7 +104,7 @@ const runRequest = async (
         // Check if before stack hasn't exit early
         if (request.response === undefined) {
             plugin?.beforeHandler?.();
-            request.response = await baseHandler(request.context, request.req);
+            request.response = await baseHandler(request.req, request.context);
             plugin?.afterHandler?.();
             await runMiddlewares(request, afterMiddlewares, plugin);
         }
