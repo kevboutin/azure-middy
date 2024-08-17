@@ -6,7 +6,7 @@ This project was inspired by https://github.com/middjs/middy but made specifical
 
 ## What is Azure-Middy
 
-Azure-Middy is a very simple middleware engine that allows you to simplify your Azure function code when using Node.js.
+Azure-Middy is a very simple middleware engine that allows you to simplify your Azure function code when using Node.js. Release tag 0.1.1 of this repository worked with v3 Azure functions. Release tag 0.2.0 works with v4 Azure functions.
 
 If you have used web frameworks like Express, then you will be familiar with the concepts adopted in Azure-Middy and you will be able to get started very quickly.
 
@@ -27,6 +27,7 @@ Let's assume you are building a JSON API to process a payment:
 
 ```javascript
 //# handler.js #
+const { app } = require("@azure/functions");
 
 // import core
 const middy = require("@kevboutin/azure-middy-core");
@@ -37,7 +38,7 @@ const secretMiddleware = require("@kevboutin/azure-middy-keyvault-secrets");
 const mongodbMiddleware = require("@kevboutin/azure-middy-mongodb");
 
 // This is your common handler, in no way different than what you are used to doing every day in Azure functions
-const baseHandler = async (context, req) => {
+const baseHandler = async (req, context) => {
     const {
         creditCardNumber,
         expiryMonth,
@@ -50,8 +51,11 @@ const baseHandler = async (context, req) => {
     // do stuff with this data
     // ...
 
-    context.res = {
-        body: { result: "success", message: "payment processed successfully" },
+    return {
+        body: JSON.stringify({
+            result: "success",
+            message: "payment processed successfully",
+        }),
     };
 };
 
@@ -71,6 +75,13 @@ const handler = middy(baseHandler)
     );
 
 module.exports = { handler };
+
+app.http("processPayment", {
+    route: "payment",
+    methods: ["POST"],
+    authLevel: "anonymous",
+    handler: handler,
+});
 ```
 
 ## Why?
@@ -100,12 +111,13 @@ As you might have already seen from our first example here, using azure-middy is
 Example:
 
 ```javascript
+const { app } = require("@azure/functions");
 const middy from "@kevboutin/azure-middy-core";
 const middleware1 = require("sample-middleware1");
 const middleware2 = require("sample-middleware2");
 const middleware3 = require("sample-middleware3");
 
-const baseHandler = (context, req) => {
+const baseHandler = (req, context) => {
     /* your business logic */
 };
 
@@ -114,18 +126,26 @@ const handler = middy(baseHandler);
 handler.use(middleware1()).use(middleware2()).use(middleware3());
 
 module.exports = { handler };
+
+app.http("getSomething", {
+    route: "something",
+    methods: ["GET"],
+    authLevel: "anonymous",
+    handler: handler,
+});
 ```
 
 `.use()` takes a single middleware or an array of middlewares, so you can attach multiple middlewares in a single call:
 
 ```javascript
+const { app } = require("@azure/functions");
 const middy = require("@kevboutin/azure-middy-core");
 const middleware1 = require("sample-middleware1");
 const middleware2 = require("sample-middleware2");
 const middleware3 = require("sample-middleware3");
 const middlewares = [middleware1(), middleware2(), middleware3()];
 
-const baseHandler = (context, req) => {
+const baseHandler = (req, context) => {
     /* your business logic */
 };
 
@@ -134,6 +154,13 @@ const handler = middy(baseHandler);
 handler.use(middlewares);
 
 module.exports = { handler };
+
+app.http("getSomething", {
+    route: "something",
+    methods: ["GET"],
+    authLevel: "anonymous",
+    handler: handler,
+});
 ```
 
 You can also attach [inline middlewares](#inline-middlewares) by using the functions `.before`, `.after` and `.onError`.
@@ -213,7 +240,7 @@ const cacheMiddleware = (options) => {
 };
 
 // sample usage
-const handler = middy((context, req) => {
+const handler = middy((req, context) => {
     /* ... */
 }).use(
     cacheMiddleware({
@@ -306,6 +333,7 @@ module.exports = (opts = {}) => {
 With this convention in mind, using a middleware will always look like the following example:
 
 ```javascript
+const { app } = require("@azure/functions");
 const middy = require("@kevboutin/azure-middy-core");
 const customMiddleware = require("customMiddleware.js");
 
@@ -322,6 +350,13 @@ handler.use(
 );
 
 module.exports = { handler };
+
+app.http("getSomething", {
+    route: "something",
+    methods: ["GET"],
+    authLevel: "anonymous",
+    handler: handler,
+});
 ```
 
 ### Inline middlewares
@@ -333,6 +368,7 @@ In these cases you can use **inline middlewares** which are shortcut functions t
 Observe how inline middlewares work with a simple example:
 
 ```javascript
+const { app } = require("@azure/functions");
 const middy = require("@kevboutin/azure-middy-core");
 
 const handler = middy((context, req) => {
@@ -352,6 +388,13 @@ handler.onError(async (request) => {
 });
 
 module.exports = { handler };
+
+app.http("getSomething", {
+    route: "something",
+    methods: ["GET"],
+    authLevel: "anonymous",
+    handler: handler,
+});
 ```
 
 As you can see above, a middy instance also exposes the `before`, `after` and `onError` methods to allow you to quickly hook in simple inline middlewares.

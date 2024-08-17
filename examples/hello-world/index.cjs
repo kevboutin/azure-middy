@@ -1,6 +1,7 @@
 /*
  * Simple "hello world" example using the Azure functions v3 programming model.
  */
+const { app } = require("@azure/functions");
 const middy = require("@kevboutin/azure-middy-core");
 const loggerMiddleware = require("@kevboutin/azure-middy-logger");
 
@@ -12,24 +13,30 @@ const headers = {
 /**
  * Handles a request and generates an appropriate response.
  *
- * @param {object} context The context object containing information about the current execution context.
- * @param {object} req The request object containing information about the incoming request.
+ * @param {Object} req The request object containing information about the incoming request.
+ * @param {Object} context The context object containing information about the current execution context.
  * @returns {void}
  */
-const baseHandler = async (context, req) => {
-    if (req.query.name || (req.body && req.body.name)) {
-        const name = req.query.name || req.body.name;
+const baseHandler = async (req, context) => {
+    let queryParams = {};
+    // Azure v4 functions need to use the following to get the body.
+    let requestBody = await new Response(req.body).json();
+    // Azure v4 functions use URLSearchParams.
+    if (req.query instanceof URLSearchParams) {
+        queryParams = Object.fromEntries(req.query.entries());
+    }
+    if (queryParams.name || requestBody.name) {
+        const name = queryParams.name || requestBody.name;
         const msg = `Hello world! This is from ${name}.`;
         console.log(`${TAG}: ${msg}`);
-        context.res = {
-            headers,
+        return {
             status: 200,
-            body: {
+            headers,
+            body: JSON.stringify({
                 result: "success",
                 message: msg,
-            },
+            }),
         };
-        return;
     }
 
     console.error(
@@ -38,11 +45,11 @@ const baseHandler = async (context, req) => {
     context.res = {
         headers,
         status: 400,
-        body: {
+        body: JSON.stringify({
             result: "failure",
             message:
                 "Please provide a name as a query parameter or in the body of the request.",
-        },
+        }),
     };
     return;
 };
@@ -50,3 +57,10 @@ const baseHandler = async (context, req) => {
 const handler = middy(baseHandler).use(loggerMiddleware());
 
 module.exports = { handler };
+
+app.http("hello-world", {
+    route: "hello",
+    methods: ["GET"],
+    authLevel: "anonymous",
+    handler: handler,
+});
