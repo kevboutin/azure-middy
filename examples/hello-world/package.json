@@ -27,7 +27,7 @@
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
     "dependencies": {
         "@azure/functions": "^4.5.0",
-        "@kevboutin/azure-middy-core": "^0.2.0",
-        "@kevboutin/azure-middy-logger": "^0.2.0"
+        "@kevboutin/azure-middy-core": "^0.2.1",
+        "@kevboutin/azure-middy-logger": "^0.2.1"
     }
 }

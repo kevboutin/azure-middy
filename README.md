@@ -452,3 +452,11 @@ module.exports = (opts = {}) => {
 ### More details on creating middlewares
 
 Check the [code for existing middlewares](/packages) to see more examples on how to write a middleware.
+
+## Publishing Releases
+
+Use the following command to publish the various packages from this repository. Afterward, use GitHub to generate a new release based on the root package.json version.
+
+```shell
+npm publish --workspaces
+```
