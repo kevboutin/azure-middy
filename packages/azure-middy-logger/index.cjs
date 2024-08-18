@@ -17,6 +17,4 @@ const loggerMiddleware = () => {
     };
 };
 
-module.exports = {
-    loggerMiddleware,
-};
+module.exports = loggerMiddleware;

@@ -1,8 +1,12 @@
 {
     "name": "@kevboutin/azure-middy-util",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "Node.js middleware engine for Azure functions (azure-middy-util package)",
     "main": "index.cjs",
+    "type": "commonjs",
+    "exports": {
+        "require": "./index.cjs"
+    },
     "scripts": {
         "test": "npm run test:unit",
         "test:unit": "ava"

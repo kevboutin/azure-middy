@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-mongodb",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "MongoDB middleware for the azure-middy framework",
     "engines": {
         "node": ">=18"
@@ -9,15 +9,12 @@
         "access": "public"
     },
     "exports": {
-        ".": {
-            "import": {
-                "default": "./index.cjs"
-            }
-        }
+        "require": "./index.cjs"
     },
     "files": [
         "index.cjs"
     ],
+    "type": "commonjs",
     "scripts": {
         "test": "npm run test:unit",
         "test:unit": "ava --config test.config.js"

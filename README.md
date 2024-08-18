@@ -35,7 +35,7 @@ const middy = require("@kevboutin/azure-middy-core");
 // import some middlewares
 const loggerMiddleware = require("@kevboutin/azure-middy-logger");
 const secretMiddleware = require("@kevboutin/azure-middy-keyvault-secrets");
-const mongodbMiddleware = require("@kevboutin/azure-middy-mongodb");
+const { mongodbMiddleware } = require("@kevboutin/azure-middy-mongodb");
 
 // This is your common handler, in no way different than what you are used to doing every day in Azure functions
 const baseHandler = async (req, context) => {
@@ -460,3 +460,10 @@ Use the following command to publish the various packages from this repository. 
 ```shell
 npm publish --workspaces
 ```
+
+## Further Help
+
+Microsoft has some good documentation to help develop Azure functions. Please refer to the following material:
+
+-   [Node.js Azure Function Reference](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-node?tabs=javascript%2Clinux%2Cazure-cli&pivots=nodejs-model-v4)
+-   [Node.js Azure Function How-to Guide](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/develop-serverless-apps?tabs=v4-js)

@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-core",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "A Node.js middleware engine for Azure functions (core package)",
     "engines": {
         "node": ">=18"
@@ -11,15 +11,12 @@
     },
     "main": "./index.cjs",
     "exports": {
-        ".": {
-            "import": {
-                "default": "./index.cjs"
-            }
-        }
+        "require": "./index.cjs"
     },
     "files": [
         "index.cjs"
     ],
+    "type": "commonjs",
     "scripts": {
         "test": "npm run test:unit",
         "test:unit": "ava"

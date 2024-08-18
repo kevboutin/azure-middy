@@ -275,6 +275,4 @@ const securityHeadersMiddleware = (opts = {}) => {
     };
 };
 
-module.exports = {
-    securityHeadersMiddleware,
-};
+module.exports = securityHeadersMiddleware;

@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-security-headers",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "Middleware for sending HTTP response security headers",
     "engines": {
         "node": ">=18"
@@ -8,10 +8,15 @@
     "publishConfig": {
         "access": "public"
     },
+    "exports": {
+        "require": "./index.cjs"
+    },
+    "main": "./index.cjs",
     "scripts": {
         "test": "npm run test:unit",
         "test:unit": "ava --config test.config.js"
     },
+    "type": "commonjs",
     "license": "MIT",
     "keywords": [
         "azure",
@@ -37,6 +42,5 @@
     "dependencies": {
         "@kevboutin/azure-middy-util": "0.2.1"
     },
-    "homepage": "https://github.com/kevboutin/azure-middy#readme",
-    "main": "index.cjs"
+    "homepage": "https://github.com/kevboutin/azure-middy#readme"
 }

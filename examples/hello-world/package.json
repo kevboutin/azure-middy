@@ -1,14 +1,18 @@
 {
     "name": "hello-world",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "Example hello world function using azure-middy",
-    "main": "index.cjs",
+    "main": "src/functions/*.*js",
     "scripts": {
+        "start": "npx func start",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [
         "example",
         "hello",
+        "functions",
+        "faas",
+        "serverless",
         "azure",
         "cloud",
         "javascript",
@@ -29,5 +33,8 @@
         "@azure/functions": "^4.5.0",
         "@kevboutin/azure-middy-core": "^0.2.1",
         "@kevboutin/azure-middy-logger": "^0.2.1"
+    },
+    "devDependencies": {
+        "azure-functions-core-tools": "^4.0.5907"
     }
 }
