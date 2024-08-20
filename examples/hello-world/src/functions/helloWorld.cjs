@@ -70,10 +70,10 @@ const baseHandler = async (req, context) => {
         return {
             status: 200,
             headers,
-            body: JSON.stringify({
+            jsonBody: {
                 result: "success",
                 message: msg,
-            }),
+            },
         };
     }
 
