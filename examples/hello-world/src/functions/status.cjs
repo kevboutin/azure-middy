@@ -16,8 +16,8 @@ const headers = {
  * All responses use this format.
  *
  * @typedef {Object} Response
- * @property {string} body The body of the response, which is stringified JSON.
  * @property {Object<string, string>} headers Key-value pairs used as the HTTP response headers.
+ * @property {Object} jsonBody The body of the response, which is JSON.
  * @property {number} status The HTTP response status code.
  */
 
