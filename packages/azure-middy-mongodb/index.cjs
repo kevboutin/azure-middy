@@ -80,7 +80,9 @@ const connect = async (opts = {}) => {
             .asPromise();*/
 
         // Log successful connection
-        console.log("Database connected");
+        console.log(
+            `Connected to database ${connection.name} at ${connection.host}`,
+        );
         /*
         connection.on("disconnected", async () => {
             console.log(
