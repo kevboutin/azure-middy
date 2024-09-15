@@ -40,7 +40,7 @@
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
     "dependencies": {
-        "mongoose": "^8.5.3"
+        "mongoose": "^8.6.2"
     },
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
     "main": "index.cjs"

@@ -15,6 +15,7 @@ const defaults = {
  * @param {mongoose.Connection} conn - The current database connection.
  * @param {string} databaseName - The name of the database to switch to.
  * @returns {Object|string} - The new database connection object if successful, otherwise an error message.
+ * @throws {Error} - If there is an error changing the database.
  */
 const changeDatabase = async (conn, databaseName) => {
     console.log("Changing database to:", databaseName);
@@ -24,7 +25,7 @@ const changeDatabase = async (conn, databaseName) => {
         return newConn;
     } catch (err) {
         console.error(`Error changing database to ${databaseName}`, err);
-        return err;
+        throw err;
     }
 };
 
@@ -33,6 +34,7 @@ const changeDatabase = async (conn, databaseName) => {
  *
  * @param {mongoose.Connection} conn - The database connection.
  * @returns {Promise<Error|null>} - Returns a promise that resolves to null if the disconnection is successful, or an Error object if there is an error.
+ * @throws {Error} - If there is an error disconnecting from the database.
  */
 const disconnect = async (conn) => {
     console.log("Disconnecting from MongoDB");
@@ -48,7 +50,7 @@ const disconnect = async (conn) => {
         return null;
     } catch (err) {
         console.error("Error disconnecting from the database:", err);
-        return err;
+        throw err;
     }
 };
 
@@ -74,15 +76,22 @@ const connect = async (opts = {}) => {
 
     try {
         // Connect to MongoDB using Mongoose
-        connection = await mongoose.createConnection(mongodbUri, opts);
-        /*connection = await mongoose
-            .createConnection(mongodbUri, opts)
-            .asPromise();*/
+        if (typeof mongoose.createConnection().asPromise === "function") {
+            // For newer versions of Mongoose that support asPromise
+            connection = await mongoose
+                .createConnection(mongodbUri, opts)
+                .asPromise();
+            console.log(
+                `Connected via asPromiseto database ${connection.name} at ${connection.host}`,
+            );
+        } else {
+            // For older versions of Mongoose
+            connection = await mongoose.createConnection(mongodbUri, opts);
+            console.log(
+                `Connected to database ${connection.name} at ${connection.host}`,
+            );
+        }
 
-        // Log successful connection
-        console.log(
-            `Connected to database ${connection.name} at ${connection.host}`,
-        );
         /*
         connection.on("disconnected", async () => {
             console.log(
@@ -99,7 +108,7 @@ const connect = async (opts = {}) => {
         return connection;
     } catch (err) {
         console.error("Error connecting to database:", err);
-        return err;
+        throw err;
     }
 };
 
@@ -123,13 +132,24 @@ const mongodbMiddleware = (opts = {}) => {
             console.log(
                 "Connecting to MongoDB as global connection was not yet set",
             );
-            connection = await connect(options);
+            try {
+                connection = await connect(options);
+                console.log("MongoDB connection created:", connection);
+            } catch (err) {
+                console.error("Failed to connect to MongoDB:", err);
+                throw err;
+            }
         } else {
             if (connection.readyState === 1 || connection.readyState === 2) {
                 console.log("Connection is cached");
             } else {
-                console.log("Connecting to MongoDB");
-                await connect(options);
+                console.log("Reconnecting to MongoDB");
+                try {
+                    connection = await connect(options);
+                } catch (err) {
+                    console.error("Failed to reconnect to MongoDB:", err);
+                    throw err;
+                }
             }
         }
 
