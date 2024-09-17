@@ -55,6 +55,28 @@ const disconnect = async (conn) => {
 };
 
 /**
+ * Determines if the database connection is alive/active.
+ *
+ * @param {mongoose.Connection} conn The database connection.
+ * @return {Promise<boolean>} True if the connection is still considered active.
+ */
+const isConnectionAlive = async (conn) => {
+    if (!conn) return false;
+    console.log("Database connection readyState:", conn.readyState);
+    // Return false if not connected or connecting
+    if (conn.readyState !== 1 && conn.readyState !== 2) return false;
+    try {
+        const adminUtil = conn.db.admin();
+        const result = await adminUtil.ping();
+        console.log("Ping result: ", result); // { ok: 1 }
+        return !!result?.ok === 1;
+    } catch (error) {
+        console.log("Error with ping: ", error);
+        return false;
+    }
+};
+
+/**
  * Connects to a MongoDB database cluster using Mongoose.
  *
  * @param {Object} opts - Optional parameters for creating the connection.
@@ -68,10 +90,8 @@ const connect = async (opts = {}) => {
 
     // If connection is already established, return it
     if (connection !== null) {
-        if (connection.readyState === 1 || connection.readyState === 2) {
-            console.log("Database already connected");
-            return connection;
-        }
+        const isAlive = await isConnectionAlive(connection);
+        if (isAlive) return connection;
     }
 
     try {
@@ -82,7 +102,7 @@ const connect = async (opts = {}) => {
                 .createConnection(mongodbUri, opts)
                 .asPromise();
             console.log(
-                `Connected via asPromiseto database ${connection.name} at ${connection.host}`,
+                `Connected via asPromise to database ${connection.name} at ${connection.host}`,
             );
         } else {
             // For older versions of Mongoose
