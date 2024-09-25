@@ -30,11 +30,11 @@
     "license": "MIT",
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
     "dependencies": {
-        "@azure/functions": "^4.5.0",
-        "@kevboutin/azure-middy-core": "^0.2.1",
-        "@kevboutin/azure-middy-logger": "^0.2.1"
+        "@azure/functions": "^4.5.1",
+        "@kevboutin/azure-middy-core": "^0.2.3",
+        "@kevboutin/azure-middy-logger": "^0.2.3"
     },
     "devDependencies": {
-        "azure-functions-core-tools": "^4.0.5907"
+        "azure-functions-core-tools": "^4.0.6280"
     }
 }
