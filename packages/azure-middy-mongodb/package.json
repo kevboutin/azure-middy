@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-mongodb",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "description": "MongoDB middleware for the azure-middy framework",
     "engines": {
         "node": ">=18"

@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-monorepo",
-    "version": "0.2.1",
+    "version": "0.2.4",
     "description": "A Node.js middleware engine for Azure functions",
     "private": true,
     "type": "commonjs",

@@ -31,8 +31,8 @@
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
     "dependencies": {
         "@azure/functions": "^4.5.1",
-        "@kevboutin/azure-middy-core": "^0.2.3",
-        "@kevboutin/azure-middy-logger": "^0.2.3"
+        "@kevboutin/azure-middy-core": "^0.2.4",
+        "@kevboutin/azure-middy-logger": "^0.2.4"
     },
     "devDependencies": {
         "azure-functions-core-tools": "^4.0.6280"
