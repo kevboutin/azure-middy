@@ -117,7 +117,7 @@ const middleware1 = require("sample-middleware1");
 const middleware2 = require("sample-middleware2");
 const middleware3 = require("sample-middleware3");
 
-const baseHandler = (req, context) => {
+const baseHandler = async (req, context) => {
     /* your business logic */
 };
 
@@ -371,7 +371,7 @@ Observe how inline middlewares work with a simple example:
 const { app } = require("@azure/functions");
 const middy = require("@kevboutin/azure-middy-core");
 
-const handler = middy((context, req) => {
+const handler = middy(async (req, context) => {
     // do stuff
 });
 
