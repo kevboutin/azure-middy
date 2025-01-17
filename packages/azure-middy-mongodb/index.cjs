@@ -70,7 +70,7 @@ const isConnectionAlive = async (conn) => {
         const result = await adminUtil.ping();
         // Example result: { ok: 1 }
         console.log("Ping result: ", result);
-        return !!result?.ok === 1;
+        return result?.ok === 1;
     } catch (error) {
         console.log("Error with ping: ", error);
         return false;

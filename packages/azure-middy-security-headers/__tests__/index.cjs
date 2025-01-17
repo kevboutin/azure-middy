@@ -7,39 +7,27 @@ const defaultContext = {
     getRemainingTimeInMillis: () => 1000,
 };
 
-const createDefaultObjectResponse = () =>
-    Object.assign(
-        {},
-        {
-            statusCode: 200,
-            body: { firstname: "john", lastname: "doe" },
-        },
-    );
+const createDefaultObjectResponse = () => ({
+    statusCode: 200,
+    body: { firstname: "john", lastname: "doe" },
+});
 
-const createHtmlObjectResponse = () =>
-    Object.assign(
-        {},
-        {
-            statusCode: 200,
-            body: "<html></html>",
-            headers: {
-                "Content-Type": "text/html; charset=utf-8",
-            },
-        },
-    );
+const createHtmlObjectResponse = () => ({
+    statusCode: 200,
+    body: "<html></html>",
+    headers: {
+        "Content-Type": "text/html; charset=utf-8",
+    },
+});
 
-const createHeaderObjectResponse = () =>
-    Object.assign(
-        {},
-        {
-            statusCode: 200,
-            body: { firstname: "john", lastname: "doe" },
-            headers: {
-                Server: "azure",
-                "X-Powered-By": "azure-middy",
-            },
-        },
-    );
+const createHeaderObjectResponse = () => ({
+    statusCode: 200,
+    body: { firstname: "john", lastname: "doe" },
+    headers: {
+        Server: "azure",
+        "X-Powered-By": "azure-middy",
+    },
+});
 
 const createArrayResponse = () => [{ firstname: "john", lastname: "doe" }];
 

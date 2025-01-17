@@ -1,8 +1,8 @@
 /**
  * Creates a middleware wrapper function.
  *
- * @param {Function} baseHandler - The base handler function.
- * @param {Object} plugin - The plugin object.
+ * @param {Function} [baseHandler] - The base handler function.
+ * @param {Object} [plugin] - The plugin object.
  * @returns {Function} - The middleware wrapper function.
  */
 const middy = (baseHandler = () => {}, plugin) => {
