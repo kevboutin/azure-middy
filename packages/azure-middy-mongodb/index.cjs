@@ -68,7 +68,8 @@ const isConnectionAlive = async (conn) => {
     try {
         const adminUtil = conn.db.admin();
         const result = await adminUtil.ping();
-        console.log("Ping result: ", result); // { ok: 1 }
+        // Example result: { ok: 1 }
+        console.log("Ping result: ", result);
         return !!result?.ok === 1;
     } catch (error) {
         console.log("Error with ping: ", error);
@@ -106,23 +107,11 @@ const connect = async (opts = {}) => {
             );
         } else {
             // For older versions of Mongoose
-            connection = await mongoose.createConnection(mongodbUri, opts);
+            connection = mongoose.createConnection(mongodbUri, opts);
             console.log(
                 `Connected to database ${connection.name} at ${connection.host}`,
             );
         }
-
-        /*
-        connection.on("disconnected", async () => {
-            console.log(
-                `Lost connection to ${secureUri} so closing database connection as part of cleanup.`,
-            );
-            await disconnect(connection);
-        });
-        connection.on("error", (err) => {
-            console.log(`Error occurred with established connection.`, err);
-        });
-        */
 
         // Return the database connection
         return connection;
@@ -159,17 +148,15 @@ const mongodbMiddleware = (opts = {}) => {
                 console.error("Failed to connect to MongoDB:", err);
                 throw err;
             }
+        } else if (connection.readyState === 1 || connection.readyState === 2) {
+            console.log("Connection is cached");
         } else {
-            if (connection.readyState === 1 || connection.readyState === 2) {
-                console.log("Connection is cached");
-            } else {
-                console.log("Reconnecting to MongoDB");
-                try {
-                    connection = await connect(options);
-                } catch (err) {
-                    console.error("Failed to reconnect to MongoDB:", err);
-                    throw err;
-                }
+            console.log("Reconnecting to MongoDB");
+            try {
+                connection = await connect(options);
+            } catch (err) {
+                console.error("Failed to reconnect to MongoDB:", err);
+                throw err;
             }
         }
 
