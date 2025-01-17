@@ -41,10 +41,8 @@ const context = {
 test.serial(
     "It should create connection and set to internal storage and use cache on subsequent call",
     async (t) => {
-        const consoleLogStub = sandbox.stub(console, "log");
-        const createConnectionStub = sandbox
-            .stub(mongoose, "createConnection")
-            .resolves(mockConnection);
+        sandbox.stub(console, "log");
+        sandbox.stub(mongoose, "createConnection").resolves(mockConnection);
 
         const handler = middy(() => {});
 
