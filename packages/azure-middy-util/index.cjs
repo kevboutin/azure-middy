@@ -39,12 +39,12 @@ const cache = {}; // key: { value:{fetchKey:Promise}, expiry }
 /**
  * Processes the cache based on the provided options, fetch function, and request.
  *
+ * @param {Object} request The request object.
  * @param {Object} options An object containing the cacheKey, cacheKeyExpiry, and cacheExpiry options.
  * @param {Function} fetch A function used to fetch data. Defaults to an empty function.
- * @param {Object} request The request object.
  * @returns {Object} Contains the value and expiry of the cache.
  */
-const processCache = (options, fetch = () => undefined, request) => {
+const processCache = (request, options, fetch = () => undefined) => {
     let { cacheKey, cacheKeyExpiry, cacheExpiry } = options;
     cacheExpiry = cacheKeyExpiry?.[cacheKey] ?? cacheExpiry;
     const now = Date.now();

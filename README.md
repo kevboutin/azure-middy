@@ -189,13 +189,13 @@ The `after` phase, happens _after_ the handler is executed. In this code you wil
 
 If you have three middlewares attached (as in the image above), this is the expected order of execution:
 
--   `middleware1` (before)
--   `middleware2` (before)
--   `middleware3` (before)
--   `handler`
--   `middleware3` (after)
--   `middleware2` (after)
--   `middleware1` (after)
+- `middleware1` (before)
+- `middleware2` (before)
+- `middleware3` (before)
+- `handler`
+- `middleware3` (after)
+- `middleware2` (after)
+- `middleware1` (after)
 
 Notice that in the `after` phase, middlewares are executed in inverted order, this way the first handler attached is the one with the highest priority as it will be the first able to change the request and last able to modify the response before it gets sent to the user.
 
@@ -294,9 +294,9 @@ async (request) => {
 
 Where:
 
--   `request`: is a reference to the current context and allows access to (and modification of)
-    the current `context`, the `req` (request), the `response` (in the _after_ phase), and `error`
-    (in case of an error).
+- `request`: is a reference to the current context and allows access to (and modification of)
+  the current `context`, the `req` (request), the `response` (in the _after_ phase), and `error`
+  (in case of an error).
 
 ### Configurable middlewares
 
@@ -434,7 +434,7 @@ module.exports = (opts = {}) => {
     let client;
     const customMiddlewareBefore = async (request) => {
         let cached;
-        cached = processCache(options, fetch, request);
+        cached = processCache(request, options, fetch);
 
         Object.assign(request.internal, cached);
         Object.assign(
@@ -453,6 +453,14 @@ module.exports = (opts = {}) => {
 
 Check the [code for existing middlewares](/packages) to see more examples on how to write a middleware.
 
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
 ## Publishing Releases
 
 Use the following command to publish the various packages from this repository. Afterward, use GitHub to generate a new release based on the root package.json version.
@@ -465,5 +473,5 @@ npm publish --workspaces
 
 Microsoft has some good documentation to help develop Azure functions. Please refer to the following material:
 
--   [Node.js Azure Function Reference](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-node?tabs=javascript%2Clinux%2Cazure-cli&pivots=nodejs-model-v4)
--   [Node.js Azure Function How-to Guide](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/develop-serverless-apps?tabs=v4-js)
+- [Node.js Azure Function Reference](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-node?tabs=javascript%2Clinux%2Cazure-cli&pivots=nodejs-model-v4)
+- [Node.js Azure Function How-to Guide](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/develop-serverless-apps?tabs=v4-js)

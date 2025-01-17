@@ -127,7 +127,7 @@ test.serial("processCache should not cache", async (t) => {
         cacheKey: "key",
         cacheExpiry: 0,
     };
-    processCache(options, fetch, cacheRequest);
+    processCache(cacheRequest, options, fetch);
     const cache = getCache("key");
     t.deepEqual(cache, {});
     clearCache();
@@ -138,11 +138,11 @@ test.serial("processCache should cache forever", async (t) => {
         cacheKey: "key",
         cacheExpiry: -1,
     };
-    processCache(options, fetch, cacheRequest);
+    processCache(cacheRequest, options, fetch);
     await setTimeout(100);
     const cacheValue = getCache("key").value;
     t.is(await cacheValue, "value");
-    const { value, cache } = processCache(options, fetch, cacheRequest);
+    const { value, cache } = processCache(cacheRequest, options, fetch);
     t.is(await value, "value");
     t.true(cache);
     t.is(fetch.callCount, 1);
@@ -154,11 +154,11 @@ test.serial("processCache should cache when not expired", async (t) => {
         cacheKey: "key",
         cacheExpiry: 100,
     };
-    processCache(options, fetch, cacheRequest);
+    processCache(cacheRequest, options, fetch);
     await setTimeout(50);
     const cacheValue = getCache("key").value;
     t.is(await cacheValue, "value");
-    const { value, cache } = processCache(options, fetch, cacheRequest);
+    const { value, cache } = processCache(cacheRequest, options, fetch);
     t.is(await value, "value");
     t.is(cache, true);
     t.is(fetch.callCount, 1);
@@ -172,11 +172,11 @@ test.serial(
             cacheKey: "key",
             cacheExpiry: Date.now() + 100,
         };
-        processCache(options, fetch, cacheRequest);
+        processCache(cacheRequest, options, fetch);
         await setTimeout(50);
         const cacheValue = getCache("key").value;
         t.is(await cacheValue, "value");
-        const { value, cache } = processCache(options, fetch, cacheRequest);
+        const { value, cache } = processCache(cacheRequest, options, fetch);
         t.is(await value, "value");
         t.is(cache, true);
         t.is(fetch.callCount, 1);
@@ -192,11 +192,11 @@ test.serial(
             cacheExpiry: 0,
             cacheKeyExpiry: { key: Date.now() + 100 },
         };
-        processCache(options, fetch, cacheRequest);
+        processCache(cacheRequest, options, fetch);
         await setTimeout(50);
         const cacheValue = getCache("key").value;
         t.is(await cacheValue, "value");
-        const { value, cache } = processCache(options, fetch, cacheRequest);
+        const { value, cache } = processCache(cacheRequest, options, fetch);
         t.is(await value, "value");
         t.is(cache, true);
         t.is(fetch.callCount, 1);
@@ -212,11 +212,11 @@ test.serial(
             cacheExpiry: Date.now() + 0,
             cacheKeyExpiry: { key: Date.now() + 100 },
         };
-        processCache(options, fetch, cacheRequest);
+        processCache(cacheRequest, options, fetch);
         await setTimeout(50);
         const cacheValue = getCache("key").value;
         t.is(await cacheValue, "value");
-        const { value, cache } = processCache(options, fetch, cacheRequest);
+        const { value, cache } = processCache(cacheRequest, options, fetch);
         t.is(await value, "value");
         t.is(cache, true);
         t.is(fetch.callCount, 1);
@@ -252,7 +252,7 @@ test.serial(
             };
         };
 
-        const cached = processCache(options, fetch, cacheRequest);
+        const cached = processCache(cacheRequest, options, fetch);
         const request = {
             internal: cached.value,
         };
@@ -272,7 +272,7 @@ test.serial(
                 data: [new Error("error")],
             });
 
-            processCache(options, fetchCached, cacheRequest);
+            processCache(cacheRequest, options, fetchCached);
             cache = getCache(options.cacheKey);
 
             t.is(cache.modified, undefined);
@@ -290,7 +290,7 @@ test.serial("processCache should cache and expire", async (t) => {
         cacheKey: "key-cache-expire",
         cacheExpiry: 150,
     };
-    processCache(options, fetch, cacheRequest);
+    processCache(cacheRequest, options, fetch);
     await setTimeout(100);
     let cache = getCache("key-cache-expire");
     t.not(cache, undefined);
@@ -307,7 +307,7 @@ test.serial(
             cacheKey: "key-cache-unix-expire",
             cacheExpiry: Date.now() + 155,
         };
-        processCache(options, fetch, cacheRequest);
+        processCache(cacheRequest, options, fetch);
         await setTimeout(100);
         let cache = getCache("key-cache-unix-expire");
         t.not(cache, undefined);
@@ -321,20 +321,20 @@ test.serial(
 test.serial("processCache should clear single key cache", async (t) => {
     const fetch = sinon.stub().resolves("value");
     processCache(
+        cacheRequest,
         {
             cacheKey: "key",
             cacheExpiry: -1,
         },
         fetch,
-        cacheRequest,
     );
     processCache(
+        cacheRequest,
         {
             cacheKey: "other",
             cacheExpiry: -1,
         },
         fetch,
-        cacheRequest,
     );
     clearCache("other");
     t.not(getCache("key").value, undefined);
@@ -344,20 +344,20 @@ test.serial("processCache should clear single key cache", async (t) => {
 test.serial("processCache should clear multi-key cache", async (t) => {
     const fetch = sinon.stub().resolves("value");
     processCache(
+        cacheRequest,
         {
             cacheKey: "key",
             cacheExpiry: -1,
         },
         fetch,
-        cacheRequest,
     );
     processCache(
+        cacheRequest,
         {
             cacheKey: "other",
             cacheExpiry: -1,
         },
         fetch,
-        cacheRequest,
     );
     clearCache(["key", "other"]);
     t.deepEqual(getCache("key"), {});
@@ -367,20 +367,20 @@ test.serial("processCache should clear multi-key cache", async (t) => {
 test.serial("processCache should clear all cache", async (t) => {
     const fetch = sinon.stub().resolves("value");
     processCache(
+        cacheRequest,
         {
             cacheKey: "key",
             cacheExpiry: -1,
         },
         fetch,
-        cacheRequest,
     );
     processCache(
+        cacheRequest,
         {
             cacheKey: "other",
             cacheExpiry: -1,
         },
         fetch,
-        cacheRequest,
     );
     clearCache();
     t.deepEqual(getCache("key"), {});

@@ -72,7 +72,7 @@ const keyvaultSecretsMiddleware = (opts = {}) => {
             client = new SecretClient(options.vaultUrl, credential);
         }
 
-        const { value } = processCache(options, fetch, request);
+        const { value } = processCache(request, options, fetch);
         if (value) {
             value.then((res) => {
                 Object.assign(request.internal, res);
