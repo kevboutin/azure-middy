@@ -14,7 +14,7 @@ npm install --save @kevboutin/azure-middy-core
 
 ## Documentation and examples
 
-For documentation and examples, refers to the main [Azure-middy monorepo on GitHub](https://github.com/kevboutin/azure-middy).
+For documentation and examples, refer to the main [Azure-middy monorepo on GitHub](https://github.com/kevboutin/azure-middy).
 
 ## Contributing
 
