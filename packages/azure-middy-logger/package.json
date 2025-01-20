@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-logger",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "description": "Azure logging middleware for the azure-middy framework",
     "engines": {
         "node": ">=18"
