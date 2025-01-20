@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-keyvault-secrets",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "description": "Azure Key Vault Secrets middleware for the azure-middy framework",
     "engines": {
         "node": ">=18"
