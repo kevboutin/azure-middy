@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-mongodb",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "description": "MongoDB middleware for the azure-middy framework",
     "engines": {
         "node": ">=18"
@@ -40,7 +40,7 @@
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
     "dependencies": {
-        "mongoose": "^8.9.5"
+        "mongoose": "^8.15.2"
     },
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
     "main": "index.cjs"
