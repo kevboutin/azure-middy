@@ -5,11 +5,17 @@
     "main": "index.cjs",
     "type": "commonjs",
     "exports": {
-        "require": "./index.cjs"
+        "require": "./index.cjs",
+        "import": "./index.ts",
+        "types": "./typings.d.ts",
+        "default": "./index.ts"
     },
     "scripts": {
         "test": "npm run test:unit",
-        "test:unit": "ava"
+        "test:unit": "ava",
+        "build": "tsc",
+        "build:watch": "tsc --watch",
+        "type-check": "tsc --noEmit"
     },
     "keywords": [
         "azure",
@@ -33,5 +39,16 @@
     "bugs": {
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
-    "license": "MIT"
+    "files": [
+        "index.cjs",
+        "index.ts",
+        "typings.d.ts",
+        "tsconfig.json",
+        "example.ts"
+    ],
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "typescript": "^5.0.0"
+    }
 }
