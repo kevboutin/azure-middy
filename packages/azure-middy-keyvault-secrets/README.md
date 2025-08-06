@@ -19,7 +19,9 @@ npm install --save @kevboutin/azure-middy-keyvault-secrets
 
 ## Usage
 
-The middleware provides Azure Key Vault secrets management for your Azure Functions:
+The middleware provides Azure Key Vault secrets management for your Azure Functions.
+
+### JavaScript (CommonJS)
 
 ```javascript
 const { app } = require("@azure/functions");
@@ -45,7 +47,7 @@ const handler = middy(baseHandler).use(
             apiKey: "api-key-secret-name",
             dbPassword: "db-password-secret-name",
         },
-        cacheExpiry: 300000, // Cache for 5 minutes (optional)
+        cacheKey: "my-secrets",
     }),
 );
 
@@ -59,6 +61,92 @@ app.http("yourFunction", {
 });
 ```
 
+### TypeScript
+
+```typescript
+import { app } from "@azure/functions";
+import middy from "@kevboutin/azure-middy-core";
+import {
+    keyvaultSecretsMiddleware,
+    KeyVaultSecretsOptions,
+    AzureFunctionRequest,
+} from "@kevboutin/azure-middy-keyvault-secrets";
+
+// Your handler
+const baseHandler = async (req: AzureFunctionRequest, context: any) => {
+    // Access secrets from the request internal object
+    const apiKey = req.internal?.["apiKey"];
+    const dbPassword = req.internal?.["dbPassword"];
+
+    console.log("Retrieved secrets:", {
+        hasApiKey: !!apiKey,
+        hasDbPassword: !!dbPassword,
+    });
+
+    return {
+        body: JSON.stringify({ message: "Success" }),
+    };
+};
+
+// Configure Key Vault options with TypeScript
+const keyVaultOptions: KeyVaultSecretsOptions = {
+    vaultUrl: "https://your-vault.vault.azure.net",
+    fetchData: {
+        apiKey: "api-key-secret-name",
+        dbPassword: "db-password-secret-name",
+        jwtSecret: "jwt-signing-key",
+    },
+    cacheKey: "my-secrets",
+};
+
+// Wrap handler with middy
+const handler = middy(baseHandler).use(
+    keyvaultSecretsMiddleware(keyVaultOptions),
+);
+
+export { handler };
+
+app.http("yourFunction", {
+    route: "your-route",
+    methods: ["GET"],
+    authLevel: "anonymous",
+    handler: handler,
+});
+```
+
+## TypeScript Support
+
+This package includes full TypeScript support with:
+
+- **Type Definitions**: Complete type definitions for all Key Vault interfaces and functions
+- **Type Safety**: Full type checking for middleware options and request objects
+- **IntelliSense**: Enhanced IDE support with autocomplete and type hints
+
+### Available Types
+
+```typescript
+import {
+    KeyVaultSecretsOptions,
+    AzureFunctionRequest,
+    KeyVaultSecretsMiddleware,
+    CachedValues,
+    FetchedValues,
+} from "@kevboutin/azure-middy-keyvault-secrets";
+```
+
+### TypeScript Configuration
+
+To use TypeScript with this package, ensure your `tsconfig.json` includes:
+
+```json
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "moduleResolution": "node"
+    }
+}
+```
+
 ## API
 
 ### keyvaultSecretsMiddleware(opts = {})
@@ -68,7 +156,6 @@ Creates a middleware instance with the following options:
 - `opts.vaultUrl` (required): The URL of your Azure Key Vault (e.g., "https://your-vault.vault.azure.net")
 - `opts.fetchData` (required): Object mapping of local names to Key Vault secret names
 - `opts.cacheKey` (optional): Custom cache key for storing secrets (default: "secrets")
-- `opts.cacheExpiry` (optional): How long to cache secrets in milliseconds (default: 0, no cache)
 
 ## Authentication
 

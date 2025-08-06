@@ -1,0 +1,18 @@
+# TypeScript build artifacts
+dist/
+*.tsbuildinfo
+
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# IDE files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
