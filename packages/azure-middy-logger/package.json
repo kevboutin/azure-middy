@@ -9,15 +9,25 @@
         "access": "public"
     },
     "exports": {
-        "require": "./index.cjs"
+        "require": "./index.cjs",
+        "import": "./index.ts",
+        "types": "./typings.d.ts",
+        "default": "./index.ts"
     },
     "files": [
-        "index.cjs"
+        "index.cjs",
+        "index.ts",
+        "typings.d.ts",
+        "tsconfig.json",
+        "example.ts"
     ],
     "type": "commonjs",
     "scripts": {
         "test": "npm run test:unit",
-        "test:unit": "ava --config test.config.js"
+        "test:unit": "ava --config test.config.js",
+        "build": "tsc",
+        "build:watch": "tsc --watch",
+        "type-check": "tsc --noEmit"
     },
     "license": "MIT",
     "keywords": [
@@ -43,6 +53,10 @@
     },
     "dependencies": {
         "azure-function-log-intercept": "^1.1.6"
+    },
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "typescript": "^5.0.0"
     },
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
     "main": "index.cjs"

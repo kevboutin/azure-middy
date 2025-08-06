@@ -17,7 +17,9 @@ npm install --save @kevboutin/azure-middy-logger
 
 ## Usage
 
-The middleware provides logging capabilities for your Azure Functions using the azure-function-log-intercept library:
+The middleware provides logging capabilities for your Azure Functions using the azure-function-log-intercept library.
+
+### JavaScript (CommonJS)
 
 ```javascript
 const { app } = require("@azure/functions");
@@ -44,6 +46,80 @@ app.http("yourFunction", {
     authLevel: "anonymous",
     handler: handler,
 });
+```
+
+### TypeScript
+
+```typescript
+import { app } from "@azure/functions";
+import middy from "@kevboutin/azure-middy-core";
+import {
+    loggerMiddleware,
+    AzureFunctionRequest,
+    AzureFunctionContext,
+} from "@kevboutin/azure-middy-logger";
+
+// Your handler
+const baseHandler = async (
+    req: AzureFunctionRequest,
+    context: AzureFunctionContext,
+) => {
+    // Your business logic here
+    // Logging is automatically handled by the middleware
+
+    context.log("Processing request");
+    context.info("Request details:", {
+        method: req["method"],
+        url: req["url"],
+    });
+
+    return {
+        body: JSON.stringify({ message: "Success" }),
+    };
+};
+
+// Wrap handler with middy
+const handler = middy(baseHandler).use(loggerMiddleware());
+
+export { handler };
+
+app.http("yourFunction", {
+    route: "your-route",
+    methods: ["GET"],
+    authLevel: "anonymous",
+    handler: handler,
+});
+```
+
+## TypeScript Support
+
+This package includes full TypeScript support with:
+
+- **Type Definitions**: Complete type definitions for all logging interfaces and functions
+- **Type Safety**: Full type checking for request and context objects
+- **IntelliSense**: Enhanced IDE support with autocomplete and type hints
+
+### Available Types
+
+```typescript
+import {
+    AzureFunctionRequest,
+    AzureFunctionContext,
+    LoggerMiddleware,
+} from "@kevboutin/azure-middy-logger";
+```
+
+### TypeScript Configuration
+
+To use TypeScript with this package, ensure your `tsconfig.json` includes:
+
+```json
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "moduleResolution": "node"
+    }
+}
 ```
 
 ## How it works

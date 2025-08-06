@@ -21,4 +21,4 @@ export type LoggerMiddlewareFunction = () => LoggerMiddleware;
 // Declare module for dependencies
 declare module "azure-function-log-intercept" {
     export function intercept(context: AzureFunctionContext): void;
-} 
+}
