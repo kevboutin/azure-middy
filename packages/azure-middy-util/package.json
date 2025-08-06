@@ -11,10 +11,10 @@
         "default": "./index.ts"
     },
     "scripts": {
-        "test": "npm run test:unit",
-        "test:unit": "ava",
         "build": "tsc",
         "build:watch": "tsc --watch",
+        "test": "npm run test:unit",
+        "test:unit": "ava",
         "type-check": "tsc --noEmit"
     },
     "keywords": [

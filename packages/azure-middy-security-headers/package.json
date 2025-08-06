@@ -16,10 +16,10 @@
     },
     "main": "./index.cjs",
     "scripts": {
-        "test": "npm run test:unit",
-        "test:unit": "ava --config test.config.js",
         "build": "tsc",
         "build:watch": "tsc --watch",
+        "test": "npm run test:unit",
+        "test:unit": "ava --config test.config.js",
         "type-check": "tsc --noEmit"
     },
     "type": "commonjs",
