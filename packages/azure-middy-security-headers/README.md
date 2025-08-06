@@ -17,7 +17,9 @@ npm install --save @kevboutin/azure-middy-security-headers
 
 ## Usage
 
-The middleware adds security headers to your HTTP responses:
+The middleware adds security headers to your HTTP responses.
+
+### JavaScript (CommonJS)
 
 ```javascript
 const { app } = require("@azure/functions");
@@ -35,10 +37,9 @@ const baseHandler = async (req, context) => {
 const handler = middy(baseHandler).use(
     securityHeadersMiddleware({
         contentSecurityPolicy: {
-            directives: {
-                defaultSrc: ["'self'"],
-                scriptSrc: ["'self'", "'unsafe-inline'"],
-            },
+            "default-src": "'self'",
+            "script-src": "'self' 'unsafe-inline'",
+            "style-src": "'self' 'unsafe-inline'",
         },
         referrerPolicy: {
             policy: "strict-origin-when-cross-origin",
@@ -47,6 +48,68 @@ const handler = middy(baseHandler).use(
 );
 
 module.exports = { handler };
+
+app.http("yourFunction", {
+    route: "your-route",
+    methods: ["GET"],
+    authLevel: "anonymous",
+    handler: handler,
+});
+```
+
+### TypeScript
+
+```typescript
+import { app } from "@azure/functions";
+import middy from "@kevboutin/azure-middy-core";
+import {
+    securityHeadersMiddleware,
+    SecurityHeadersOptions,
+    ContentSecurityPolicy,
+} from "@kevboutin/azure-middy-security-headers";
+
+// Your handler
+const baseHandler = async (req: any, context: any) => {
+    return {
+        body: JSON.stringify({ message: "Success" }),
+    };
+};
+
+// Configure security headers with TypeScript
+const securityOptions: SecurityHeadersOptions = {
+    contentSecurityPolicy: {
+        "default-src": "'self'",
+        "script-src": "'self' 'unsafe-inline'",
+        "style-src": "'self' 'unsafe-inline'",
+        "img-src": "'self' data: https:",
+        "connect-src": "'self'",
+        "font-src": "'self'",
+        "object-src": "'none'",
+        "media-src": "'self'",
+        "frame-src": "'none'",
+    } as ContentSecurityPolicy,
+    strictTransportSecurity: {
+        maxAge: 31536000, // 1 year
+        includeSubDomains: true,
+        preload: true,
+    },
+    contentTypeOptions: {
+        action: "nosniff",
+    },
+    frameOptions: {
+        action: "deny",
+    },
+    referrerPolicy: {
+        policy: "strict-origin-when-cross-origin",
+    },
+};
+
+// Wrap handler with middy
+const handler = middy(baseHandler).use(
+    securityHeadersMiddleware(securityOptions),
+);
+
+export { handler };
 
 app.http("yourFunction", {
     route: "your-route",
@@ -164,6 +227,42 @@ dnsPrefetchControl: { allow: false }, // X-DNS-Prefetch-Control
 downloadOptions: { noopen: true }, // X-Download-Options
 permittedCrossDomainPolicies: { policy: "none" }, // X-Permitted-Cross-Domain-Policies
 xssFilter: { setOnOldIE: true } // X-XSS-Protection
+```
+
+## TypeScript Support
+
+This package includes full TypeScript support with:
+
+- **Type Definitions**: Complete type definitions for all security header options and interfaces
+- **Type Safety**: Full type checking for middleware options and request objects
+- **IntelliSense**: Enhanced IDE support with autocomplete and type hints
+
+### Available Types
+
+```typescript
+import {
+    SecurityHeadersOptions,
+    AzureFunctionRequest,
+    SecurityHeadersMiddleware,
+    ContentSecurityPolicy,
+    StrictTransportSecurity,
+    ReferrerPolicy,
+    FrameOptions,
+    PermissionsPolicy,
+} from "@kevboutin/azure-middy-security-headers";
+```
+
+### TypeScript Configuration
+
+To use TypeScript with this package, ensure your `tsconfig.json` includes:
+
+```json
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "moduleResolution": "node"
+    }
+}
 ```
 
 ## Security Best Practices
