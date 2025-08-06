@@ -11,15 +11,25 @@
     },
     "main": "./index.cjs",
     "exports": {
-        "require": "./index.cjs"
+        "require": "./index.cjs",
+        "import": "./index.ts",
+        "types": "./typings.d.ts",
+        "default": "./index.ts"
     },
     "files": [
-        "index.cjs"
+        "index.cjs",
+        "index.ts",
+        "typings.d.ts",
+        "tsconfig.json",
+        "example.ts"
     ],
     "type": "commonjs",
     "scripts": {
         "test": "npm run test:unit",
-        "test:unit": "ava"
+        "test:unit": "ava",
+        "build": "tsc",
+        "build:watch": "tsc --watch",
+        "type-check": "tsc --noEmit"
     },
     "license": "MIT",
     "keywords": [
@@ -43,5 +53,9 @@
     },
     "bugs": {
         "url": "https://github.com/kevboutin/middy/issues"
+    },
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "typescript": "^5.0.0"
     }
 }
