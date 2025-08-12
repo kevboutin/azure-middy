@@ -1,13 +1,12 @@
 import { DefaultAzureCredential } from "@azure/identity";
 import { SecretClient } from "@azure/keyvault-secrets";
-// @ts-ignore
-const {
+import {
     getCache,
     getInternal,
     modifyCache,
     processCache,
     jsonSafeParse,
-} = require("@kevboutin/azure-middy-util");
+} from "@kevboutin/azure-middy-util";
 import {
     KeyVaultSecretsOptions,
     AzureFunctionRequest,
@@ -59,9 +58,9 @@ const keyvaultSecretsMiddleware = (
                 );
                 values[internalKey] = jsonSafeParse(rawValue);
             } catch (e) {
-                const value = getCache(options.cacheKey).value ?? {};
+                const value = getCache(options.cacheKey!).value ?? {};
                 value[internalKey] = undefined;
-                modifyCache(options.cacheKey, value);
+                modifyCache(options.cacheKey!, value);
                 throw e;
             }
         }
