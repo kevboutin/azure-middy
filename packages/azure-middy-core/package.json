@@ -57,5 +57,8 @@
     "devDependencies": {
         "@types/node": "^20.0.0",
         "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "@azure/functions": "^4.7.2-preview"
     }
 }

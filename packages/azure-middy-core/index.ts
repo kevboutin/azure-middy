@@ -8,6 +8,8 @@ import {
     MiddyFunction,
 } from "./typings";
 
+import { HttpRequest, InvocationContext, HttpResponse } from '@azure/functions';
+
 /**
  * Creates a middleware wrapper function.
  *
@@ -126,7 +128,7 @@ const runRequest = async (
     } catch (e) {
         // Reset response changes made by after stack before error thrown
         request.response = undefined;
-        request.error = e;
+        request.error = e as Error;
         try {
             await runMiddlewares(request, onErrorMiddlewares, plugin);
             // Catch if onError stack hasn't handled the error
@@ -134,7 +136,7 @@ const runRequest = async (
         } catch (e) {
             // Save error that wasn't handled
             (e as any).originalError = request.error;
-            request.error = e;
+            request.error = e as Error;
             throw request.error;
         }
     } finally {

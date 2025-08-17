@@ -1,8 +1,10 @@
+import { HttpRequest, InvocationContext, HttpResponse } from '@azure/functions';
+
 export interface AzureFunctionRequest {
-    req: any;
-    context: any;
-    response?: any;
-    error?: any;
+    req: HttpRequest;
+    context: InvocationContext;
+    response?: HttpResponse | undefined;
+    error?: Error | undefined;
     internal: Record<string, any>;
 }
 

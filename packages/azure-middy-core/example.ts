@@ -6,15 +6,18 @@ import middy, {
     AzureFunctionRequest,
 } from "./index";
 
-// Example handler with proper TypeScript types
-const baseHandler = async (req: any, context: any) => {
-    console.log("Processing request:", req.method, req.url);
+import { HttpRequest, InvocationContext } from '@azure/functions';
 
+// Example handler with proper TypeScript types
+const baseHandler = async (req: HttpRequest, context: InvocationContext): Promise<{ status: number; headers: Record<string, string>; body: string }> => {
+    console.log("Processing request:", req.method, req.url);
+    const headers = { "Content-Type": "application/json" };
+    const body = JSON.stringify({ message: "Success" });
+    // Return a plain object with status, headers, and body
     return {
-        body: JSON.stringify({ message: "Success" }),
-        headers: {
-            "Content-Type": "application/json",
-        },
+        status: 200,
+        headers,
+        body,
     };
 };
 
@@ -30,7 +33,7 @@ const loggingMiddleware: Middleware = {
     after: async (request: AzureFunctionRequest) => {
         console.log(
             "After handler - Response status:",
-            request.response?.statusCode,
+            request.response?.status,
         );
     },
     onError: async (request: AzureFunctionRequest) => {
