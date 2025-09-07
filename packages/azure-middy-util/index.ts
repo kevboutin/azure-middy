@@ -85,7 +85,11 @@ const processCache: ProcessCacheFunction = (
         if (unexpired) {
             if (cached.modified) {
                 const value = fetch(request, cached.value);
-                Object.assign(cached.value, value);
+                if (value && typeof value === "object") {
+                    if (typeof cached.value === "object" && cached.value !== null) {
+                        Object.assign(cached.value as object, value);
+                    }
+                }
                 cache[cacheKey] = {
                     value: cached.value,
                     expiry: cached.expiry || undefined,
@@ -187,7 +191,7 @@ const getInternal: GetInternalFunction = async (
             valuePromise = Promise.resolve(valuePromise);
         }
         promises.push(
-            valuePromise.then((value: any) =>
+            (valuePromise as Promise<any>).then((value: any) =>
                 pathOptionKey.reduce((p: any, c: string) => p?.[c], value),
             ),
         );
@@ -221,15 +225,15 @@ const getInternal: GetInternalFunction = async (
 const normalizeHttpResponse: NormalizeHttpResponseFunction = (
     request: AzureFunctionRequest,
 ): NormalizedHttpResponse => {
-    let { response } = request;
+    let response = request['response'] as NormalizedHttpResponse | undefined;
     if (typeof response === "undefined") {
-        response = {};
+        response = { statusCode: 500 };
     } else if (
         typeof response?.statusCode === "undefined" &&
         typeof response?.body === "undefined" &&
         typeof response?.headers === "undefined"
     ) {
-        response = { statusCode: 200, body: response };
+        response = { statusCode: 200, body: response as any };
     }
     response.statusCode ??= 500;
     response.headers ??= {};

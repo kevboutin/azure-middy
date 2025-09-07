@@ -9,7 +9,7 @@ export interface AzureFunctionContext {
 
 export interface AzureFunctionRequest {
     context?: AzureFunctionContext;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export interface LoggerMiddleware {

@@ -1,16 +1,14 @@
 import { Connection, ConnectOptions } from "mongoose";
 
 export interface MongoDBMiddlewareOptions extends ConnectOptions {
-    serverSelectionTimeoutMS?: number;
+    readonly serverSelectionTimeoutMS?: number;
 }
 
 export interface AzureFunctionRequest {
-    internal?: {
-        connection?: {
-            [key: string]: any;
-        };
+    readonly internal?: {
+        readonly connection?: Record<string, unknown>;
     };
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export interface MongoDBMiddleware {

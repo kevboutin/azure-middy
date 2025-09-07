@@ -133,29 +133,29 @@ export interface StrictTransportSecurity {
 }
 
 export interface SecurityHeadersOptions {
-    contentSecurityPolicy?: ContentSecurityPolicy;
-    contentTypeOptions?: ContentTypeOptions;
-    crossOriginEmbedderPolicy?: CrossOriginEmbedderPolicy;
-    crossOriginOpenerPolicy?: CrossOriginOpenerPolicy;
-    crossOriginResourcePolicy?: CrossOriginResourcePolicy;
-    dnsPrefetchControl?: DnsPrefetchControl;
-    downloadOptions?: DownloadOptions;
-    frameOptions?: FrameOptions;
-    originAgentCluster?: OriginAgentCluster;
-    permissionsPolicy?: PermissionsPolicy;
-    permittedCrossDomainPolicies?: PermittedCrossDomainPolicies;
-    poweredBy?: PoweredBy;
-    referrerPolicy?: ReferrerPolicy;
-    reportTo?: ReportTo;
-    strictTransportSecurity?: StrictTransportSecurity;
+    readonly contentSecurityPolicy?: ContentSecurityPolicy;
+    readonly contentTypeOptions?: ContentTypeOptions;
+    readonly crossOriginEmbedderPolicy?: CrossOriginEmbedderPolicy;
+    readonly crossOriginOpenerPolicy?: CrossOriginOpenerPolicy;
+    readonly crossOriginResourcePolicy?: CrossOriginResourcePolicy;
+    readonly dnsPrefetchControl?: DnsPrefetchControl;
+    readonly downloadOptions?: DownloadOptions;
+    readonly frameOptions?: FrameOptions;
+    readonly originAgentCluster?: OriginAgentCluster;
+    readonly permissionsPolicy?: PermissionsPolicy;
+    readonly permittedCrossDomainPolicies?: PermittedCrossDomainPolicies;
+    readonly poweredBy?: PoweredBy;
+    readonly referrerPolicy?: ReferrerPolicy;
+    readonly reportTo?: ReportTo;
+    readonly strictTransportSecurity?: StrictTransportSecurity;
 }
 
 export interface AzureFunctionRequest {
     response?: {
-        headers: Record<string, string>;
-        [key: string]: any;
+        readonly headers: Record<string, string>;
+        [key: string]: unknown;
     };
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export interface SecurityHeadersMiddleware {

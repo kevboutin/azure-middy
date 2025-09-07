@@ -1,60 +1,59 @@
 export interface CacheOptions {
-    cacheKey: string;
-    cacheKeyExpiry?: Record<string, number>;
-    cacheExpiry?: number;
+    readonly cacheKey: string;
+    readonly cacheKeyExpiry?: Record<string, number>;
+    readonly cacheExpiry?: number;
 }
 
 export interface CacheValue {
-    value?: any;
+    value?: unknown;
     expiry?: number;
     modified?: boolean;
 }
 
 export interface ProcessCacheResult {
-    value?: any;
+    value?: unknown;
     expiry?: number;
     cache?: boolean;
 }
 
 export interface AzureFunctionRequest {
-    internal: Record<string, any>;
-    [key: string]: any;
+    readonly internal: Record<string, unknown>;
+    [key: string]: unknown;
 }
 
-export interface FetchFunction {
-    (request: AzureFunctionRequest, cachedValues?: any): Promise<any> | any;
-}
+export type FetchFunction<T = AzureFunctionRequest, R = unknown> = (request: T, cachedValues?: unknown) => Promise<R> | R;
+
 
 export interface InternalVariables {
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export interface NormalizedHttpResponse {
     statusCode: number;
-    body?: any;
+    body?: unknown;
     headers?: Record<string, string>;
 }
 
 export interface JsonSafeParseOptions {
-    reviver?: (key: string, value: any) => any;
+    reviver?: (key: string, value: unknown) => unknown;
 }
 
 export interface JsonSafeStringifyOptions {
-    replacer?: ((key: string, value: any) => any) | (string | number)[];
+    replacer?: ((key: string, value: unknown) => unknown) | (string | number)[];
     space?: string | number;
 }
 
 // Function type definitions
 export type JsonSafeParseFunction = (
-    text: any,
+    text: unknown,
     reviver?: JsonSafeParseOptions["reviver"],
-) => any;
+) => unknown;
 
 export type JsonSafeStringifyFunction = (
-    value: any,
+    value: unknown,
     replacer?: JsonSafeStringifyOptions["replacer"],
     space?: JsonSafeStringifyOptions["space"],
-) => string | any;
+) => string | unknown;
 
 export type ProcessCacheFunction = (
     request: AzureFunctionRequest,
@@ -64,12 +63,12 @@ export type ProcessCacheFunction = (
 
 export type GetCacheFunction = (key: string) => CacheValue;
 
-export type ModifyCacheFunction = (cacheKey: string, value: any) => void;
+export type ModifyCacheFunction = (cacheKey: string, value: unknown) => void;
 
 export type ClearCacheFunction = (keys?: string[] | string | null) => void;
 
 export type GetInternalFunction = (
-    variables: boolean | string | string[] | Record<string, any>,
+    variables: boolean | string | string[] | Record<string, unknown>,
     request: AzureFunctionRequest,
 ) => Promise<InternalVariables>;
 

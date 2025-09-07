@@ -2,24 +2,22 @@ import { SecretClient } from "@azure/keyvault-secrets";
 import { DefaultAzureCredential } from "@azure/identity";
 
 export interface KeyVaultSecretsOptions {
-    cacheKey?: string;
-    fetchData: Record<string, string>;
-    vaultUrl: string;
+    readonly cacheKey?: string;
+    readonly fetchData: Record<string, string>;
+    readonly vaultUrl: string;
 }
 
 export interface AzureFunctionRequest {
-    internal?: {
-        [key: string]: any;
-    };
-    [key: string]: any;
+    readonly internal?: Record<string, unknown>;
+    [key: string]: unknown;
 }
 
 export interface CachedValues {
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export interface FetchedValues {
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export interface KeyVaultSecretsMiddleware {
@@ -27,15 +25,13 @@ export interface KeyVaultSecretsMiddleware {
 }
 
 export type KeyVaultSecretsMiddlewareFunction = (
-    opts?: KeyVaultSecretsOptions,
+    opts?: Partial<KeyVaultSecretsOptions>,
 ) => KeyVaultSecretsMiddleware;
 
-export interface FetchFunction {
-    (
-        request: AzureFunctionRequest,
-        cachedValues?: CachedValues,
-    ): Promise<FetchedValues>;
-}
+export type FetchFunction = (
+    request: AzureFunctionRequest,
+    cachedValues?: CachedValues,
+) => Promise<FetchedValues>;
 
 // Declare module for dependencies
 declare module "@kevboutin/azure-middy-util" {

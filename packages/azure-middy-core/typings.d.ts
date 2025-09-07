@@ -1,21 +1,19 @@
 import { HttpRequest, InvocationContext, HttpResponse } from '@azure/functions';
 
 export interface AzureFunctionRequest {
-    req: HttpRequest;
-    context: InvocationContext;
+    readonly req: HttpRequest;
+    readonly context: InvocationContext;
     response?: HttpResponse | undefined;
     error?: Error | undefined;
-    internal: Record<string, any>;
+    readonly internal: Record<string, unknown>;
 }
 
-export interface MiddlewareFunction {
-    (request: AzureFunctionRequest): Promise<any> | any;
-}
+export type MiddlewareFunction<T = AzureFunctionRequest, R = unknown> = (request: T) => Promise<R> | R;
 
-export interface Middleware {
-    before?: MiddlewareFunction;
-    after?: MiddlewareFunction;
-    onError?: MiddlewareFunction;
+export interface Middleware<T = AzureFunctionRequest, R = unknown> {
+    before?: MiddlewareFunction<T, R>;
+    after?: MiddlewareFunction<T, R>;
+    onError?: MiddlewareFunction<T, R>;
 }
 
 export interface Plugin {
@@ -28,23 +26,25 @@ export interface Plugin {
     afterMiddleware?: (middlewareName?: string) => void;
 }
 
-export interface MiddyInstance {
-    (req?: any, context?: any): Promise<any>;
-    use: (middlewares: Middleware | Middleware[]) => MiddyInstance;
-    applyMiddleware: (middleware: Middleware) => MiddyInstance;
-    before: (beforeMiddleware: MiddlewareFunction) => MiddyInstance;
-    after: (afterMiddleware: MiddlewareFunction) => MiddyInstance;
-    onError: (onErrorMiddleware: MiddlewareFunction) => MiddyInstance;
+
+export interface MiddyInstance<T = AzureFunctionRequest, R = unknown> {
+    (req?: unknown, context?: unknown): Promise<R>;
+    use: (middlewares: Middleware<T, R> | Middleware<T, R>[]) => MiddyInstance<T, R>;
+    applyMiddleware: (middleware: Middleware<T, R>) => MiddyInstance<T, R>;
+    before: (beforeMiddleware: MiddlewareFunction<T, R>) => MiddyInstance<T, R>;
+    after: (afterMiddleware: MiddlewareFunction<T, R>) => MiddyInstance<T, R>;
+    onError: (onErrorMiddleware: MiddlewareFunction<T, R>) => MiddyInstance<T, R>;
     __middlewares: {
-        before: MiddlewareFunction[];
-        after: MiddlewareFunction[];
-        onError: MiddlewareFunction[];
+        before: MiddlewareFunction<T, R>[];
+        after: MiddlewareFunction<T, R>[];
+        onError: MiddlewareFunction<T, R>[];
     };
 }
 
-export type BaseHandler = (req?: any, context?: any) => Promise<any> | any;
 
-export type MiddyFunction = (
+export type BaseHandler<T = unknown, C = unknown, R = unknown> = (req?: T, context?: C) => Promise<R> | R;
+
+export type MiddyFunction<T = AzureFunctionRequest, R = unknown> = (
     baseHandler?: BaseHandler,
     plugin?: Plugin,
-) => MiddyInstance;
+) => MiddyInstance<T, R>;

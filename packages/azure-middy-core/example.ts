@@ -4,6 +4,7 @@ import middy, {
     Middleware,
     Plugin,
     AzureFunctionRequest,
+    BaseHandler,
 } from "./index";
 
 import { HttpRequest, InvocationContext } from '@azure/functions';
@@ -64,7 +65,7 @@ const monitoringPlugin: Plugin = {
 };
 
 // Create middleware instance with TypeScript
-const handler: MiddyInstance = middy(baseHandler, monitoringPlugin);
+const handler: MiddyInstance<AzureFunctionRequest, unknown> = middy(baseHandler as BaseHandler, monitoringPlugin);
 
 // Apply middleware
 handler.use(loggingMiddleware);
