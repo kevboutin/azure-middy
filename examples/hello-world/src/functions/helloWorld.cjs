@@ -23,7 +23,12 @@
  * @see module:helloWorld
  * @author Kevin Boutin <kevboutin@gmail.com>
  */
-const { app, HttpRequest, InvocationContext } = require("@azure/functions");
+const {
+    app,
+    HttpRequest,
+    HttpResponse,
+    InvocationContext,
+} = require("@azure/functions");
 const middy = require("@kevboutin/azure-middy-core");
 const loggerMiddleware = require("@kevboutin/azure-middy-logger");
 
@@ -35,20 +40,11 @@ const headers = {
 };
 
 /**
- * All responses use this format.
- *
- * @typedef {Object} Response
- * @property {Object<string, string>} headers Key-value pairs used as the HTTP response headers.
- * @property {Object} jsonBody The body of the response, which is JSON.
- * @property {number} status The HTTP response status code.
- */
-
-/**
  * Handles a request and generates an appropriate response.
  *
  * @param {HttpRequest} req The request object containing information about the incoming request.
  * @param {InvocationContext} context The context object containing information about the current execution context.
- * @returns {Response} The response.
+ * @returns {HttpResponse} The response.
  */
 const baseHandler = async (req, context) => {
     console.log(

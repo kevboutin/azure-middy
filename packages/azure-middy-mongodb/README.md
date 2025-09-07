@@ -20,6 +20,8 @@ npm install --save @kevboutin/azure-middy-mongodb
 
 The middleware provides MongoDB connection management for your Azure Functions.
 
+### JavaScript (CommonJS)
+
 ```javascript
 const { app } = require("@azure/functions");
 const middy = require("@kevboutin/azure-middy-core");
@@ -51,6 +53,42 @@ app.http("yourFunction", {
 });
 ```
 
+### TypeScript
+
+```typescript
+import { app } from "@azure/functions";
+import middy from "@kevboutin/azure-middy-core";
+import {
+    mongodbMiddleware,
+    MongoDBMiddlewareOptions,
+} from "@kevboutin/azure-middy-mongodb";
+
+// Your handler
+const baseHandler = async (req: any, context: any) => {
+    // Your business logic here
+    // The MongoDB connection is available in req.internal.connection
+    return {
+        body: JSON.stringify({ message: "Success" }),
+    };
+};
+
+// Wrap handler with middy
+const handler = middy(baseHandler).use(
+    mongodbMiddleware({
+        serverSelectionTimeoutMS: 5000, // Optional configuration
+    } as MongoDBMiddlewareOptions),
+);
+
+export { handler };
+
+app.http("yourFunction", {
+    route: "your-route",
+    methods: ["GET"],
+    authLevel: "anonymous",
+    handler: handler,
+});
+```
+
 ## Connection Management
 
 The middleware automatically handles:
@@ -60,6 +98,38 @@ The middleware automatically handles:
 - Connection health checks
 - Reconnection if the connection is lost
 - Safe connection closure
+
+## TypeScript Support
+
+This package includes full TypeScript support with:
+
+- **Type Definitions**: Complete type definitions for all exported functions and interfaces
+- **Type Safety**: Full type checking for middleware options and request objects
+- **IntelliSense**: Enhanced IDE support with autocomplete and type hints
+
+### Available Types
+
+```typescript
+import {
+    MongoDBMiddlewareOptions,
+    AzureFunctionRequest,
+    MongoDBMiddleware,
+    MongoDBConnection,
+} from "@kevboutin/azure-middy-mongodb";
+```
+
+### TypeScript Configuration
+
+To use TypeScript with this package, ensure your `tsconfig.json` includes:
+
+```json
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "moduleResolution": "node"
+    }
+}
+```
 
 ## Environment Variables
 

@@ -16,7 +16,9 @@ npm install --save @kevboutin/azure-middy-util
 
 ## Usage
 
-The utility package provides common functions used across azure-middy middlewares:
+The utility package provides common functions used across azure-middy middlewares.
+
+### JavaScript (CommonJS)
 
 ```javascript
 const {
@@ -34,6 +36,87 @@ const request = {
 };
 normalizeHttpResponse(request);
 console.log(request.response); // { body: 'Hello World', headers: {}, statusCode: 200 }
+```
+
+### TypeScript
+
+```typescript
+import {
+    normalizeHttpResponse,
+    jsonSafeParse,
+    jsonSafeStringify,
+    processCache,
+    getCache,
+    modifyCache,
+    clearCache,
+    getInternal,
+    AzureFunctionRequest,
+    CacheOptions,
+} from "@kevboutin/azure-middy-util";
+
+// Example: Parse JSON safely with TypeScript
+const result = jsonSafeParse('{"key": "value"}');
+console.log(result); // { key: 'value' }
+
+// Example: Cache operations with TypeScript
+const cacheOptions: CacheOptions = {
+    cacheKey: "example-cache",
+    cacheExpiry: 60000, // 1 minute
+};
+
+const exampleRequest: AzureFunctionRequest = {
+    internal: {
+        user: { id: 1, name: "John" },
+        settings: { theme: "dark" },
+    },
+};
+
+// Process cache with TypeScript
+const cacheResult = processCache(
+    exampleRequest,
+    cacheOptions,
+    () => "cached value",
+);
+
+// Get internal values with TypeScript
+const internalValues = await getInternal(["user", "settings"], exampleRequest);
+```
+
+## TypeScript Support
+
+This package includes full TypeScript support with:
+
+- **Type Definitions**: Complete type definitions for all utility functions and interfaces
+- **Type Safety**: Full type checking for cache operations, JSON parsing, and HTTP responses
+- **IntelliSense**: Enhanced IDE support with autocomplete and type hints
+
+### Available Types
+
+```typescript
+import {
+    AzureFunctionRequest,
+    CacheOptions,
+    CacheValue,
+    ProcessCacheResult,
+    FetchFunction,
+    InternalVariables,
+    NormalizedHttpResponse,
+    JsonSafeParseFunction,
+    JsonSafeStringifyFunction,
+} from "@kevboutin/azure-middy-util";
+```
+
+### TypeScript Configuration
+
+To use TypeScript with this package, ensure your `tsconfig.json` includes:
+
+```json
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "moduleResolution": "node"
+    }
+}
 ```
 
 ## API

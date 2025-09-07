@@ -1,23 +1,30 @@
-const mongoose = require("mongoose");
+import mongoose, { Connection, ConnectOptions } from "mongoose";
+import {
+    MongoDBMiddlewareOptions,
+    AzureFunctionRequest,
+    MongoDBMiddleware,
+    MongoDBConnection,
+} from "./typings";
 
-/** @type mongoose.Connection */
-let connection = null;
-/** @type {string} */
-const mongodbUri = process.env.MONGO_URI || "mongodb://localhost:27017";
-/** @type {Object<string, boolean|number|string>} */
-const defaults = {
+let connection: Connection | null = null;
+const mongodbUri: string =
+    process.env["MONGO_URI"] || "mongodb://localhost:27017";
+const defaults: MongoDBMiddlewareOptions = {
     serverSelectionTimeoutMS: 5000,
 };
 
 /**
  * Provides an updated database connection to the specified database.
  *
- * @param {mongoose.Connection} conn - The current database connection.
- * @param {string} databaseName - The name of the database to switch to.
- * @returns {Object|string} - The new database connection object if successful, otherwise an error message.
- * @throws {Error} - If there is an error changing the database.
+ * @param conn - The current database connection.
+ * @param databaseName - The name of the database to switch to.
+ * @returns The new database connection object if successful, otherwise an error message.
+ * @throws If there is an error changing the database.
  */
-const changeDatabase = async (conn, databaseName) => {
+const changeDatabase = async (
+    conn: Connection,
+    databaseName: string,
+): Promise<Connection> => {
     console.log("Changing database to:", databaseName);
     try {
         const newConn = conn.useDb(databaseName);
@@ -32,11 +39,11 @@ const changeDatabase = async (conn, databaseName) => {
 /**
  * Disconnects from the database cluster.
  *
- * @param {mongoose.Connection} conn - The database connection.
- * @returns {Promise<Error|null>} - Returns a promise that resolves to null if the disconnection is successful, or an Error object if there is an error.
- * @throws {Error} - If there is an error disconnecting from the database.
+ * @param conn - The database connection.
+ * @returns Returns a promise that resolves to null if the disconnection is successful, or an Error object if there is an error.
+ * @throws If there is an error disconnecting from the database.
  */
-const disconnect = async (conn) => {
+const disconnect = async (conn: Connection): Promise<Error | null> => {
     console.log("Disconnecting from MongoDB");
     try {
         if (conn) {
@@ -57,20 +64,21 @@ const disconnect = async (conn) => {
 /**
  * Determines if the database connection is alive/active.
  *
- * @param {mongoose.Connection} conn The database connection.
- * @return {Promise<boolean>} True if the connection is still considered active.
+ * @param conn The database connection.
+ * @return True if the connection is still considered active.
  */
-const isConnectionAlive = async (conn) => {
+const isConnectionAlive = async (conn: Connection): Promise<boolean> => {
     if (!conn) return false;
     console.log("Database connection readyState:", conn.readyState);
     // Return false if not connected or connecting
     if (conn.readyState !== 1 && conn.readyState !== 2) return false;
     try {
-        const adminUtil = conn.db.admin();
+        const adminUtil = conn.db?.admin();
+        if (!adminUtil) return false;
         const result = await adminUtil.ping();
         // Example result: { ok: 1 }
         console.log("Ping result: ", result);
-        return result?.ok === 1;
+        return result?.["ok"] === 1;
     } catch (error) {
         console.log("Error with ping: ", error);
         return false;
@@ -80,11 +88,13 @@ const isConnectionAlive = async (conn) => {
 /**
  * Connects to a MongoDB database cluster using Mongoose.
  *
- * @param {Object} opts - Optional parameters for creating the connection.
- * @returns {Promise<mongoose.Connection>} - A promise that resolves to the database connection.
- * @throws {Error} - If there is an error connecting to the database.
+ * @param opts - Optional parameters for creating the connection.
+ * @returns A promise that resolves to the database connection.
+ * @throws If there is an error connecting to the database.
  */
-const connect = async (opts = {}) => {
+const connect = async (
+    opts: MongoDBMiddlewareOptions = {},
+): Promise<Connection> => {
     // Log the MongoDB URI securely
     const secureUri = mongodbUri.replace(/\/\/.*@/, "//***:***@");
     console.log("Connecting to MongoDB at:", secureUri);
@@ -124,19 +134,23 @@ const connect = async (opts = {}) => {
 /**
  * Middleware function for connecting to a MongoDB cluster.
  *
- * @param {Object} opts - Options for connecting to a MongoDB cluster.
- * @returns {Object} - Middleware object with 'before' function.
+ * @param opts - Options for connecting to a MongoDB cluster.
+ * @returns Middleware object with 'before' function.
  */
-const mongodbMiddleware = (opts = {}) => {
-    const options = { ...defaults, ...opts };
+const mongodbMiddleware = (
+    opts: MongoDBMiddlewareOptions = {},
+): MongoDBMiddleware => {
+    const options: MongoDBMiddlewareOptions = { ...defaults, ...opts };
 
     /**
      * Middleware function that handles the MongoDB connection before processing the request.
      *
-     * @param {Object} request - The request object.
-     * @returns {Promise} - A promise that resolves when the connection is established.
+     * @param request - The request object.
+     * @returns A promise that resolves when the connection is established.
      */
-    const mongodbMiddlewareBefore = async (request) => {
+    const mongodbMiddlewareBefore = async (
+        request: AzureFunctionRequest,
+    ): Promise<void> => {
         if (!connection) {
             console.log(
                 "Connecting to MongoDB as global connection was not yet set",
@@ -171,9 +185,18 @@ const mongodbMiddleware = (opts = {}) => {
     };
 };
 
-// Export the connect function for use in other modules
-module.exports = {
+// Export the functions for use in other modules
+const mongodbConnection: MongoDBConnection = {
     changeDatabase,
     disconnect,
     mongodbMiddleware,
+};
+
+export default mongodbConnection;
+export { changeDatabase, disconnect, mongodbMiddleware };
+export type {
+    MongoDBMiddlewareOptions,
+    AzureFunctionRequest,
+    MongoDBMiddleware,
+    MongoDBConnection,
 };

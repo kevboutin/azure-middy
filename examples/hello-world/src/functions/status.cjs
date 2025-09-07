@@ -5,7 +5,12 @@
  * @see module:status
  * @author Kevin Boutin <kevboutin@gmail.com>
  */
-const { app, HttpRequest, InvocationContext } = require("@azure/functions");
+const {
+    app,
+    HttpRequest,
+    HttpResponse,
+    InvocationContext,
+} = require("@azure/functions");
 
 /** @constant {Object<string, string>} */
 const headers = {
@@ -13,20 +18,11 @@ const headers = {
 };
 
 /**
- * All responses use this format.
- *
- * @typedef {Object} Response
- * @property {Object<string, string>} headers Key-value pairs used as the HTTP response headers.
- * @property {Object} jsonBody The body of the response, which is JSON.
- * @property {number} status The HTTP response status code.
- */
-
-/**
  * Show environment.
  *
  * @param {HttpRequest} request The request.
  * @param {InvocationContext} context The context.
- * @returns {Response} The response.
+ * @returns {HttpResponse} The response.
  */
 const status = async (request, context) => {
     context.log(
