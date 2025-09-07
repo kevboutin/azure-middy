@@ -42,7 +42,7 @@ export interface MiddyInstance<T = AzureFunctionRequest, R = unknown> {
 }
 
 
-export type BaseHandler<T = unknown, C = unknown, R = unknown> = (req?: T, context?: C) => Promise<R> | R;
+export type BaseHandler<T = HttpRequest, C = InvocationContext, R = HttpResponse> = (req?: T, context?: C) => Promise<R> | R;
 
 export type MiddyFunction<T = AzureFunctionRequest, R = unknown> = (
     baseHandler?: BaseHandler,

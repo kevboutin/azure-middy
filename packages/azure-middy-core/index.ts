@@ -18,7 +18,12 @@ import { HttpRequest, InvocationContext, HttpResponse } from '@azure/functions';
  * @returns The middleware wrapper function.
  */
 const middy: MiddyFunction = (
-    baseHandler: BaseHandler = () => {},
+    baseHandler: BaseHandler = async (_req?: HttpRequest, _context?: InvocationContext) => {
+        return new HttpResponse({
+            status: 200,
+            headers: new Headers(),
+        });
+    },
     plugin?: Plugin,
 ) => {
     plugin?.beforePrefetch?.();
