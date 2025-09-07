@@ -1,6 +1,6 @@
 {
     "name": "hello-world",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "description": "Example hello world function using azure-middy",
     "main": "src/functions/*.*js",
     "scripts": {
@@ -31,10 +31,10 @@
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
     "dependencies": {
         "@azure/functions": "^4.7.2",
-        "@kevboutin/azure-middy-core": "^0.2.6",
-        "@kevboutin/azure-middy-logger": "^0.2.6"
+        "@kevboutin/azure-middy-core": "^0.2.7",
+        "@kevboutin/azure-middy-logger": "^0.2.7"
     },
     "devDependencies": {
-        "azure-functions-core-tools": "^4.0.7317"
+        "azure-functions-core-tools": "^4.2.2"
     }
 }
