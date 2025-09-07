@@ -5,7 +5,12 @@
  * @see module:helloMiddy
  * @author Kevin Boutin <kevboutin@gmail.com>
  */
-import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import {
+    app,
+    HttpRequest,
+    HttpResponseInit,
+    InvocationContext,
+} from "@azure/functions";
 import middy from "@kevboutin/azure-middy-core";
 import loggerMiddleware from "@kevboutin/azure-middy-logger";
 
@@ -21,7 +26,10 @@ const headers = new Headers({
  * @param {InvocationContext} context The context object containing information about the current execution context.
  * @returns {HttpResponse} The response.
  */
-const baseHandler = async (req: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> => {
+const baseHandler = async (
+    req: HttpRequest,
+    context: InvocationContext,
+): Promise<HttpResponseInit> => {
     console.log(
         `${TAG}: Function ${context.functionName} has been called with ${req.method} to ${req.url}`,
     );
@@ -46,10 +54,10 @@ const baseHandler = async (req: HttpRequest, context: InvocationContext): Promis
         return {
             status: 200,
             headers,
-            body: JSON.stringify({
+            jsonBody: {
                 result: "success",
                 message: msg,
-            }),
+            },
         };
     }
 
@@ -59,11 +67,11 @@ const baseHandler = async (req: HttpRequest, context: InvocationContext): Promis
     return {
         status: 400,
         headers,
-        body: JSON.stringify({
+        jsonBody: {
             result: "failure",
             message:
                 "Please provide a name as a query parameter as a get or in the body of the request as a post.",
-        }),
+        },
     };
 };
 
