@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-util",
-    "version": "0.2.7",
+    "version": "0.2.8",
     "description": "Node.js middleware engine for Azure functions (azure-middy-util package)",
     "main": "index.cjs",
     "types": "./typings.d.ts",
