@@ -55,7 +55,7 @@
         "azure-function-log-intercept": "^1.1.6"
     },
     "devDependencies": {
-        "@types/node": "^20.0.0",
+        "@types/node": "^24.3.1",
         "typescript": "^5.0.0"
     },
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
