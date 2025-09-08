@@ -15,6 +15,7 @@
         "default": "./index.ts"
     },
     "main": "./index.cjs",
+    "types": "./typings.d.ts",
     "scripts": {
         "build": "tsc",
         "build:watch": "tsc --watch",

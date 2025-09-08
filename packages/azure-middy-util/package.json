@@ -3,6 +3,7 @@
     "version": "0.2.7",
     "description": "Node.js middleware engine for Azure functions (azure-middy-util package)",
     "main": "index.cjs",
+    "types": "./typings.d.ts",
     "type": "commonjs",
     "exports": {
         "require": "./index.cjs",
