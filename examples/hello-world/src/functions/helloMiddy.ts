@@ -11,7 +11,7 @@ import {
     HttpResponseInit,
     InvocationContext,
 } from "@azure/functions";
-import { middy, AzureFunctionRequest } from "@kevboutin/azure-middy-core";
+import middy from "@kevboutin/azure-middy-core";
 import loggerMiddleware from "@kevboutin/azure-middy-logger";
 
 const TAG: string = "hello-middy";

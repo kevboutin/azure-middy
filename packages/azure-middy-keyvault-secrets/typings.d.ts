@@ -8,7 +8,7 @@ export interface KeyVaultSecretsOptions {
 }
 
 export interface AzureFunctionRequest {
-    readonly internal?: Record<string, unknown>;
+    readonly internal: Record<string, unknown>;
     [key: string]: unknown;
 }
 
