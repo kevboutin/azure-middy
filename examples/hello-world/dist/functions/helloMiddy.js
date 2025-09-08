@@ -1,3 +1,10 @@
+"use strict";
+var __importDefault =
+    (this && this.__importDefault) ||
+    function (mod) {
+        return mod && mod.__esModule ? mod : { default: mod };
+    };
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Hello middy module that is a simple example using the Azure functions v4 programming model.
  *
@@ -5,20 +12,17 @@
  * @see module:helloMiddy
  * @author Kevin Boutin <kevboutin@gmail.com>
  */
-import {
-    app,
-    HttpRequest,
-    HttpResponseInit,
-    InvocationContext,
-} from "@azure/functions";
-import { middy, AzureFunctionRequest } from "@kevboutin/azure-middy-core";
-import loggerMiddleware from "@kevboutin/azure-middy-logger";
-
-const TAG: string = "hello-middy";
+const functions_1 = require("@azure/functions");
+const azure_middy_core_1 = __importDefault(
+    require("@kevboutin/azure-middy-core"),
+);
+const azure_middy_logger_1 = __importDefault(
+    require("@kevboutin/azure-middy-logger"),
+);
+const TAG = "hello-middy";
 const headers = new Headers({
     "Content-Type": "application/json",
 });
-
 /**
  * Handles a request and generates an appropriate response.
  *
@@ -26,10 +30,7 @@ const headers = new Headers({
  * @param {InvocationContext} context The context object containing information about the current execution context.
  * @returns {HttpResponseInit} The response.
  */
-const baseHandler = async (
-    req: HttpRequest | undefined,
-    context: InvocationContext,
-): Promise<HttpResponseInit> => {
+const baseHandler = async (req, context) => {
     if (!req) {
         console.error(`${TAG}: Request object is undefined.`);
         return {
@@ -44,11 +45,11 @@ const baseHandler = async (
     console.log(
         `${TAG}: Function ${context.functionName} has been called with ${req.method} to ${req.url}`,
     );
-    let queryParams: { [key: string]: string } = {};
+    let queryParams = {};
     // Azure v4 functions need to use the following to get the body.
-    let requestBody: { [key: string]: any } = {};
+    let requestBody = {};
     try {
-        requestBody = (await req.json()) as { [key: string]: any };
+        requestBody = await req.json();
     } catch (e) {
         requestBody = {};
     }
@@ -84,12 +85,11 @@ const baseHandler = async (
         },
     };
 };
-
-const helloMiddy = middy(baseHandler).use(loggerMiddleware());
-
+const helloMiddy = (0, azure_middy_core_1.default)(baseHandler).use(
+    (0, azure_middy_logger_1.default)(),
+);
 module.exports = helloMiddy;
-
-app.http("helloMiddy", {
+functions_1.app.http("helloMiddy", {
     route: "middy",
     methods: ["GET", "POST"],
     authLevel: "anonymous",

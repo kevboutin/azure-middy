@@ -10,6 +10,7 @@
         "access": "public"
     },
     "main": "./index.cjs",
+    "types": "./typings.d.ts",
     "exports": {
         "require": "./index.cjs",
         "import": "./index.ts",

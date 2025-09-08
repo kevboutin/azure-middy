@@ -7,10 +7,20 @@ import middy, {
     BaseHandler,
 } from "./index";
 
-import { HttpRequest, InvocationContext } from '@azure/functions';
+import { HttpRequest, InvocationContext } from "@azure/functions";
 
 // Example handler with proper TypeScript types
-const baseHandler = async (req: HttpRequest, context: InvocationContext): Promise<{ status: number; headers: Record<string, string>; body: string }> => {
+const baseHandler = async (
+    req: HttpRequest | undefined,
+    context: InvocationContext,
+): Promise<{
+    status: number;
+    headers: Record<string, string>;
+    body: string;
+}> => {
+    if (!req) {
+        throw new Error("Request object is undefined");
+    }
     console.log("Processing request:", req.method, req.url);
     const headers = { "Content-Type": "application/json" };
     const body = JSON.stringify({ message: "Success" });
@@ -65,7 +75,10 @@ const monitoringPlugin: Plugin = {
 };
 
 // Create middleware instance with TypeScript
-const handler: MiddyInstance<AzureFunctionRequest, unknown> = middy(baseHandler as BaseHandler, monitoringPlugin);
+const handler: MiddyInstance<AzureFunctionRequest, unknown> = middy(
+    baseHandler as unknown as BaseHandler,
+    monitoringPlugin,
+);
 
 // Apply middleware
 handler.use(loggingMiddleware);

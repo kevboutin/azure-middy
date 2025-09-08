@@ -57,5 +57,6 @@
         "typescript": "^5.0.0"
     },
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
-    "main": "index.cjs"
+    "main": "index.cjs",
+    "types": "./typings.d.ts"
 }
