@@ -174,8 +174,7 @@ const mongodbMiddleware = (
             }
         }
 
-        if (request.internal) {
-            request.internal.connection = {};
+        if (request.internal && request.internal.connection) {
             Object.assign(request.internal.connection, connection);
         }
     };

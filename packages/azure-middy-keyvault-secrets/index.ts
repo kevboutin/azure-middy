@@ -68,10 +68,8 @@ const keyvaultSecretsMiddleware = (
         return values;
     };
 
-    /** @type {SecretClient} */
     let client: SecretClient;
-    /** @type {DefaultAzureCredential} */
-    const credential = new DefaultAzureCredential();
+    const credential: DefaultAzureCredential = new DefaultAzureCredential();
 
     /**
      * Middleware function that retrieves secrets from Azure Key Vault and adds them to the request object.
@@ -86,7 +84,16 @@ const keyvaultSecretsMiddleware = (
             client = new SecretClient(options.vaultUrl, credential);
         }
 
-        const { value } = processCache(request, options, fetch);
+        // Ensure 'internal' property exists for type compatibility.
+        if (!request.internal) {
+            Object.assign(request, { internal: {} });
+        }
+
+        const { value } = processCache(
+            request,
+            options,
+            fetch as Parameters<typeof processCache>[2],
+        );
         if (value) {
             value.then((res: any) => {
                 Object.assign(request.internal!, res);
