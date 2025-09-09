@@ -1,15 +1,16 @@
 {
     "name": "@kevboutin/azure-middy-util",
-    "version": "0.2.8",
+    "version": "0.2.9",
     "description": "Node.js middleware engine for Azure functions (azure-middy-util package)",
-    "main": "index.cjs",
+    "main": "./index.cjs",
     "types": "./typings.d.ts",
     "type": "commonjs",
     "exports": {
-        "require": "./index.cjs",
-        "import": "./index.ts",
-        "types": "./typings.d.ts",
-        "default": "./index.ts"
+        ".": {
+            "require": "./index.cjs",
+            "import": "./index.cjs",
+            "types": "./typings.d.ts"
+        }
     },
     "scripts": {
         "build": "tsc",

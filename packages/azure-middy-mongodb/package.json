@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-mongodb",
-    "version": "0.2.8",
+    "version": "0.2.9",
     "description": "MongoDB middleware for the azure-middy framework",
     "engines": {
         "node": ">=18"
@@ -8,11 +8,14 @@
     "publishConfig": {
         "access": "public"
     },
+    "main": "./index.cjs",
+    "types": "./typings.d.ts",
     "exports": {
-        "require": "./index.cjs",
-        "import": "./index.ts",
-        "types": "./typings.d.ts",
-        "default": "./index.ts"
+        ".": {
+            "require": "./index.cjs",
+            "import": "./index.cjs",
+            "types": "./typings.d.ts"
+        }
     },
     "files": [
         "index.cjs",
@@ -56,7 +59,5 @@
         "@types/node": "^24.3.1",
         "typescript": "^5.0.0"
     },
-    "homepage": "https://github.com/kevboutin/azure-middy#readme",
-    "main": "index.cjs",
-    "types": "./typings.d.ts"
+    "homepage": "https://github.com/kevboutin/azure-middy#readme"
 }

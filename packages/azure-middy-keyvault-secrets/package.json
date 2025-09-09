@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-keyvault-secrets",
-    "version": "0.2.8",
+    "version": "0.2.9",
     "description": "Azure Key Vault Secrets middleware for the azure-middy framework",
     "engines": {
         "node": ">=18"
@@ -8,11 +8,14 @@
     "publishConfig": {
         "access": "public"
     },
+    "main": "./index.cjs",
+    "types": "./typings.d.ts",
     "exports": {
-        "require": "./index.cjs",
-        "import": "./index.ts",
-        "types": "./typings.d.ts",
-        "default": "./index.ts"
+        ".": {
+            "require": "./index.cjs",
+            "import": "./index.cjs",
+            "types": "./typings.d.ts"
+        }
     },
     "files": [
         "index.cjs",
@@ -52,13 +55,11 @@
     "dependencies": {
         "@azure/identity": "^4.10.1",
         "@azure/keyvault-secrets": "^4.10.0",
-        "@kevboutin/azure-middy-util": "0.2.8"
+        "@kevboutin/azure-middy-util": "0.2.9"
     },
     "devDependencies": {
         "@types/node": "^24.3.1",
         "typescript": "^5.0.0"
     },
-    "homepage": "https://github.com/kevboutin/azure-middy#readme",
-    "main": "index.cjs",
-    "types": "./typings.d.ts"
+    "homepage": "https://github.com/kevboutin/azure-middy#readme"
 }

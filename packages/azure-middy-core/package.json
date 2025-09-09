@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-core",
-    "version": "0.2.8",
+    "version": "0.2.9",
     "description": "A Node.js middleware engine for Azure functions (core package)",
     "engines": {
         "node": ">=18"
@@ -12,10 +12,11 @@
     "main": "./index.cjs",
     "types": "./typings.d.ts",
     "exports": {
-        "require": "./index.cjs",
-        "import": "./index.ts",
-        "types": "./typings.d.ts",
-        "default": "./index.ts"
+        ".": {
+            "require": "./index.cjs",
+            "import": "./index.cjs",
+            "types": "./typings.d.ts"
+        }
     },
     "files": [
         "index.cjs",
