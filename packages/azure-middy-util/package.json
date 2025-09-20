@@ -1,19 +1,19 @@
 {
     "name": "@kevboutin/azure-middy-util",
-    "version": "0.2.10",
+    "version": "0.2.11",
     "description": "Node.js middleware engine for Azure functions (azure-middy-util package)",
-    "main": "./index.cjs",
+    "main": "./index.js",
     "types": "./typings.d.ts",
     "type": "commonjs",
     "exports": {
         ".": {
-            "require": "./index.cjs",
-            "import": "./index.cjs",
-            "types": "./typings.d.ts"
+            "require": "./dist/index.js",
+            "import": "./dist/index.js",
+            "types": "./dist/typings.d.ts"
         }
     },
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && cpy typings*.d.ts dist",
         "build:watch": "tsc --watch",
         "test": "npm run test:unit",
         "test:unit": "ava",
@@ -42,15 +42,18 @@
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
     "files": [
-        "index.cjs",
-        "index.ts",
-        "typings.d.ts",
-        "tsconfig.json",
-        "example.ts"
+        "dist"
+    ],
+    "include": [
+        "**/*.ts",
+        "typings.d.ts"
     ],
     "license": "MIT",
     "devDependencies": {
         "@types/node": "^24.3.1",
         "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "cpy-cli": "^6.0.0"
     }
 }

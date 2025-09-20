@@ -40,8 +40,8 @@
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
     "dependencies": {
         "@azure/functions": "^4.7.2",
-        "@kevboutin/azure-middy-core": "^0.2.10",
-        "@kevboutin/azure-middy-logger": "^0.2.10"
+        "@kevboutin/azure-middy-core": "^0.2.11",
+        "@kevboutin/azure-middy-logger": "^0.2.11"
     },
     "devDependencies": {
         "azure-functions-core-tools": "^4.2.2"

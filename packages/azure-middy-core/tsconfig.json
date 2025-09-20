@@ -3,6 +3,9 @@
         "target": "ES2022",
         "module": "CommonJS",
         "lib": ["ES2022"],
+        "declaration": true,
+        "declarationDir": "./dist",
+        "emitDeclarationOnly": false,
         "outDir": "./dist",
         "rootDir": "./",
         "strict": true,
@@ -10,7 +13,6 @@
         "skipLibCheck": true,
         "moduleResolution": "node",
         "forceConsistentCasingInFileNames": true,
-        "declaration": true,
         "declarationMap": true,
         "sourceMap": true,
         "removeComments": false,
@@ -26,6 +28,6 @@
         "allowUnusedLabels": false,
         "allowUnreachableCode": false
     },
-    "include": ["*.ts", "typings.d.ts"],
+    "include": ["*.ts", "typings.d.ts", "typings-azure.d.ts"],
     "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }

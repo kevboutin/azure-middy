@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-keyvault-secrets",
-    "version": "0.2.10",
+    "version": "0.2.11",
     "description": "Azure Key Vault Secrets middleware for the azure-middy framework",
     "engines": {
         "node": ">=18"
@@ -8,25 +8,21 @@
     "publishConfig": {
         "access": "public"
     },
-    "main": "./index.cjs",
-    "types": "./typings.d.ts",
+    "main": "./dist/index.js",
+    "types": "./dist/typings.d.ts",
     "exports": {
         ".": {
-            "require": "./index.cjs",
-            "import": "./index.cjs",
-            "types": "./typings.d.ts"
+            "require": "./dist/index.js",
+            "import": "./dist/index.js",
+            "types": "./dist/typings.d.ts"
         }
     },
     "files": [
-        "index.cjs",
-        "index.ts",
-        "typings.d.ts",
-        "tsconfig.json",
-        "example.ts"
+        "dist"
     ],
     "type": "commonjs",
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && cpy typings*.d.ts dist",
         "build:watch": "tsc --watch",
         "test": "npm run test:unit",
         "test:unit": "ava --config test.config.js",
@@ -55,11 +51,16 @@
     "dependencies": {
         "@azure/identity": "^4.10.1",
         "@azure/keyvault-secrets": "^4.10.0",
-        "@kevboutin/azure-middy-util": "0.2.9"
+        "@kevboutin/azure-middy-util": "0.2.11",
+        "cpy-cli": "^6.0.0"
     },
     "devDependencies": {
         "@types/node": "^24.3.1",
         "typescript": "^5.0.0"
     },
+    "include": [
+        "**/*.ts",
+        "typings.d.ts"
+    ],
     "homepage": "https://github.com/kevboutin/azure-middy#readme"
 }

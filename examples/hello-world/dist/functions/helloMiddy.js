@@ -1,9 +1,66 @@
 "use strict";
-var __importDefault =
-    (this && this.__importDefault) ||
-    function (mod) {
-        return mod && mod.__esModule ? mod : { default: mod };
-    };
+var __createBinding =
+    (this && this.__createBinding) ||
+    (Object.create
+        ? function (o, m, k, k2) {
+              if (k2 === undefined) k2 = k;
+              var desc = Object.getOwnPropertyDescriptor(m, k);
+              if (
+                  !desc ||
+                  ("get" in desc
+                      ? !m.__esModule
+                      : desc.writable || desc.configurable)
+              ) {
+                  desc = {
+                      enumerable: true,
+                      get: function () {
+                          return m[k];
+                      },
+                  };
+              }
+              Object.defineProperty(o, k2, desc);
+          }
+        : function (o, m, k, k2) {
+              if (k2 === undefined) k2 = k;
+              o[k2] = m[k];
+          });
+var __setModuleDefault =
+    (this && this.__setModuleDefault) ||
+    (Object.create
+        ? function (o, v) {
+              Object.defineProperty(o, "default", {
+                  enumerable: true,
+                  value: v,
+              });
+          }
+        : function (o, v) {
+              o["default"] = v;
+          });
+var __importStar =
+    (this && this.__importStar) ||
+    (function () {
+        var ownKeys = function (o) {
+            ownKeys =
+                Object.getOwnPropertyNames ||
+                function (o) {
+                    var ar = [];
+                    for (var k in o)
+                        if (Object.prototype.hasOwnProperty.call(o, k))
+                            ar[ar.length] = k;
+                    return ar;
+                };
+            return ownKeys(o);
+        };
+        return function (mod) {
+            if (mod && mod.__esModule) return mod;
+            var result = {};
+            if (mod != null)
+                for (var k = ownKeys(mod), i = 0; i < k.length; i++)
+                    if (k[i] !== "default") __createBinding(result, mod, k[i]);
+            __setModuleDefault(result, mod);
+            return result;
+        };
+    })();
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Hello middy module that is a simple example using the Azure functions v4 programming model.
@@ -13,12 +70,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @author Kevin Boutin <kevboutin@gmail.com>
  */
 const functions_1 = require("@azure/functions");
-const azure_middy_core_1 = __importDefault(
-    require("@kevboutin/azure-middy-core"),
-);
-const azure_middy_logger_1 = __importDefault(
-    require("@kevboutin/azure-middy-logger"),
-);
+const middy = __importStar(require("@kevboutin/azure-middy-core"));
+const loggerMiddleware = __importStar(require("@kevboutin/azure-middy-logger"));
 const TAG = "hello-middy";
 const headers = new Headers({
     "Content-Type": "application/json",
@@ -85,9 +138,7 @@ const baseHandler = async (req, context) => {
         },
     };
 };
-const helloMiddy = (0, azure_middy_core_1.default)(baseHandler).use(
-    (0, azure_middy_logger_1.default)(),
-);
+const helloMiddy = middy(baseHandler).use(loggerMiddleware());
 module.exports = helloMiddy;
 functions_1.app.http("helloMiddy", {
     route: "middy",

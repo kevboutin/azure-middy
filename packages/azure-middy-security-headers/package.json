@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-security-headers",
-    "version": "0.2.10",
+    "version": "0.2.11",
     "description": "Middleware for sending HTTP response security headers",
     "engines": {
         "node": ">=18"
@@ -8,17 +8,17 @@
     "publishConfig": {
         "access": "public"
     },
-    "main": "./index.cjs",
-    "types": "./typings.d.ts",
+    "main": "./dist/index.js",
+    "types": "./dist/typings.d.ts",
     "exports": {
         ".": {
-            "require": "./index.cjs",
-            "import": "./index.cjs",
-            "types": "./typings.d.ts"
+            "require": "./dist/index.js",
+            "import": "./dist/index.js",
+            "types": "./dist/typings.d.ts"
         }
     },
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && cpy typings*.d.ts dist",
         "build:watch": "tsc --watch",
         "test": "npm run test:unit",
         "test:unit": "ava --config test.config.js",
@@ -48,18 +48,19 @@
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
     "dependencies": {
-        "@kevboutin/azure-middy-util": "0.2.10"
+        "@kevboutin/azure-middy-util": "0.2.11",
+        "cpy-cli": "^6.0.0"
     },
     "devDependencies": {
         "@types/node": "^24.3.1",
         "typescript": "^5.0.0"
     },
     "files": [
-        "index.cjs",
-        "index.ts",
-        "typings.d.ts",
-        "tsconfig.json",
-        "example.ts"
+        "dist"
+    ],
+    "include": [
+        "**/*.ts",
+        "typings.d.ts"
     ],
     "homepage": "https://github.com/kevboutin/azure-middy#readme"
 }

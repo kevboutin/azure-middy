@@ -12,6 +12,8 @@
         "forceConsistentCasingInFileNames": true,
         "declaration": true,
         "declarationMap": true,
+        "declarationDir": "./dist",
+        "emitDeclarationOnly": false,
         "sourceMap": true,
         "removeComments": false,
         "noImplicitAny": true,
