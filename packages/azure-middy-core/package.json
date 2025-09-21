@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-core",
-    "version": "0.2.11",
+    "version": "0.2.12",
     "description": "A Node.js middleware engine for Azure functions (core package)",
     "engines": {
         "node": ">=18"
@@ -57,12 +57,12 @@
         "typescript": "^5.0.0"
     },
     "dependencies": {
-        "@azure/functions": "^4.7.2-preview",
+        "@azure/functions": "^4.8.0",
+        "@kevboutin/azure-middy-types": "^0.1.0",
         "cpy-cli": "^6.0.0"
     },
     "include": [
         "**/*.ts",
-        "typings-azure.d.ts",
         "typings.d.ts"
     ]
 }

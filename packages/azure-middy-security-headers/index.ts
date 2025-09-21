@@ -2,7 +2,6 @@
 import { normalizeHttpResponse } from "@kevboutin/azure-middy-util";
 import {
     SecurityHeadersOptions,
-    AzureFunctionRequest,
     SecurityHeadersMiddleware,
     ContentSecurityPolicy,
     ContentTypeOptions,
@@ -20,6 +19,7 @@ import {
     ReportTo,
     StrictTransportSecurity,
 } from "./typings";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 const defaults: SecurityHeadersOptions = {
     contentSecurityPolicy: {
@@ -419,7 +419,6 @@ export default securityHeadersMiddleware;
 export { securityHeadersMiddleware };
 export type {
     SecurityHeadersOptions,
-    AzureFunctionRequest,
     SecurityHeadersMiddleware,
     ContentSecurityPolicy,
     ContentTypeOptions,

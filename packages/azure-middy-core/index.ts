@@ -1,5 +1,4 @@
 import {
-    AzureFunctionRequest,
     MiddlewareFunction,
     Middleware,
     Plugin,
@@ -7,8 +6,8 @@ import {
     BaseHandler,
     MiddyFunction,
 } from "./typings";
-
-import { HttpRequest, InvocationContext, HttpResponse } from '@azure/functions';
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
+import { HttpRequest, InvocationContext, HttpResponse } from "@azure/functions";
 
 /**
  * Creates a middleware wrapper function.
@@ -18,7 +17,10 @@ import { HttpRequest, InvocationContext, HttpResponse } from '@azure/functions';
  * @returns The middleware wrapper function.
  */
 const middy: MiddyFunction = (
-    baseHandler: BaseHandler = async (_req?: HttpRequest, _context?: InvocationContext) => {
+    baseHandler: BaseHandler = async (
+        _req?: HttpRequest,
+        _context?: InvocationContext,
+    ) => {
         return new HttpResponse({
             status: 200,
             headers: new Headers(),
@@ -126,7 +128,10 @@ const runRequest = async (
         // Check if before stack hasn't exit early
         if (request.response === undefined) {
             plugin?.beforeHandler?.();
-            request.response = await baseHandler(request.req, request.context) as HttpResponse;
+            request.response = (await baseHandler(
+                request.req,
+                request.context,
+            )) as HttpResponse;
             plugin?.afterHandler?.();
             await runMiddlewares(request, afterMiddlewares, plugin);
         }
@@ -168,7 +173,12 @@ const runMiddlewares = async (
         const res = await nextMiddleware?.(request);
         plugin?.afterMiddleware?.(nextMiddleware?.name);
         // short circuit chaining and respond early
-        if (res !== undefined && res !== null && typeof res === 'object' && Object.keys(res).length > 0) {
+        if (
+            res !== undefined &&
+            res !== null &&
+            typeof res === "object" &&
+            Object.keys(res).length > 0
+        ) {
             request.response = res as HttpResponse;
             return;
         }
@@ -178,7 +188,6 @@ const runMiddlewares = async (
 export default middy;
 export { middy };
 export type {
-    AzureFunctionRequest,
     MiddlewareFunction,
     Middleware,
     Plugin,

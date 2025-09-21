@@ -1,0 +1,28 @@
+{
+    "name": "@kevboutin/azure-middy-types",
+    "version": "0.1.0",
+    "description": "Shared types for Azure Middy packages",
+    "author": {
+        "name": "Azure-Middy contributors",
+        "url": "https://github.com/kevboutin/azure-middy/graphs/contributors"
+    },
+    "repository": {
+        "type": "git",
+        "url": "github:kevboutin/azure-middy",
+        "directory": "packages/azure-middy-types"
+    },
+    "bugs": {
+        "url": "https://github.com/kevboutin/azure-middy/issues"
+    },
+    "types": "index.d.ts",
+    "files": [
+        "index.d.ts"
+    ],
+    "license": "MIT",
+    "peerDependencies": {
+        "@azure/functions": "^4.8.0"
+    },
+    "devDependencies": {
+        "@azure/functions": "^4.8.0"
+    }
+}

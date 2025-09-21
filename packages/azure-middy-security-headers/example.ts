@@ -2,10 +2,10 @@
 import {
     securityHeadersMiddleware,
     SecurityHeadersOptions,
-    AzureFunctionRequest,
     ContentSecurityPolicy,
     StrictTransportSecurity,
 } from "./index";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 // Example handler with proper TypeScript types
 const baseHandler = async (req: AzureFunctionRequest, context: any) => {

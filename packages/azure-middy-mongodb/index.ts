@@ -1,10 +1,10 @@
-import mongoose, { Connection, ConnectOptions } from "mongoose";
+import mongoose, { Connection } from "mongoose";
 import {
     MongoDBMiddlewareOptions,
-    AzureFunctionRequest,
     MongoDBMiddleware,
     MongoDBConnection,
 } from "./typings";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 let connection: Connection | null = null;
 const mongodbUri: string =
@@ -174,7 +174,8 @@ const mongodbMiddleware = (
             }
         }
 
-        if (request.internal && request.internal.connection) {
+        if (request.internal) {
+            request.internal.connection = {};
             Object.assign(request.internal.connection, connection);
         }
     };
@@ -193,9 +194,4 @@ const mongodbConnection: MongoDBConnection = {
 
 export default mongodbConnection;
 export { changeDatabase, disconnect, mongodbMiddleware };
-export type {
-    MongoDBMiddlewareOptions,
-    AzureFunctionRequest,
-    MongoDBMiddleware,
-    MongoDBConnection,
-};
+export type { MongoDBMiddlewareOptions, MongoDBMiddleware, MongoDBConnection };

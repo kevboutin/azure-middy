@@ -1,11 +1,6 @@
 // Example TypeScript usage of the core middleware engine
-import middy, {
-    MiddyInstance,
-    Middleware,
-    Plugin,
-    AzureFunctionRequest,
-    BaseHandler,
-} from "./index";
+import middy, { MiddyInstance, Middleware, Plugin, BaseHandler } from "./index";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 import { HttpRequest, InvocationContext } from "@azure/functions";
 

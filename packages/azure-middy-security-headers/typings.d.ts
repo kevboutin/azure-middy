@@ -1,3 +1,5 @@
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
+
 export interface ContentSecurityPolicy {
     "default-src"?: string;
     "child-src"?: string;
@@ -148,14 +150,6 @@ export interface SecurityHeadersOptions {
     readonly referrerPolicy?: ReferrerPolicy;
     readonly reportTo?: ReportTo;
     readonly strictTransportSecurity?: StrictTransportSecurity;
-}
-
-export interface AzureFunctionRequest {
-    response?: {
-        readonly headers: Record<string, string>;
-        [key: string]: unknown;
-    };
-    [key: string]: unknown;
 }
 
 export interface SecurityHeadersMiddleware {

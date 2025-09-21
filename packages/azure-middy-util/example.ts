@@ -8,9 +8,9 @@ import {
     clearCache,
     getInternal,
     normalizeHttpResponse,
-    AzureFunctionRequest,
     CacheOptions,
 } from "./index";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 // Example JSON parsing with TypeScript
 const jsonExample = {

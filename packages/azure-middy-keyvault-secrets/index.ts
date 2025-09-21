@@ -9,11 +9,11 @@ import {
 } from "@kevboutin/azure-middy-util";
 import {
     KeyVaultSecretsOptions,
-    AzureFunctionRequest,
     KeyVaultSecretsMiddleware,
     CachedValues,
     FetchedValues,
 } from "./typings";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 const defaults: KeyVaultSecretsOptions = {
     cacheKey: "secrets",
@@ -112,7 +112,6 @@ export default keyvaultSecretsMiddleware;
 export { keyvaultSecretsMiddleware };
 export type {
     KeyVaultSecretsOptions,
-    AzureFunctionRequest,
     KeyVaultSecretsMiddleware,
     CachedValues,
     FetchedValues,

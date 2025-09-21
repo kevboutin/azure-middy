@@ -1,15 +1,7 @@
-export interface AzureFunctionContext {
-    log: (...args: any[]) => void;
-    error: (...args: any[]) => void;
-    warn: (...args: any[]) => void;
-    info: (...args: any[]) => void;
-    [key: string]: any;
-}
-
-export interface AzureFunctionRequest {
-    context?: AzureFunctionContext;
-    [key: string]: unknown;
-}
+import type {
+    AzureFunctionRequest,
+    AzureFunctionContext,
+} from "@kevboutin/azure-middy-types";
 
 export interface LoggerMiddleware {
     before: (request: AzureFunctionRequest) => Promise<void>;
