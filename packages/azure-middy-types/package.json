@@ -11,6 +11,9 @@
         "url": "github:kevboutin/azure-middy",
         "directory": "packages/azure-middy-types"
     },
+    "publishConfig": {
+        "access": "public"
+    },
     "bugs": {
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
