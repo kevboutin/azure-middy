@@ -16,7 +16,7 @@
     },
     "scripts": {
         "test": "npm run test:unit",
-        "test:unit": "ava"
+        "test:unit": "echo \"No tests for types package\""
     },
     "types": "index.d.ts",
     "files": [
