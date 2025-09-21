@@ -41,7 +41,7 @@ const middy: MiddyFunction = (
             response: undefined,
             error: undefined,
             internal: {},
-        };
+        } as AzureFunctionRequest;
 
         return runRequest(
             request,

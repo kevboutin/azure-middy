@@ -69,8 +69,8 @@ import middy from "@kevboutin/azure-middy-core";
 import {
     keyvaultSecretsMiddleware,
     KeyVaultSecretsOptions,
-    AzureFunctionRequest,
 } from "@kevboutin/azure-middy-keyvault-secrets";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 // Your handler
 const baseHandler = async (req: AzureFunctionRequest, context: any) => {

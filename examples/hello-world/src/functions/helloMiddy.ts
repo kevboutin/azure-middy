@@ -11,9 +11,9 @@ import {
     HttpResponseInit,
     InvocationContext,
 } from "@azure/functions";
-import * as middy from "@kevboutin/azure-middy-core";
+import middy from "@kevboutin/azure-middy-core";
 import type { BaseHandler } from "@kevboutin/azure-middy-core";
-import * as loggerMiddleware from "@kevboutin/azure-middy-logger";
+import loggerMiddleware from "@kevboutin/azure-middy-logger";
 
 const TAG: string = "hello-middy";
 const headers = new Headers({

@@ -41,8 +41,8 @@ import middy, {
     MiddyInstance,
     Middleware,
     Plugin,
-    AzureFunctionRequest,
 } from "@kevboutin/azure-middy-core";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 const baseHandler = async (req: any, context: any) => {
     return {
@@ -89,10 +89,10 @@ import {
     MiddyInstance,
     Middleware,
     Plugin,
-    AzureFunctionRequest,
     MiddlewareFunction,
     BaseHandler,
 } from "@kevboutin/azure-middy-core";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 ```
 
 ### TypeScript Configuration

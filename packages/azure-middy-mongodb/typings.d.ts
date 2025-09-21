@@ -1,4 +1,5 @@
 import { Connection, ConnectOptions } from "mongoose";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 export interface MongoDBMiddlewareOptions extends ConnectOptions {
     readonly serverSelectionTimeoutMS?: number;

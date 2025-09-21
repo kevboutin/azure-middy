@@ -112,10 +112,10 @@ This package includes full TypeScript support with:
 ```typescript
 import {
     MongoDBMiddlewareOptions,
-    AzureFunctionRequest,
     MongoDBMiddleware,
     MongoDBConnection,
 } from "@kevboutin/azure-middy-mongodb";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 ```
 
 ### TypeScript Configuration

@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-logger",
-    "version": "0.2.12",
+    "version": "0.2.13",
     "description": "Azure logging middleware for the azure-middy framework",
     "engines": {
         "node": ">=18"
@@ -51,7 +51,7 @@
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
     "dependencies": {
-        "@kevboutin/azure-middy-types": "^0.1.0",
+        "@kevboutin/azure-middy-types": "^0.1.1",
         "azure-function-log-intercept": "^1.1.7",
         "cpy-cli": "^6.0.0"
     },

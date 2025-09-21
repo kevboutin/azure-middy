@@ -1,4 +1,9 @@
-import type { HttpRequest, InvocationContext } from "@azure/functions";
+import type {
+    HttpRequest,
+    HttpResponse,
+    HttpResponseInit,
+    InvocationContext,
+} from "@azure/functions";
 
 export type { HttpRequest, InvocationContext };
 
@@ -7,10 +12,7 @@ export interface AzureFunctionRequest extends HttpRequest {
     readonly internal?: {
         readonly connection?: Record<string, unknown>;
     };
-    response?: {
-        readonly headers: Record<string, string>;
-        [key: string]: unknown;
-    };
+    response?: HttpResponse | HttpResponseInit | undefined;
     context?: AzureFunctionContext;
     error?: Error | undefined;
     [key: string]: unknown;

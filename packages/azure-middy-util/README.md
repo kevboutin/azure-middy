@@ -50,9 +50,9 @@ import {
     modifyCache,
     clearCache,
     getInternal,
-    AzureFunctionRequest,
     CacheOptions,
 } from "@kevboutin/azure-middy-util";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 // Example: Parse JSON safely with TypeScript
 const result = jsonSafeParse('{"key": "value"}');
@@ -94,7 +94,6 @@ This package includes full TypeScript support with:
 
 ```typescript
 import {
-    AzureFunctionRequest,
     CacheOptions,
     CacheValue,
     ProcessCacheResult,
@@ -104,6 +103,7 @@ import {
     JsonSafeParseFunction,
     JsonSafeStringifyFunction,
 } from "@kevboutin/azure-middy-util";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 ```
 
 ### TypeScript Configuration

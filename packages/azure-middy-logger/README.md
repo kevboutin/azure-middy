@@ -53,11 +53,11 @@ app.http("yourFunction", {
 ```typescript
 import { app } from "@azure/functions";
 import middy from "@kevboutin/azure-middy-core";
-import {
-    loggerMiddleware,
-    AzureFunctionRequest,
+import { loggerMiddleware } from "@kevboutin/azure-middy-logger";
+import type {
     AzureFunctionContext,
-} from "@kevboutin/azure-middy-logger";
+    AzureFunctionRequest,
+} from "@kevboutin/azure-middy-types";
 
 // Your handler
 const baseHandler = async (
@@ -102,11 +102,11 @@ This package includes full TypeScript support with:
 ### Available Types
 
 ```typescript
-import {
-    AzureFunctionRequest,
+import { LoggerMiddleware } from "@kevboutin/azure-middy-logger";
+import type {
     AzureFunctionContext,
-    LoggerMiddleware,
-} from "@kevboutin/azure-middy-logger";
+    AzureFunctionRequest,
+} from "@kevboutin/azure-middy-types";
 ```
 
 ### TypeScript Configuration

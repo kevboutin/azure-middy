@@ -33,10 +33,14 @@ const middlewareOptions: MongoDBMiddlewareOptions = {
 const mongoMiddleware = mongodbMiddleware(middlewareOptions);
 
 // Example of using the middleware
-const exampleRequest: AzureFunctionRequest = {
+const exampleRequest = {
     internal: {},
-    // ... other request properties
-};
+    method: "GET",
+    headers: new Headers(),
+    query: new URLSearchParams(),
+    params: {},
+    // Add other necessary properties from HttpRequest
+} as unknown as AzureFunctionRequest;
 
 // This would typically be called by the middleware engine
 // mongoMiddleware.before(exampleRequest);

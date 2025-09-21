@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-types",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Shared types for Azure Middy packages",
     "author": {
         "name": "Azure-Middy contributors",

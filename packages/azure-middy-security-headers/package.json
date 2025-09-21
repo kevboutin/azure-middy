@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-security-headers",
-    "version": "0.2.12",
+    "version": "0.2.13",
     "description": "Middleware for sending HTTP response security headers",
     "engines": {
         "node": ">=18"
@@ -48,8 +48,8 @@
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
     "dependencies": {
-        "@kevboutin/azure-middy-types": "^0.1.0",
-        "@kevboutin/azure-middy-util": "0.2.12",
+        "@kevboutin/azure-middy-types": "^0.1.1",
+        "@kevboutin/azure-middy-util": "0.2.13",
         "cpy-cli": "^6.0.0"
     },
     "devDependencies": {

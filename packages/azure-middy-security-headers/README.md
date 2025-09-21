@@ -242,7 +242,6 @@ This package includes full TypeScript support with:
 ```typescript
 import {
     SecurityHeadersOptions,
-    AzureFunctionRequest,
     SecurityHeadersMiddleware,
     ContentSecurityPolicy,
     StrictTransportSecurity,
@@ -250,6 +249,7 @@ import {
     FrameOptions,
     PermissionsPolicy,
 } from "@kevboutin/azure-middy-security-headers";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 ```
 
 ### TypeScript Configuration
