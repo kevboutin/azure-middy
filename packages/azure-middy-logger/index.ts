@@ -1,10 +1,7 @@
 // @ts-ignore
 import intercept from "azure-function-log-intercept";
-import {
-    AzureFunctionRequest,
-    AzureFunctionContext,
-    LoggerMiddleware,
-} from "./typings";
+import { LoggerMiddleware } from "./typings";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 /**
  * Middleware function for logging.
@@ -29,4 +26,4 @@ const loggerMiddleware = (): LoggerMiddleware => {
 
 export default loggerMiddleware;
 export { loggerMiddleware };
-export type { AzureFunctionRequest, AzureFunctionContext, LoggerMiddleware };
+export type { LoggerMiddleware };

@@ -1,9 +1,9 @@
 // Example TypeScript usage of the logger middleware
+import { loggerMiddleware } from "./index";
 import {
-    loggerMiddleware,
     AzureFunctionRequest,
     AzureFunctionContext,
-} from "./index";
+} from "@kevboutin/azure-middy-types";
 
 // Example handler with proper TypeScript types
 const baseHandler = async (

@@ -1,3 +1,5 @@
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
+
 export interface CacheOptions {
     readonly cacheKey: string;
     readonly cacheKeyExpiry?: Record<string, number>;
@@ -16,13 +18,10 @@ export interface ProcessCacheResult {
     cache?: boolean;
 }
 
-export interface AzureFunctionRequest {
-    readonly internal: Record<string, unknown>;
-    [key: string]: unknown;
-}
-
-export type FetchFunction<T = AzureFunctionRequest, R = unknown> = (request: T, cachedValues?: unknown) => Promise<R> | R;
-
+export type FetchFunction<T = AzureFunctionRequest, R = unknown> = (
+    request: T,
+    cachedValues?: unknown,
+) => Promise<R> | R;
 
 export interface InternalVariables {
     [key: string]: unknown;

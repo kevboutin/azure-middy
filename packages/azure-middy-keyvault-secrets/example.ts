@@ -1,9 +1,6 @@
 // Example TypeScript usage of the Key Vault secrets middleware
-import {
-    keyvaultSecretsMiddleware,
-    KeyVaultSecretsOptions,
-    AzureFunctionRequest,
-} from "./index";
+import { keyvaultSecretsMiddleware, KeyVaultSecretsOptions } from "./index";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 // Example handler with proper TypeScript types
 const baseHandler = async (req: AzureFunctionRequest, context: any) => {

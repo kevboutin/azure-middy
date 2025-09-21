@@ -1,15 +1,11 @@
 import { SecretClient } from "@azure/keyvault-secrets";
 import { DefaultAzureCredential } from "@azure/identity";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 export interface KeyVaultSecretsOptions {
     readonly cacheKey?: string;
     readonly fetchData: Record<string, string>;
     readonly vaultUrl: string;
-}
-
-export interface AzureFunctionRequest {
-    readonly internal: Record<string, unknown>;
-    [key: string]: unknown;
 }
 
 export interface CachedValues {

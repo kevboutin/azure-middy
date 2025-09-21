@@ -1,6 +1,6 @@
 {
     "name": "@kevboutin/azure-middy-keyvault-secrets",
-    "version": "0.2.11",
+    "version": "0.2.12",
     "description": "Azure Key Vault Secrets middleware for the azure-middy framework",
     "engines": {
         "node": ">=18"
@@ -49,9 +49,10 @@
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
     "dependencies": {
-        "@azure/identity": "^4.10.1",
+        "@azure/identity": "^4.12.0",
         "@azure/keyvault-secrets": "^4.10.0",
-        "@kevboutin/azure-middy-util": "0.2.11",
+        "@kevboutin/azure-middy-types": "^0.1.0",
+        "@kevboutin/azure-middy-util": "0.2.12",
         "cpy-cli": "^6.0.0"
     },
     "devDependencies": {

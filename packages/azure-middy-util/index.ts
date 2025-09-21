@@ -2,7 +2,6 @@ import {
     CacheOptions,
     CacheValue,
     ProcessCacheResult,
-    AzureFunctionRequest,
     FetchFunction,
     InternalVariables,
     NormalizedHttpResponse,
@@ -15,6 +14,7 @@ import {
     GetInternalFunction,
     NormalizeHttpResponseFunction,
 } from "./typings";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 /**
  * Safely parses a JSON string into a JavaScript value.
@@ -86,7 +86,10 @@ const processCache: ProcessCacheFunction = (
             if (cached.modified) {
                 const value = fetch(request, cached.value);
                 if (value && typeof value === "object") {
-                    if (typeof cached.value === "object" && cached.value !== null) {
+                    if (
+                        typeof cached.value === "object" &&
+                        cached.value !== null
+                    ) {
                         Object.assign(cached.value as object, value);
                     }
                 }
@@ -225,7 +228,7 @@ const getInternal: GetInternalFunction = async (
 const normalizeHttpResponse: NormalizeHttpResponseFunction = (
     request: AzureFunctionRequest,
 ): NormalizedHttpResponse => {
-    let response = request['response'] as NormalizedHttpResponse | undefined;
+    let response = request["response"] as NormalizedHttpResponse | undefined;
     if (typeof response === "undefined") {
         response = { statusCode: 500 };
     } else if (
@@ -256,7 +259,6 @@ export type {
     CacheOptions,
     CacheValue,
     ProcessCacheResult,
-    AzureFunctionRequest,
     FetchFunction,
     InternalVariables,
     NormalizedHttpResponse,

@@ -1,9 +1,6 @@
 // Example TypeScript usage of the MongoDB middleware
-import {
-    mongodbMiddleware,
-    MongoDBMiddlewareOptions,
-    AzureFunctionRequest,
-} from "./index";
+import { mongodbMiddleware, MongoDBMiddlewareOptions } from "./index";
+import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 
 // Example handler with proper TypeScript types
 const baseHandler = async (req: AzureFunctionRequest, context: any) => {

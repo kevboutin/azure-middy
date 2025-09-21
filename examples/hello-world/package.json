@@ -4,7 +4,7 @@
     "description": "Example hello world function using azure-middy",
     "main": "src/functions/*.*s",
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && cpy typings*.d.ts dist && cpy src/functions/*.cjs dist",
         "build:watch": "tsc --watch",
         "start": "npx func start",
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -39,9 +39,11 @@
     "license": "MIT",
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
     "dependencies": {
-        "@azure/functions": "^4.7.2",
-        "@kevboutin/azure-middy-core": "^0.2.11",
-        "@kevboutin/azure-middy-logger": "^0.2.11"
+        "@azure/functions": "^4.8.0",
+        "@kevboutin/azure-middy-core": "^0.2.12",
+        "@kevboutin/azure-middy-logger": "^0.2.12",
+        "@kevboutin/azure-middy-types": "^0.1.0",
+        "cpy-cli": "^6.0.0"
     },
     "devDependencies": {
         "azure-functions-core-tools": "^4.2.2"
