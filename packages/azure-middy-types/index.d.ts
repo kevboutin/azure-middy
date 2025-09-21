@@ -10,7 +10,8 @@ export type { HttpRequest, InvocationContext };
 export interface AzureFunctionRequest extends HttpRequest {
     readonly req?: HttpRequest;
     readonly internal?: {
-        readonly connection?: Record<string, unknown>;
+        connection?: Record<string, unknown>;
+        [key: string]: unknown;
     };
     response?: HttpResponse | HttpResponseInit | undefined;
     context?: AzureFunctionContext;

@@ -379,12 +379,18 @@ const securityHeadersMiddleware = (
                 ...options[key as keyof SecurityHeadersOptions],
             };
             helmet[key as keyof HelmetFunctions](
-                request.response!.headers,
+                request.response!.headers as Record<string, string>,
                 config as any,
             );
         });
 
-        if (request.response?.headers["Content-Type"]?.includes("text/html")) {
+        if (
+            request.response &&
+            request.response.headers &&
+            (request.response.headers as Record<string, string>)[
+                "Content-Type"
+            ]?.includes("text/html")
+        ) {
             Object.keys(helmetHtmlOnly).forEach((key) => {
                 if (!options[key as keyof SecurityHeadersOptions]) return;
                 const config = {
@@ -392,7 +398,7 @@ const securityHeadersMiddleware = (
                     ...options[key as keyof SecurityHeadersOptions],
                 };
                 helmetHtmlOnly[key as keyof HelmetFunctions]!(
-                    request.response!.headers,
+                    request.response!.headers as Record<string, string>,
                     config as any,
                 );
             });

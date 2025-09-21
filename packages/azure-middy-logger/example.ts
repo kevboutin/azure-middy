@@ -44,7 +44,7 @@ const exampleRequest: AzureFunctionRequest = {
     headers: {
         "Content-Type": "application/json",
     },
-};
+} as unknown as AzureFunctionRequest;
 
 // This would typically be called by the middleware engine
 // await logger.before(exampleRequest);

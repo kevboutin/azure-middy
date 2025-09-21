@@ -42,7 +42,7 @@ const exampleRequest: AzureFunctionRequest = {
     },
     method: "GET",
     url: "/api/example",
-};
+} as unknown as AzureFunctionRequest;
 
 // Example fetch function
 const fetchData = async (request: AzureFunctionRequest, cachedValues?: any) => {
@@ -86,9 +86,9 @@ const requestWithResponse: AzureFunctionRequest = {
     internal: {},
     response: {
         body: JSON.stringify({ message: "Success" }),
-        statusCode: 200,
+        status: 200,
     },
-};
+} as unknown as AzureFunctionRequest;
 
 const normalizedResponse = normalizeHttpResponse(requestWithResponse);
 console.log("Normalized Response:", normalizedResponse);

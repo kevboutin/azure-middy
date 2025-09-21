@@ -32,8 +32,8 @@ const loggingMiddleware: Middleware = {
     before: async (request: AzureFunctionRequest) => {
         console.log(
             "Before handler - Request:",
-            request.req.method,
-            request.req.url,
+            request?.req?.method,
+            request?.req?.url,
         );
     },
     after: async (request: AzureFunctionRequest) => {

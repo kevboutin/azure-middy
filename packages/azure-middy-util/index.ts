@@ -175,7 +175,7 @@ const getInternal: GetInternalFunction = async (
     let keys: string[] = [];
     let values: string[] = [];
     if (variables === true) {
-        keys = values = Object.keys(request.internal);
+        keys = values = Object.keys(request.internal ?? {});
     } else if (typeof variables === "string") {
         keys = values = [variables];
     } else if (Array.isArray(variables)) {
@@ -189,7 +189,7 @@ const getInternal: GetInternalFunction = async (
         // 'internal.key.sub_value' -> { [key]: internal.key.sub_value }
         const pathOptionKey = internalKey.split(".");
         const rootOptionKey = pathOptionKey.shift()!;
-        let valuePromise = request.internal[rootOptionKey];
+        let valuePromise = (request.internal ?? {})[rootOptionKey];
         if (!isPromise(valuePromise)) {
             valuePromise = Promise.resolve(valuePromise);
         }

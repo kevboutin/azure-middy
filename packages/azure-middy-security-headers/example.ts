@@ -73,7 +73,7 @@ const exampleRequest: AzureFunctionRequest = {
         },
     },
     // ... other request properties
-};
+} as unknown as AzureFunctionRequest;
 
 // This would typically be called by the middleware engine
 // await securityMiddleware.after(exampleRequest);
