@@ -39,7 +39,7 @@
     "license": "MIT",
     "homepage": "https://github.com/kevboutin/azure-middy#readme",
     "dependencies": {
-        "@azure/functions": "^4.8.0",
+        "@azure/functions": "^4.11.0",
         "@kevboutin/azure-middy-core": "^0.2.14",
         "@kevboutin/azure-middy-logger": "^0.2.14",
         "@kevboutin/azure-middy-types": "^0.1.2",
