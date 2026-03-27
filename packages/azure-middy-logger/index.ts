@@ -15,7 +15,7 @@ const loggerMiddleware = (): LoggerMiddleware => {
         request: AzureFunctionRequest,
     ): Promise<void> => {
         // Ensure we only intercept when context has the Azure logging API
-        if (request.context && request.context.log) {
+        if (request.context && typeof request.context.log === "function") {
             intercept(request.context);
         }
     };
