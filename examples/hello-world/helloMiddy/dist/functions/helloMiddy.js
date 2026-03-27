@@ -1,25 +1,21 @@
-/**
- * Hello middy module that is a simple example using the Azure functions v4 programming model.
- *
- * @module helloMiddy
- * @see module:helloMiddy
- * @author Kevin Boutin <kevboutin@gmail.com>
- */
-import {
-    HttpRequest,
-    HttpResponse,
-    HttpResponseInit,
-    InvocationContext,
-} from "@azure/functions";
-import middy from "@kevboutin/azure-middy-core";
-import type { BaseHandler } from "@kevboutin/azure-middy-core";
-import loggerMiddleware from "@kevboutin/azure-middy-logger";
-
-const TAG: string = "hello-middy";
+"use strict";
+var __importDefault =
+    (this && this.__importDefault) ||
+    function (mod) {
+        return mod && mod.__esModule ? mod : { default: mod };
+    };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.helloMiddy = void 0;
+const azure_middy_core_1 = __importDefault(
+    require("@kevboutin/azure-middy-core"),
+);
+const azure_middy_logger_1 = __importDefault(
+    require("@kevboutin/azure-middy-logger"),
+);
+const TAG = "hello-middy";
 const headers = {
     "Content-Type": "application/json",
 };
-
 /**
  * Handles a request and generates an appropriate response.
  *
@@ -27,10 +23,7 @@ const headers = {
  * @param {InvocationContext} context The context object containing information about the current execution context.
  * @returns {HttpResponseInit} The response.
  */
-const baseHandler = async (
-    req: HttpRequest | undefined,
-    context: InvocationContext,
-): Promise<HttpResponseInit | HttpResponse> => {
+const baseHandler = async (req, context) => {
     if (!req) {
         console.error(`${TAG}: Request object is undefined.`);
         return {
@@ -45,11 +38,11 @@ const baseHandler = async (
     console.log(
         `${TAG}: Function ${context?.functionName ?? "helloMiddy"} has been called with ${req.method} to ${req.url}`,
     );
-    let queryParams: { [key: string]: string } = {};
+    let queryParams = {};
     // Azure v4 functions need to use the following to get the body.
-    let requestBody: { [key: string]: any } = {};
+    let requestBody = {};
     try {
-        requestBody = (await req.json()) as { [key: string]: any };
+        requestBody = await req.json();
     } catch (e) {
         requestBody = {};
     }
@@ -98,42 +91,34 @@ const baseHandler = async (
         }),
     };
 };
-
-const middyHandler = middy(baseHandler as BaseHandler).use(loggerMiddleware());
-
-const isHttpRequest = (value: any): value is HttpRequest => {
+const middyHandler = (0, azure_middy_core_1.default)(baseHandler).use(
+    (0, azure_middy_logger_1.default)(),
+);
+const isHttpRequest = (value) => {
     return (
         value &&
         typeof value.method === "string" &&
         typeof value.url === "string"
     );
 };
-
-export const helloMiddy = async (
-    firstArg: HttpRequest | InvocationContext | undefined,
-    secondArg?: InvocationContext | HttpRequest,
-): Promise<HttpResponseInit | HttpResponse> => {
+const helloMiddy = async (firstArg, secondArg) => {
     // Accept both v4 app model (req, context) and classic context-first host invocation
-    let req: HttpRequest | undefined;
-    let context: InvocationContext | undefined;
-
+    let req;
+    let context;
     if (isHttpRequest(firstArg)) {
         req = firstArg;
-        context = secondArg as InvocationContext;
+        context = secondArg;
     } else if (isHttpRequest(secondArg)) {
         req = secondArg;
-        context = firstArg as InvocationContext;
+        context = firstArg;
     } else {
-        context =
-            (firstArg as InvocationContext) ?? (secondArg as InvocationContext);
+        context = firstArg ?? secondArg;
     }
-
     const response = await middyHandler(req, context);
-
     // For bindings-based function model (function.json), context.res is expected.
     if (context && typeof context === "object") {
-        (context as any).res = response;
+        context.res = response;
     }
-
-    return response as HttpResponseInit | HttpResponse;
+    return response;
 };
+exports.helloMiddy = helloMiddy;
