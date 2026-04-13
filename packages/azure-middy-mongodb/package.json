@@ -54,7 +54,7 @@
         "mongoose": "^9.4.1"
     },
     "devDependencies": {
-        "@types/node": "^25.5.2",
+        "@types/node": "^25.6.0",
         "typescript": "^6.0.2"
     },
     "include": [
