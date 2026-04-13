@@ -52,7 +52,7 @@
     },
     "dependencies": {
         "@kevboutin/azure-middy-types": "^0.1.2",
-        "azure-function-log-intercept": "^1.1.7",
+        "azure-function-log-intercept": "^1.1.10",
         "cpy-cli": "^7.0.0"
     },
     "devDependencies": {
