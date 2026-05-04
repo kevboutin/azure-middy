@@ -25,6 +25,7 @@
         "noImplicitOverride": true,
         "noPropertyAccessFromIndexSignature": true,
         "noUncheckedIndexedAccess": true,
+        "ignoreDeprecations": "6.0",
         "allowUnusedLabels": false,
         "allowUnreachableCode": false
     },

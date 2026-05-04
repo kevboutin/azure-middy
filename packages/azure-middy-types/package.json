@@ -27,7 +27,7 @@
     ],
     "license": "MIT",
     "peerDependencies": {
-        "@azure/functions": "^4.8.0"
+        "@azure/functions": "^4.14.0"
     },
     "devDependencies": {
         "@azure/functions": "^4.14.0"

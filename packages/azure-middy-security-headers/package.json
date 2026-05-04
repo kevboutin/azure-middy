@@ -21,7 +21,7 @@
         "build": "tsc && cpy typings*.d.ts dist",
         "build:watch": "tsc --watch",
         "test": "npm run test:unit",
-        "test:unit": "ava --config test.config.js",
+        "test:unit": "npx vitest run",
         "type-check": "tsc --noEmit"
     },
     "type": "commonjs",
@@ -54,7 +54,8 @@
     },
     "devDependencies": {
         "@types/node": "^25.6.0",
-        "typescript": "^6.0.3"
+        "typescript": "^6.0.3",
+        "vitest": "^4.1.5"
     },
     "files": [
         "dist"

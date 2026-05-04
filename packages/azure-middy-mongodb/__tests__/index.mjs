@@ -1,20 +1,16 @@
-const mongoose = require("mongoose");
-const test = require("ava");
-const sinon = require("sinon");
-const middy = require("../../azure-middy-core/index.cjs");
-const {
-    changeDatabase,
-    mongodbMiddleware,
-    disconnect,
-} = require("../index.cjs");
-const { getInternal } = require("@kevboutin/azure-middy-util");
+import { test, expect, beforeEach, afterEach } from 'vitest';
+import mongoose from "mongoose";
+import sinon from "sinon";
+import middy from "../../azure-middy-core/dist/index.js";
+import { changeDatabase, mongodbMiddleware, disconnect } from "../dist/index.js";
+import { getInternal } from "@kevboutin/azure-middy-util";
 
 /** @type {sinon.SinonSandbox} */
 let sandbox;
 let stub;
 let mockConnection;
 
-test.beforeEach(() => {
+beforeEach(() => {
     sandbox = sinon.createSandbox();
     // Create a mock connection object
     mockConnection = {
@@ -26,7 +22,7 @@ test.beforeEach(() => {
     };
 });
 
-test.afterEach(() => {
+afterEach(() => {
     if (stub && stub.restore) {
         stub.restore();
     }
@@ -38,9 +34,9 @@ const context = {
     getRemainingTimeInMillis: () => 1000,
 };
 
-test.serial(
+test(
     "It should create connection and set to internal storage and use cache on subsequent call",
-    async (t) => {
+    async () => {
         sandbox.stub(console, "log");
         sandbox.stub(mongoose, "createConnection").resolves(mockConnection);
 
@@ -49,15 +45,8 @@ test.serial(
         const middleware = async (request) => {
             const values = await getInternal(true, request);
             console.log("Middleware values:", JSON.stringify(values, null, 2));
-            t.truthy(
-                values.connection,
-                "Connection should be set in internal storage",
-            );
-            t.deepEqual(
-                values.connection,
-                mockConnection,
-                "Connection object should match the mock",
-            );
+            expect(values.connection).toBeTruthy();
+            expect(values.connection).toEqual(mockConnection);
         };
 
         handler.use(mongodbMiddleware()).before(middleware);
@@ -68,7 +57,7 @@ test.serial(
     },
 );
 
-test.serial("should change the database successfully", async (t) => {
+test("should change the database successfully", async () => {
     const consoleLogStub = sandbox.stub(console, "log");
     const newDbName = "newTestDb";
     const mockNewConnection = { name: newDbName };
@@ -76,27 +65,26 @@ test.serial("should change the database successfully", async (t) => {
 
     const result = await changeDatabase(mockConnection, newDbName);
 
-    t.is(result, mockNewConnection);
-    t.true(mockConnection.useDb.calledWith(newDbName));
-    t.true(consoleLogStub.calledWith("Changing database to:", newDbName));
+    expect(result).toBe(mockNewConnection);
+    expect(mockConnection.useDb.calledWith(newDbName)).toBe(true);
+    expect(consoleLogStub.calledWith("Changing database to:", newDbName)).toBe(true);
 });
 
-test.serial("should handle errors when changing database", async (t) => {
+test("should handle errors when changing database", async () => {
     const consoleErrorStub = sandbox.stub(console, "error");
     const newDbName = "errorDb";
     const mockError = new Error("Database change error");
     mockConnection.useDb.throws(mockError);
 
-    await t.throwsAsync(() => changeDatabase(mockConnection, newDbName), {
-        instanceOf: Error,
-        message: "Database change error",
-    });
+    await expect(() => changeDatabase(mockConnection, newDbName)).rejects.toThrow(
+        "Database change error",
+    );
 
-    t.true(mockConnection.useDb.calledWith(newDbName));
-    t.true(
+    expect(mockConnection.useDb.calledWith(newDbName)).toBe(true);
+    expect(
         consoleErrorStub.calledWith(
             `Error changing database to ${newDbName}`,
             mockError,
         ),
-    );
+    ).toBe(true);
 });
