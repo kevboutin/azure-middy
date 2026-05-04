@@ -22,7 +22,7 @@
         "release:tag": "git tag $npm_package_version && git push --tags",
         "test": "npm run test:lint && npm run test:packages:unit",
         "test:lint": "npx lint-staged",
-        "test:packages:unit": "c8 npm run test:unit --workspaces",
+        "test:packages:unit": "lerna run test:unit",
         "update": "npm update --workspaces && npm install --workspaces"
     },
     "repository": {
@@ -53,11 +53,11 @@
     "devDependencies": {
         "@commitlint/cli": "^20.0.0",
         "@commitlint/config-conventional": "^20.0.0",
-        "ava": "^7.0.0",
-        "c8": "^11.0.0",
+        "@vitest/coverage-v8": "^2.0.0",
         "lerna": "^9.0.0",
         "lint-staged": "^16.1.2",
         "prettier": "^3.5.3",
-        "sinon": "^21.0.0"
+        "sinon": "^21.0.0",
+        "vitest": "^2.0.0"
     }
 }

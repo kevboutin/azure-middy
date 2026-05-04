@@ -1,17 +1,17 @@
-const test = require("ava");
-const sinon = require("sinon");
-const interceptor = require("azure-function-log-intercept");
+import { test, expect, beforeEach, afterEach } from "vitest";
+import sinon from "sinon";
+import interceptor from "azure-function-log-intercept";
 
 let sandbox;
-test.beforeEach(async (t) => {
+beforeEach(async () => {
     sandbox = sinon.createSandbox();
 });
 
-test.afterEach(async (t) => {
+afterEach(async () => {
     sandbox.restore();
 });
 
-test("interceptor intercepts all methods", (t) => {
+test("interceptor intercepts all methods", () => {
     let x = 0;
     const context = {
         log() {
@@ -32,5 +32,5 @@ test("interceptor intercepts all methods", (t) => {
     console.info("intercepted");
     console.error("intercepted");
 
-    t.is(x, 4);
+    expect(x).toBe(4);
 });

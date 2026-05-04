@@ -1,7 +1,7 @@
-const test = require("ava");
-const sinon = require("sinon");
-const { setTimeout } = require("node:timers/promises");
-const {
+import { test, expect } from 'vitest';
+import sinon from "sinon";
+import { setTimeout } from "node:timers/promises";
+import {
     jsonSafeParse,
     jsonSafeStringify,
     processCache,
@@ -10,118 +10,118 @@ const {
     modifyCache,
     normalizeHttpResponse,
     getInternal,
-} = require("../index.cjs");
+} from "../dist/index.js";
 
 // jsonSafeParse
-test("jsonSafeParse should parse valid json", async (t) => {
+test("jsonSafeParse should parse valid json", async () => {
     const value = jsonSafeParse("{}");
-    t.deepEqual(value, {});
+    expect(value).toEqual({});
 });
-test("jsonSafeParse should not parse object", async (t) => {
+test("jsonSafeParse should not parse object", async () => {
     const value = jsonSafeParse({});
-    t.deepEqual(value, {});
+    expect(value).toEqual({});
 });
-test("jsonSafeParse should not parse string", async (t) => {
+test("jsonSafeParse should not parse string", async () => {
     const value = jsonSafeParse("value");
-    t.is(value, "value");
+    expect(value).toBe("value");
 });
-test("jsonSafeParse should not parse empty string", async (t) => {
+test("jsonSafeParse should not parse empty string", async () => {
     const value = jsonSafeParse("");
-    t.is(value, "");
+    expect(value).toBe("");
 });
-test("jsonSafeParse should not parse null", async (t) => {
+test("jsonSafeParse should not parse null", async () => {
     const value = jsonSafeParse(null);
-    t.is(value, null);
+    expect(value).toBe(null);
 });
-test("jsonSafeParse should not parse number", async (t) => {
+test("jsonSafeParse should not parse number", async () => {
     const value = jsonSafeParse(1);
-    t.is(value, 1);
+    expect(value).toBe(1);
 });
-test("jsonSafeParse should not parse nested function", async (t) => {
+test("jsonSafeParse should not parse nested function", async () => {
     const value = jsonSafeParse("{fct:() => {}}");
-    t.is(value, "{fct:() => {}}");
+    expect(value).toBe("{fct:() => {}}");
 });
 
 // jsonSafeStringify
-test("jsonSafeStringify should stringify valid json", async (t) => {
+test("jsonSafeStringify should stringify valid json", async () => {
     const value = jsonSafeStringify({ hello: ["world"] });
-    t.is(value, '{"hello":["world"]}');
+    expect(value).toBe('{"hello":["world"]}');
 });
-test("jsonSafeStringify should stringify with replacer", async (t) => {
+test("jsonSafeStringify should stringify with replacer", async () => {
     const value = jsonSafeStringify(
         JSON.stringify({ msg: JSON.stringify({ hello: ["world"] }) }),
         (key, value) => jsonSafeParse(value),
     );
-    t.is(value, '{"msg":{"hello":["world"]}}');
+    expect(value).toBe('{"msg":{"hello":["world"]}}');
 });
-test("jsonSafeStringify should not stringify if throws error", async (t) => {
+test("jsonSafeStringify should not stringify if throws error", async () => {
     const value = jsonSafeStringify({ bigint: BigInt(9007199254740991) });
-    t.deepEqual(value, { bigint: BigInt(9007199254740991) });
+    expect(value).toEqual({ bigint: BigInt(9007199254740991) });
 });
 
 // normalizeHttpResponse
-test("normalizeHttpResponse should not change response", async (t) => {
+test("normalizeHttpResponse should not change response", async () => {
     const request = {
         response: { headers: {} },
     };
     const response = normalizeHttpResponse(request);
-    t.deepEqual(response, { statusCode: 500, headers: {} });
-    t.deepEqual(request, { response });
+    expect(response).toEqual({ statusCode: 500, headers: {} });
+    expect(request).toEqual({ response });
 });
-test("normalizeHttpResponse should update headers in response", async (t) => {
+test("normalizeHttpResponse should update headers in response", async () => {
     const request = {
         response: {},
     };
     const response = normalizeHttpResponse(request);
-    t.deepEqual(response, { statusCode: 200, headers: {}, body: {} });
-    t.deepEqual(request, { response });
+    expect(response).toEqual({ statusCode: 200, headers: {}, body: {} });
+    expect(request).toEqual({ response });
 });
-test("normalizeHttpResponse should update undefined response", async (t) => {
+test("normalizeHttpResponse should update undefined response", async () => {
     const request = {};
     const response = normalizeHttpResponse(request);
-    t.deepEqual(response, { statusCode: 500, headers: {} });
-    t.deepEqual(request, { response });
+    expect(response).toEqual({ statusCode: 500, headers: {} });
+    expect(request).toEqual({ response });
 });
-test("normalizeHttpResponse should update incomplete response", async (t) => {
+test("normalizeHttpResponse should update incomplete response", async () => {
     const request = {
         response: {
             body: "",
         },
     };
     const response = normalizeHttpResponse(request);
-    t.deepEqual(response, { statusCode: 500, headers: {}, body: "" });
-    t.deepEqual(request, { response });
+    expect(response).toEqual({ statusCode: 500, headers: {}, body: "" });
+    expect(request).toEqual({ response });
 });
-test("normalizeHttpResponse should update nullish response", async (t) => {
+test("normalizeHttpResponse should update nullish response", async () => {
     const request = {
         response: null,
     };
     const response = normalizeHttpResponse(request);
-    t.deepEqual(response, { statusCode: 200, headers: {}, body: null });
-    t.deepEqual(request, { response });
+    expect(response).toEqual({ statusCode: 200, headers: {}, body: null });
+    expect(request).toEqual({ response });
 });
-test("normalizeHttpResponse should update string response", async (t) => {
+test("normalizeHttpResponse should update string response", async () => {
     const request = {
         response: "",
     };
     const response = normalizeHttpResponse(request);
-    t.deepEqual(response, { statusCode: 200, headers: {}, body: "" });
-    t.deepEqual(request, { response });
+    expect(response).toEqual({ statusCode: 200, headers: {}, body: "" });
+    expect(request).toEqual({ response });
 });
-test("normalizeHttpResponse should update array response", async (t) => {
+test("normalizeHttpResponse should update array response", async () => {
     const request = {
         response: [],
     };
     const response = normalizeHttpResponse(request);
-    t.deepEqual(response, { statusCode: 200, headers: {}, body: [] });
-    t.deepEqual(request, { response });
+    expect(response).toEqual({ statusCode: 200, headers: {}, body: [] });
+    expect(request).toEqual({ response });
 });
 
 // processCache / clearCache
 const cacheRequest = {
     internal: {},
 };
-test.serial("processCache should not cache", async (t) => {
+test("processCache should not cache", async () => {
     const fetch = sinon.stub().resolves("value");
     const options = {
         cacheKey: "key",
@@ -129,10 +129,10 @@ test.serial("processCache should not cache", async (t) => {
     };
     processCache(cacheRequest, options, fetch);
     const cache = getCache("key");
-    t.deepEqual(cache, {});
+    expect(cache).toEqual({});
     clearCache();
 });
-test.serial("processCache should cache forever", async (t) => {
+test("processCache should cache forever", async () => {
     const fetch = sinon.stub().resolves("value");
     const options = {
         cacheKey: "key",
@@ -141,14 +141,14 @@ test.serial("processCache should cache forever", async (t) => {
     processCache(cacheRequest, options, fetch);
     await setTimeout(100);
     const cacheValue = getCache("key").value;
-    t.is(await cacheValue, "value");
+    expect(await cacheValue).toBe("value");
     const { value, cache } = processCache(cacheRequest, options, fetch);
-    t.is(await value, "value");
-    t.true(cache);
-    t.is(fetch.callCount, 1);
+    expect(await value).toBe("value");
+    expect(cache);
+    expect(fetch.callCount).toBe(1);
     clearCache();
 });
-test.serial("processCache should cache when not expired", async (t) => {
+test("processCache should cache when not expired", async () => {
     const fetch = sinon.stub().resolves("value");
     const options = {
         cacheKey: "key",
@@ -157,16 +157,16 @@ test.serial("processCache should cache when not expired", async (t) => {
     processCache(cacheRequest, options, fetch);
     await setTimeout(50);
     const cacheValue = getCache("key").value;
-    t.is(await cacheValue, "value");
+    expect(await cacheValue).toBe("value");
     const { value, cache } = processCache(cacheRequest, options, fetch);
-    t.is(await value, "value");
-    t.is(cache, true);
-    t.is(fetch.callCount, 1);
+    expect(await value).toBe("value");
+    expect(cache).toBe(true);
+    expect(fetch.callCount).toBe(1);
     clearCache();
 });
-test.serial(
+test(
     "processCache should cache when not expired w/ unix timestamp",
-    async (t) => {
+    async () => {
         const fetch = sinon.stub().resolves("value");
         const options = {
             cacheKey: "key",
@@ -175,17 +175,17 @@ test.serial(
         processCache(cacheRequest, options, fetch);
         await setTimeout(50);
         const cacheValue = getCache("key").value;
-        t.is(await cacheValue, "value");
+        expect(await cacheValue).toBe("value");
         const { value, cache } = processCache(cacheRequest, options, fetch);
-        t.is(await value, "value");
-        t.is(cache, true);
-        t.is(fetch.callCount, 1);
+        expect(await value).toBe("value");
+        expect(cache).toBe(true);
+        expect(fetch.callCount).toBe(1);
         clearCache();
     },
 );
-test.serial(
+test(
     "processCache should cache when not expired using cacheKeyExpire",
-    async (t) => {
+    async () => {
         const fetch = sinon.stub().resolves("value");
         const options = {
             cacheKey: "key",
@@ -195,17 +195,17 @@ test.serial(
         processCache(cacheRequest, options, fetch);
         await setTimeout(50);
         const cacheValue = getCache("key").value;
-        t.is(await cacheValue, "value");
+        expect(await cacheValue).toBe("value");
         const { value, cache } = processCache(cacheRequest, options, fetch);
-        t.is(await value, "value");
-        t.is(cache, true);
-        t.is(fetch.callCount, 1);
+        expect(await value).toBe("value");
+        expect(cache).toBe(true);
+        expect(fetch.callCount).toBe(1);
         clearCache();
     },
 );
-test.serial(
+test(
     "processCache should cache when not expired using cacheKeyExpire w/ unix timestamp",
-    async (t) => {
+    async () => {
         const fetch = sinon.stub().resolves("value");
         const options = {
             cacheKey: "key",
@@ -215,17 +215,17 @@ test.serial(
         processCache(cacheRequest, options, fetch);
         await setTimeout(50);
         const cacheValue = getCache("key").value;
-        t.is(await cacheValue, "value");
+        expect(await cacheValue).toBe("value");
         const { value, cache } = processCache(cacheRequest, options, fetch);
-        t.is(await value, "value");
-        t.is(cache, true);
-        t.is(fetch.callCount, 1);
+        expect(await value).toBe("value");
+        expect(cache).toBe(true);
+        expect(fetch.callCount).toBe(1);
         clearCache();
     },
 );
-test.serial(
+test(
     "processCache should clear and re-fetch modified cache",
-    async (t) => {
+    async () => {
         const options = {
             cacheKey: "key",
             cacheExpiry: -1,
@@ -243,7 +243,7 @@ test.serial(
             }),
         });
         const fetchCached = (request, cached) => {
-            t.deepEqual(cached, {
+            expect(cached).toEqual({
                 a: "value",
                 b: undefined,
             });
@@ -261,13 +261,13 @@ test.serial(
         } catch (e) {
             let cache = getCache(options.cacheKey);
 
-            t.true(cache.modified);
-            t.deepEqual(cache.value, {
+            expect(cache.modified);
+            expect(cache.value).toEqual({
                 a: "value",
                 b: undefined,
             });
-            t.is(e.message, "Failed to resolve internal values");
-            t.deepEqual(e.cause, {
+            expect(e.message).toBe("Failed to resolve internal values");
+            expect(e.cause).toEqual({
                 package: "@kevboutin/azure-middy-util",
                 data: [new Error("error")],
             });
@@ -275,8 +275,8 @@ test.serial(
             processCache(cacheRequest, options, fetchCached);
             cache = getCache(options.cacheKey);
 
-            t.is(cache.modified, undefined);
-            t.deepEqual(cache.value, {
+            expect(cache.modified).toBe(undefined);
+            expect(cache.value).toEqual({
                 a: "value",
                 b: "value",
             });
@@ -284,7 +284,7 @@ test.serial(
         clearCache();
     },
 );
-test.serial("processCache should cache and expire", async (t) => {
+test("processCache should cache and expire", async () => {
     const fetch = sinon.stub().resolves("value");
     const options = {
         cacheKey: "key-cache-expire",
@@ -293,15 +293,15 @@ test.serial("processCache should cache and expire", async (t) => {
     processCache(cacheRequest, options, fetch);
     await setTimeout(100);
     let cache = getCache("key-cache-expire");
-    t.not(cache, undefined);
+    expect(cache, undefined);
     await setTimeout(250); // expire twice
     cache = getCache("key-cache-expire");
-    t.true(cache.expiry < Date.now());
+    expect(cache.expiry < Date.now());
     clearCache();
 });
-test.serial(
+test(
     "processCache should cache and expire w/ unix timestamp",
-    async (t) => {
+    async () => {
         const fetch = sinon.stub().resolves("value");
         const options = {
             cacheKey: "key-cache-unix-expire",
@@ -310,15 +310,15 @@ test.serial(
         processCache(cacheRequest, options, fetch);
         await setTimeout(100);
         let cache = getCache("key-cache-unix-expire");
-        t.not(cache, undefined);
+        expect(cache, undefined);
         await setTimeout(250); // expire once, then doesn't cache
         cache = getCache("key-cache-unix-expire");
 
-        t.true(cache.expiry < Date.now());
+        expect(cache.expiry < Date.now());
         clearCache();
     },
 );
-test.serial("processCache should clear single key cache", async (t) => {
+test("processCache should clear single key cache", async () => {
     const fetch = sinon.stub().resolves("value");
     processCache(
         cacheRequest,
@@ -337,11 +337,11 @@ test.serial("processCache should clear single key cache", async (t) => {
         fetch,
     );
     clearCache("other");
-    t.not(getCache("key").value, undefined);
-    t.deepEqual(getCache("other"), {});
+    expect(getCache("key").value, undefined);
+    expect(getCache("other")).toEqual({});
     clearCache();
 });
-test.serial("processCache should clear multi-key cache", async (t) => {
+test("processCache should clear multi-key cache", async () => {
     const fetch = sinon.stub().resolves("value");
     processCache(
         cacheRequest,
@@ -360,11 +360,11 @@ test.serial("processCache should clear multi-key cache", async (t) => {
         fetch,
     );
     clearCache(["key", "other"]);
-    t.deepEqual(getCache("key"), {});
-    t.deepEqual(getCache("other"), {});
+    expect(getCache("key")).toEqual({});
+    expect(getCache("other")).toEqual({});
     clearCache();
 });
-test.serial("processCache should clear all cache", async (t) => {
+test("processCache should clear all cache", async () => {
     const fetch = sinon.stub().resolves("value");
     processCache(
         cacheRequest,
@@ -383,17 +383,17 @@ test.serial("processCache should clear all cache", async (t) => {
         fetch,
     );
     clearCache();
-    t.deepEqual(getCache("key"), {});
-    t.deepEqual(getCache("other"), {});
+    expect(getCache("key")).toEqual({});
+    expect(getCache("other")).toEqual({});
     clearCache();
 });
 
 // modifyCache
-test.serial(
+test(
     "modifyCache should not override value when it does not exist",
-    async (t) => {
+    async () => {
         modifyCache("key");
-        t.deepEqual(getCache("key"), {});
+        expect(getCache("key")).toEqual({});
     },
 );
 
@@ -414,13 +414,13 @@ const getInternalRequest = {
         // promiseReject: Promise.reject('promise')
     },
 };
-test("getInternal should get none from internal store", async (t) => {
+test("getInternal should get none from internal store", async () => {
     const values = await getInternal(false, getInternalRequest);
-    t.deepEqual(values, {});
+    expect(values).toEqual({});
 });
-test("getInternal should get all from internal store", async (t) => {
+test("getInternal should get all from internal store", async () => {
     const values = await getInternal(true, getInternalRequest);
-    t.deepEqual(values, {
+    expect(values).toEqual({
         array: [],
         boolean: true,
         number: 1,
@@ -434,19 +434,19 @@ test("getInternal should get all from internal store", async (t) => {
         string: "string",
     });
 });
-test("getInternal should get from internal store when string", async (t) => {
+test("getInternal should get from internal store when string", async () => {
     const values = await getInternal("number", getInternalRequest);
-    t.deepEqual(values, { number: 1 });
+    expect(values).toEqual({ number: 1 });
 });
-test("getInternal should get from internal store when array[string]", async (t) => {
+test("getInternal should get from internal store when array[string]", async () => {
     const values = await getInternal(["boolean", "string"], getInternalRequest);
-    t.deepEqual(values, { boolean: true, string: "string" });
+    expect(values).toEqual({ boolean: true, string: "string" });
 });
-test("getInternal should get from internal store when object", async (t) => {
+test("getInternal should get from internal store when object", async () => {
     const values = await getInternal({ newKey: "promise" }, getInternalRequest);
-    t.deepEqual(values, { newKey: "promise" });
+    expect(values).toEqual({ newKey: "promise" });
 });
-test("getInternal should get from internal store a nested value", async (t) => {
+test("getInternal should get from internal store a nested value", async () => {
     const values = await getInternal("promiseObject.key", getInternalRequest);
-    t.deepEqual(values, { "promiseObject.key": "value" });
+    expect(values).toEqual({ "promiseObject.key": "value" });
 });
