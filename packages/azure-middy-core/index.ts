@@ -23,7 +23,7 @@ const middy: MiddyFunction = (
     ) => {
         return new HttpResponse({
             status: 200,
-            headers: new Headers(),
+            headers: {},
         });
     },
     plugin?: Plugin,

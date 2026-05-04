@@ -9,7 +9,7 @@ import type { AzureFunctionRequest } from "@kevboutin/azure-middy-types";
 let connection: Connection | null = null;
 const mongodbUri: string =
     process.env["MONGO_URI"] || "mongodb://localhost:27017";
-const defaults: MongoDBMiddlewareOptions = {
+const defaults: Partial<MongoDBMiddlewareOptions> = {
     serverSelectionTimeoutMS: 5000,
 };
 
@@ -93,7 +93,7 @@ const isConnectionAlive = async (conn: Connection): Promise<boolean> => {
  * @throws If there is an error connecting to the database.
  */
 const connect = async (
-    opts: MongoDBMiddlewareOptions = {},
+    opts: Partial<MongoDBMiddlewareOptions> = {},
 ): Promise<Connection> => {
     // Log the MongoDB URI securely
     const secureUri = mongodbUri.replace(/\/\/.*@/, "//***:***@");
@@ -138,7 +138,7 @@ const connect = async (
  * @returns Middleware object with 'before' function.
  */
 const mongodbMiddleware = (
-    opts: MongoDBMiddlewareOptions = {},
+    opts: Partial<MongoDBMiddlewareOptions> = {},
 ): MongoDBMiddleware => {
     const options: MongoDBMiddlewareOptions = { ...defaults, ...opts };
 

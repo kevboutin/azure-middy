@@ -23,21 +23,19 @@ const baseHandler = async (req: AzureFunctionRequest, context: any) => {
 };
 
 // Configure middleware options with TypeScript
-const middlewareOptions: MongoDBMiddlewareOptions = {
+const middlewareOptions: Partial<MongoDBMiddlewareOptions> = {
     serverSelectionTimeoutMS: 5000,
-    maxPoolSize: 10,
-    minPoolSize: 1,
 };
 
 // Create middleware instance
-const mongoMiddleware = mongodbMiddleware(middlewareOptions);
+const mongoMiddleware = mongodbMiddleware(middlewareOptions as MongoDBMiddlewareOptions);
 
 // Example of using the middleware
 const exampleRequest = {
     internal: {},
     method: "GET",
-    headers: new Headers(),
-    query: new URLSearchParams(),
+    headers: {},
+    query: {},
     params: {},
     // Add other necessary properties from HttpRequest
 } as unknown as AzureFunctionRequest;
