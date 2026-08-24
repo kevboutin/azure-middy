@@ -49,7 +49,7 @@
         "url": "https://github.com/kevboutin/azure-middy/issues"
     },
     "dependencies": {
-        "@azure/identity": "^4.13.1",
+        "@azure/identity": "^4.13.2",
         "@azure/keyvault-secrets": "^4.11.2",
         "@kevboutin/azure-middy-types": "^0.1.2",
         "@kevboutin/azure-middy-util": "0.2.14",
