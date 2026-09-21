@@ -58,7 +58,7 @@
         "vitest": "^5.0.0"
     },
     "dependencies": {
-        "@azure/functions": "^4.16.2",
+        "@azure/functions": "^4.16.5",
         "@kevboutin/azure-middy-types": "^0.1.2",
         "cpy-cli": "^7.0.0"
     },
