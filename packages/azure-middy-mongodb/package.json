@@ -51,7 +51,7 @@
     "dependencies": {
         "@kevboutin/azure-middy-types": "^0.1.2",
         "cpy-cli": "^7.0.0",
-        "mongoose": "^9.10.0"
+        "mongoose": "^9.10.3"
     },
     "devDependencies": {
         "@types/node": "^26.6.2",
